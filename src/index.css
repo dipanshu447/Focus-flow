@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: rgba(244,245,244,255);
+  padding: 30px 50px;
+  display: flex;
+  justify-content: center;
+}
+
+#root {
+  width: 70%;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header > button img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+}
+
+header > button {
+  border-radius: 6px;
+  border: none;
+  padding: 21px;
+  cursor: pointer;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0;
+  height: 0;
+}
+
+.head h1{
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.head p {
+  font-size: 15px;
+  font-weight: 400;
+  color: gray;
+}
