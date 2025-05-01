@@ -25,7 +25,8 @@ export default function App() {
       </section>
       <div className="createTask">
         <div>
-          <img src="https://img.icons8.com/?size=100&id=3220&format=png&color=000000" alt="plus-img" />
+          <img src="https://img.icons8.com/?size=100&id=3220&format=png&color=ffffff" alt="plus-img" />
+          <input type="text" placeholder='Create new task' />
         </div>
       </div>
     </>

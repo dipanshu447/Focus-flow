@@ -90,3 +90,36 @@ article footer button {
 article footer button img {
   width: 1.5rem;
 }
+
+.createTask {
+  position: fixed;
+  left: 42%;
+  bottom: 10px;
+  padding: 10px;
+  background-color: black;
+}
+
+.createTask > div {
+  display: flex;
+  gap: 10px;
+}
+
+.createTask > div input {
+  background: none;
+  border: none;
+  color: white;
+}
+
+.createTask > div input:focus-visible {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.createTask > div input::placeholder{
+  color: white;
+}
+
+.createTask > div img {
+  width: 1rem;
+}
