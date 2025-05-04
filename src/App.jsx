@@ -1,5 +1,7 @@
 import Header from './components/Header.jsx';
 import Task from './components/TaskBox.jsx';
+import CreateTask from './components/CreateTask.jsx';
+import { useState } from 'react';
 
 export default function App() {
   return (
@@ -23,12 +25,8 @@ export default function App() {
         <Task />
         <Task />
       </section>
-      <div className="createTask">
-        <div>
-          <img src="https://img.icons8.com/?size=100&id=3220&format=png&color=ffffff" alt="plus-img" />
-          <input type="text" placeholder='Create new task' />
-        </div>
-      </div>
+        <img className="darkMode" src="https://img.icons8.com/?size=100&id=45475&format=png&color=000000" alt="darkModeIcon" />
+      <CreateTask />
     </>
   )
 }
