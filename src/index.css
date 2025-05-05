@@ -70,13 +70,20 @@ article {
 }
 
 article header button {
-  padding: 10px;
+  padding: 3px;
   margin-right: 10px;
   border-radius: 5px;
   border: 1px solid #b1b1b1;
   background-color: #fff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 } 
+
+article header button img {
+  width: 18px;
+}
 
 article footer button {
   display: flex;
@@ -128,10 +135,7 @@ article footer button img {
   width: 1rem;
 }
 
-.darkMode {
-  position: absolute;
-  top: 20px;
-  right: 25px;
-  width: 35px;
-  cursor: pointer;
+header > img {
+  width: 30px;
+  margin-right: 10px;
 }

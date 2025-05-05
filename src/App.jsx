@@ -4,29 +4,17 @@ import CreateTask from './components/CreateTask.jsx';
 import { useState } from 'react';
 
 export default function App() {
+  const [Tasks, setTask] = useState(["Finish reading the book","Eat food"]);
+
+  let userTasks = Tasks.map(task => <Task key={task} task={task}/>);
+
   return (
     <>
       <Header />
       <section>
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
-        <Task />
+        {userTasks}
       </section>
-        <img className="darkMode" src="https://img.icons8.com/?size=100&id=45475&format=png&color=000000" alt="darkModeIcon" />
-      <CreateTask />
+      <CreateTask addTask={setTask} />
     </>
   )
 }
