@@ -6,8 +6,10 @@ import { useState } from 'react';
 export default function App() {
   const [Tasks, setTask] = useState(["Finish reading the book","Eat food"]);
 
-  let userTasks = Tasks.map(task => <Task key={task} task={task}/>);
-
+  let userTasks = Tasks.map((task,index) => (
+    <Task key={task} id={index} changeTaskList={setTask} task={task}/>
+  ));
+  
   return (
     <>
       <Header />
@@ -15,6 +17,6 @@ export default function App() {
         {userTasks}
       </section>
       <CreateTask addTask={setTask} />
-    </>
+    </> 
   )
 }
