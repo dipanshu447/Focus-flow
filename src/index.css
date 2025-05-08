@@ -69,20 +69,8 @@ article {
   border-radius: 10px;
 }
 
-article header button {
-  padding: 3px;
-  margin-right: 10px;
-  border-radius: 5px;
-  border: 1px solid #b1b1b1;
-  background-color: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} 
-
-article header button img {
-  width: 18px;
+article header p {
+  margin-left: 8px;
 }
 
 article footer button {
@@ -138,4 +126,38 @@ article footer button img {
 header > img {
   width: 30px;
   margin-right: 10px;
+}
+
+.custom-checkbox {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.custom-checkbox > input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.checkmark {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #b1b1b1;
+  border-radius: 5px;
+  transition: 0.5s all cubic-bezier(0.47, 0.54, 0, 1.14);
+  cursor: pointer;
+}
+
+.checkmark:hover {
+  box-shadow: 0px 0px 5px 0px rgb(92, 92, 92);
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-image: url('https://img.icons8.com/?size=100&id=82769&format=png&color=ffffff');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-color: #000000;
 }

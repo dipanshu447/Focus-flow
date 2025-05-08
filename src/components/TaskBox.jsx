@@ -10,7 +10,10 @@ export default function Task({ task }) {
     return (
         <article>
             <header>
-                {taskDone ? <button onClick={taskToggle} ><img src="https://img.icons8.com/?size=100&id=82769&format=png&color=000000" alt="tickIcon" /></button> : <button onClick={taskToggle} style={{ padding: "12px" }}></button>}
+                <label className="custom-checkbox">
+                    <input type="checkbox" checked={taskDone} onChange={taskToggle}/>
+                    <span className="checkmark"></span>
+                </label>
                 <p>{task}</p>
             </header>
             <footer>
