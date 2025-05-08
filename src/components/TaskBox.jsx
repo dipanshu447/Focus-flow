@@ -7,6 +7,11 @@ export default function Task({ task }) {
         setTaskDone(prev => !prev)
     }
 
+    let checkedObj = {
+        textDecoration: "line-through", 
+        color: "#b1b1b1"
+    };
+
     return (
         <article>
             <header>
@@ -14,7 +19,7 @@ export default function Task({ task }) {
                     <input type="checkbox" checked={taskDone} onChange={taskToggle}/>
                     <span className="checkmark"></span>
                 </label>
-                <p>{task}</p>
+                <p style={taskDone ? checkedObj : {}}>{task}</p>
             </header>
             <footer>
                 <button><img src="https://img.icons8.com/?size=100&id=67884&format=png&color=686868" alt="vertical-menu" /></button>
