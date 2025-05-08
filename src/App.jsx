@@ -7,7 +7,7 @@ export default function App() {
   const [Tasks, setTask] = useState(["Finish reading the book","Eat food"]);
 
   let userTasks = Tasks.map((task,index) => (
-    <Task key={task} id={index} changeTaskList={setTask} task={task}/>
+    <Task key={task} id={index} deleteTask={setTask} task={task}/>
   ));
   
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function Task({ task, id, changeTaskList }) {
+export default function Task({ task, id, deleteTask }) {
     const [taskDone, setTaskDone] = useState(false);
 
     function taskToggle() {
@@ -12,8 +12,8 @@ export default function Task({ task, id, changeTaskList }) {
         color: "#b1b1b1"
     };
 
-    function deleteTask() {
-        changeTaskList(prev => {
+    function removeTask() {
+        deleteTask(prev => {
             let copy = [...prev];
             copy.splice(id,1);
             return copy;
@@ -30,7 +30,7 @@ export default function Task({ task, id, changeTaskList }) {
                 <p style={taskDone ? checkedObj : {}}>{task}</p>
             </header>
             <footer>
-                <button onClick={deleteTask}><img src="https://img.icons8.com/?size=100&id=67884&format=png&color=686868" alt="vertical-menu" /></button>
+                <button onClick={removeTask}><img src="https://img.icons8.com/?size=100&id=67884&format=png&color=686868" alt="vertical-menu" /></button>
             </footer>
         </article>
     )
