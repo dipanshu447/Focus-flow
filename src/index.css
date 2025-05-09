@@ -188,24 +188,28 @@ header > img {
 .menu-options {
   display: flex;
   flex-direction: column;
+  padding: 10px;
 }
 
 .menu-options ul li {
   display: flex;
   align-items: center;
   list-style-type: none;
-  padding: 13px 20px;
+  padding: 10px 15px;
   transition: 0.5s all cubic-bezier(0.47, 0.54, 0, 1.14);
   cursor: pointer;
   color:#202020;
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 10px;
 }
 
 .menu-options ul li:hover{
   background-color: #dddddd;
+  font-weight: 600;
 }
 
 .menu-options ul li img{
   width: 1.2rem;
   margin-right: 10px;
-  vertical-align: middle;
 }
