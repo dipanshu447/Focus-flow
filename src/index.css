@@ -193,7 +193,9 @@ header > img {
 
 .menu .heading span{
   font-size: 1.3rem;
+  font-family: "Kanchenjunga", sans-serif;
   font-weight: 600;
+  color: #383838;
 }
 
 .menu-options {

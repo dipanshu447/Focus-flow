@@ -4,6 +4,10 @@ import CreateTask from './components/CreateTask.jsx';
 import Menu from './components/MenuBar.jsx';
 import { useState } from 'react';
 
+// IDEAs
+// Yk progress that streak thingy we see on apps that circular thing if wo add hujaye yk 
+// By the end of the day it shows that itne percent you did completed
+
 export default function App() {
   const [Tasks, setTask] = useState(["Finish reading the book","Eat food"]);
 
