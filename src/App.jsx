@@ -1,6 +1,7 @@
 import Header from './components/Header.jsx';
 import Task from './components/TaskBox.jsx';
 import CreateTask from './components/CreateTask.jsx';
+import Menu from './components/MenuBar.jsx';
 import { useState } from 'react';
 
 export default function App() {
@@ -12,11 +13,14 @@ export default function App() {
   
   return (
     <>
+    <Menu />
+    <div className="todoList">
       <Header />
       <section>
         {userTasks}
       </section>
       <CreateTask addTask={setTask} />
+    </div>
     </> 
   )
 }

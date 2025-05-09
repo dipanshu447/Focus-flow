@@ -5,15 +5,23 @@
   font-family: "Inter", sans-serif;
 }
 
-body {
+#root {
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(244,245,244,255);
-  padding: 30px 50px;
   display: flex;
-  justify-content: center;
+  padding: 10px;
 }
 
-#root {
-  width: 70%;
+.todoList {
+  padding: 30px 50px;
+  width: 80%;
+}
+
+.menu {
+  width: 20%;
+  background-color: #fff;
+  border-radius: 8px;
 }
 
 header {
@@ -165,4 +173,39 @@ header > img {
   background-repeat: no-repeat;
   background-size: 80%;
   background-color: #000000;
+}
+
+.menu .heading {
+  border-bottom:1px solid #dbdbdb;
+  padding: 15px 20px;
+}
+
+.menu .heading span{
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.menu-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-options ul li {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  padding: 13px 20px;
+  transition: 0.5s all cubic-bezier(0.47, 0.54, 0, 1.14);
+  cursor: pointer;
+  color:#202020;
+}
+
+.menu-options ul li:hover{
+  background-color: #dddddd;
+}
+
+.menu-options ul li img{
+  width: 1.2rem;
+  margin-right: 10px;
+  vertical-align: middle;
 }
