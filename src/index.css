@@ -8,18 +8,29 @@
 #root {
   width: 100vw;
   height: 100vh;
+  min-height: 100vh;
   background-color: rgba(244,245,244,255);
   display: flex;
   padding: 10px;
 }
 
 .todoList {
-  padding: 30px 50px;
+  padding: 30px 50px 15px 50px;
   width: 80%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main {
+  width: 100%;
 }
 
 .menu {
   width: 20%;
+  height: auto;
   background-color: #fff;
   border-radius: 8px;
 }
@@ -62,10 +73,12 @@ header .header-menu {
 }
 
 section {
-  padding: 35px 0px;
+  margin-top: 35px;
   display: flex;
   flex-direction: column;
   gap: 9px;
+  overflow-y: auto;
+  height: 500px;
 }
 
 article {
@@ -102,9 +115,7 @@ article footer button img {
 }
 
 .createTask {
-  position: fixed;
-  left: 38%;
-  bottom: 10px;
+  width: 40%;
   padding: 15px 20px;
   background-color: black;
   border-radius: 25px;
@@ -212,4 +223,17 @@ header > img {
 .menu-options ul li img{
   width: 1.2rem;
   margin-right: 10px;
+}
+
+/* scroll bar formatting */
+
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+  background-color:#b1b1b1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #202020;
+  border-radius: 10px;
 }

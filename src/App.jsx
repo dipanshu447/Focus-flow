@@ -15,10 +15,12 @@ export default function App() {
     <>
     <Menu />
     <div className="todoList">
-      <Header />
-      <section>
-        {userTasks}
-      </section>
+      <div className='main'>
+        <Header />
+        <section>
+          {userTasks}
+        </section>
+      </div>
       <CreateTask addTask={setTask} />
     </div>
     </> 
