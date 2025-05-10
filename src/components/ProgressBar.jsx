@@ -5,7 +5,7 @@ export default function ProgressBar({progress}) {
     const circumference = 2 * Math.PI * normalizedRadius;
     const offSet = circumference - (progress / 100) * circumference;
     return (
-        <svg width='35px' height='35px'>
+        <svg className="progressBar" width='35px' height='35px'>
             <circle
                 cx='20'
                 cy='20'

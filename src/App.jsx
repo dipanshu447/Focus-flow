@@ -8,7 +8,6 @@ import { useState } from 'react';
 export default function App() {
   const [Tasks, setTask] = useState(["Finish reading the book", "Eat food"]);
   const [taskDone, setTaskDone] = useState(Tasks.map(e => false));
-  console.log(taskDone);
 
   function taskToggle(id) {
     setTaskDone(prev => {
@@ -25,29 +24,29 @@ export default function App() {
 
   function removeTask(id) {
     setTask(prev => {
-        let copy = [...prev];
-        copy.splice(id,1);
-        return copy;
+      let copy = [...prev];
+      copy.splice(id, 1);
+      return copy;
     })
 
     setTaskDone(prev => {
       let copy = [...prev];
-      copy.splice(id,1);
+      copy.splice(id, 1);
       return copy;
-  })
-}
+    })
+  }
 
   let userTasks = Tasks.map((task, index) => (
     <Task key={task} id={index} deleteTask={removeTask} task={task} taskDone={taskDone[index]} taskToggle={taskToggle} />
   ));
-  
-  let finishedTasksCount = taskDone.reduce((count,taskVal) => {
-    if(taskVal) count++;
+
+  let finishedTasksCount = taskDone.reduce((count, taskVal) => {
+    if (taskVal) count++;
     return count;
-  },0);
-  
-  let taskMessage = Tasks.length == 0 ? "No tasks yet. Add one to get started!" :(taskDone.length - finishedTasksCount) == 0 ? "You're all caught up. Great job!" :`${taskDone.length - finishedTasksCount} Tasks Remaining.`;
-  
+  }, 0);
+
+  let taskMessage = Tasks.length == 0 ? "No tasks yet. Add one to get started!" : (taskDone.length - finishedTasksCount) == 0 ? "You're all caught up. Great job!" : `${taskDone.length - finishedTasksCount} Tasks Remaining.`;
+
   let taskProgress = (finishedTasksCount / taskDone.length) * 100;
   let progressPercent = isNaN(taskProgress) ? 0 : Math.round(taskProgress);
 
