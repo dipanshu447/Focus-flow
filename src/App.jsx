@@ -43,18 +43,21 @@ export default function App() {
     return count;
   }, 0);
 
-  
+  const [page, setPage] = useState("ToDolist");
 
   return (
     <>
-      <Menu />
-      <TodoList 
-        addTask={addTask} 
+      <Menu setPage={setPage}/>
+      {page == "Welcome" && <h1>Welcome</h1>}
+      {page == "ToDolist" && <TodoList
+        addTask={addTask}
         remainingTaskCount={finishedTasksCount}
         taskDoneLength={taskDone.length}
         taskLength={Tasks.length}
         userTasks={userTasks}
-      />
+      />}
+      {page == "Pomodoro" && <h1>Pomodoro</h1>}
+      {page == "Coming Soon" && <h1>Coming Soon</h1>}
     </>
   )
 }

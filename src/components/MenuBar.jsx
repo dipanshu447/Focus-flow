@@ -17,14 +17,15 @@ const menuItem = [
     }
 ]
 
-let menuOptions = menuItem.map((item, index) => (
-    <li key={index}>
-        <img src={item.icon} alt={item.lable + " option"} />
-        {item.lable}
-    </li>
-))
 
-export default function Menu() {
+export default function Menu({setPage}) {
+    let menuOptions = menuItem.map((item, index) => (
+        <li key={index} onClick={() => setPage(menuItem[index].lable)}>
+            <img src={item.icon} alt={item.lable + " option"} />
+            {item.lable}
+        </li>
+    ))
+
     return (
         <div className="menu">
             <div className="heading">
