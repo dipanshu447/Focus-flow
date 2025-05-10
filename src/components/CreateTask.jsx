@@ -5,7 +5,7 @@ export default function CreateTask({addTask}) {
 
     function handleKey(event) {
         if(event.key == "Enter" && input.trim() !== ""){
-            addTask(prev => [...prev, input]);
+            addTask(input);
             setInput('');
         }
     }
