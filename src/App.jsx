@@ -1,6 +1,7 @@
 import Task from './components/todolistComponents/TaskBox.jsx';
 import Menu from './components/MenuBar.jsx';
 import TodoList from './components/TodoList.jsx';
+import Pomodoro from './components/Pomodoro.jsx';
 import { useState } from 'react';
 
 export default function App() {
@@ -56,7 +57,7 @@ export default function App() {
         taskLength={Tasks.length}
         userTasks={userTasks}
       />}
-      {page == "Pomodoro" && <h1>Pomodoro</h1>}
+      {page == "Pomodoro" && <Pomodoro />}
       {page == "Coming Soon" && <h1>Coming Soon</h1>}
     </>
   )

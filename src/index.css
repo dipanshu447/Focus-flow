@@ -273,3 +273,8 @@ header > img {
 .progressBar {
   transform: rotate(-90deg);
 }
+
+.pomodoro {
+  padding: 30px 50px 15px 50px;
+  width: 80%;
+}
