@@ -256,6 +256,7 @@ header > img {
 .status {
   display: flex;
   align-items: center;
+  gap:2px;
 }
 
 .subHead {
@@ -277,4 +278,10 @@ header > img {
 .pomodoro {
   padding: 30px 50px 15px 50px;
   width: 80%;
+}
+
+.timer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

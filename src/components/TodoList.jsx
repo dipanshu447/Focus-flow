@@ -19,7 +19,6 @@ export default function TodoList({addTask, taskDoneLength, taskLength,remainingT
                         <small>{progressPercent}%</small>
                         <ProgressBar 
                             strokeSize='5'
-                            Radius='14'
                             CircleSize='35'
                             progress={progressPercent} 
                         />
