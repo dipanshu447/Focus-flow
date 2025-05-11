@@ -1,22 +1,23 @@
-export default function ProgressBar({progress}) {
-    const stroke = 5;
-    const radius = 14;
+export default function ProgressBar({strokeSize,Radius,CircleSize,progress}) {
+    const stroke = strokeSize;
+    const radius = Radius;
     const normalizedRadius = radius - stroke / 2;
     const circumference = 2 * Math.PI * normalizedRadius;
     const offSet = circumference - (progress / 100) * circumference;
+    const center = CircleSize / 2;
     return (
-        <svg className="progressBar" width='35px' height='35px'>
+        <svg className="progressBar" width={CircleSize} height={CircleSize}>
             <circle
-                cx='20'
-                cy='20'
+                cx={center}
+                cy={center}
                 strokeWidth={stroke}
                 r={normalizedRadius}
                 stroke='#b1b1b1'
                 fill='transparent'
                 />
             <circle
-                cx='20'
-                cy='20'
+                cx={center}
+                cy={center}
                 strokeWidth={stroke}
                 r={normalizedRadius}
                 stroke='#202020'

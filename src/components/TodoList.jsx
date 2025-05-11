@@ -17,7 +17,12 @@ export default function TodoList({addTask, taskDoneLength, taskLength,remainingT
                     <div className="leftOver">{taskMessage}</div>
                     <div className="status">
                         <small>{progressPercent}%</small>
-                        <ProgressBar progress={progressPercent} />
+                        <ProgressBar 
+                            strokeSize='5'
+                            Radius='14'
+                            CircleSize='35'
+                            progress={progressPercent} 
+                        />
                     </div>
                 </div>
                 <section>
