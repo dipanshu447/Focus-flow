@@ -11,7 +11,7 @@ export default function Pomodoro() {
     function formatTimer(seconds) {
         let min = Math.floor(seconds / 60);
         let sec = seconds % 60;
-        return `${min < 10 ? '0': ''}${min}:${sec < 10 ? '0': ''}${sec}`
+        return `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
     }
 
     useEffect(() => {
@@ -45,6 +45,12 @@ export default function Pomodoro() {
         <>
             <div className="pomodoro">
                 <Header />
+                <div className="options timerOption">
+                    <button className='newTask'>
+                        <img src="https://img.icons8.com/?size=100&id=359EtvQ5YRwA&format=png&color=ffffff" alt="plusIcon" />
+                        Set Pomodoro
+                    </button>
+                </div>
                 <div className="timer">
                     <ProgressBar strokeSize='15' CircleSize='350' progress={progressPercent}>
                         {formatTimer(timer)}
