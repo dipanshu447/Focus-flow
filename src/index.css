@@ -8,7 +8,6 @@
 :root {
   --progress-width : 6px;
   --transition-time-smooth : 0.5s all cubic-bezier(0.47, 0.54, 0, 1.14);
-  --option-hover-color : #ffffff;
 }
 
 #root {
@@ -18,6 +17,7 @@
   background-color: rgba(244,245,244,255);
   display: flex;
   padding: 10px;
+  position: relative;
 }
 
 .todoList {
@@ -28,6 +28,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  transition: var(--transition-time-smooth);
+  background-color: rgba(244,245,244,255);
 }
 
 .main {
@@ -353,4 +355,53 @@ header > img {
 .filter {
   background-color: white;
   color: rgb(0, 0, 0);
+}
+
+.taskDialogBox {
+  position: absolute;
+  top: 41%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  left: 48%;
+  width: 400px;
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+  gap: 15px;
+  font-weight: 600;
+  font-size: 20px;
+  box-shadow: 0px 0px 2px 0px rgb(158, 158, 158);
+  overflow: hidden;
+}
+
+.taskDialogBox input {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 10px;
+  box-shadow: 0px 0px 2px 0px rgb(158, 158, 158);
+}
+
+input:focus-visible {
+  outline: none;
+}
+
+.btns {
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+.btns button{
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #000;
+  color: white;
+  transition: var(--transition-time-smooth);
+  cursor: pointer;
+}
+
+.btns button:hover{
+  font-weight: 600;
 }
