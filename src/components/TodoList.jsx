@@ -1,6 +1,6 @@
 import Header from './Header.jsx';
 import ProgressBar from './todolistComponents/ProgressBar.jsx';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function TodoList({ addTask, taskDoneLength, taskLength, remainingTaskCount, userTasks }) {
 
@@ -13,7 +13,7 @@ export default function TodoList({ addTask, taskDoneLength, taskLength, remainin
        e.preventDefault();
        let data = new FormData(e.target); 
        let taskInput = data.get('task');
-       addTask(taskInput);
+       if(taskInput.trim() !== "") addTask(taskInput);
        e.target.reset();
     }
 
@@ -21,6 +21,11 @@ export default function TodoList({ addTask, taskDoneLength, taskLength, remainin
     function toggleShowAddTask() {
         setshowAddTask(prev => !prev);
     }
+
+    const inputFocus = useRef(null);
+    useEffect(() => {
+        if(showAddTask && inputFocus.current) inputFocus.current.focus();
+    },[showAddTask])
 
     return (
         <>
@@ -54,8 +59,8 @@ export default function TodoList({ addTask, taskDoneLength, taskLength, remainin
                 </div>
             </div>
             {showAddTask && <form className="taskDialogBox" onSubmit={handleInput}>
-                <label>Add new Task</label>
-                <input type="text" name='task'/>
+                <label>Add new task</label>
+                <input ref={inputFocus} type="text" name='task'/>
                 <div className="btns">
                     <button type='button' onClick={toggleShowAddTask}>Back</button>
                     <button type='submit'>Add</button>

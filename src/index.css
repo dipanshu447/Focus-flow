@@ -367,7 +367,7 @@ header > img {
   width: 400px;
   padding: 20px;
   background-color: rgb(255, 255, 255);
-  border-radius: 20px;
+  border-radius: 10px;
   gap: 15px;
   font-weight: 600;
   font-size: 20px;
@@ -395,7 +395,7 @@ input:focus-visible {
 .btns button{
   padding: 10px 15px;
   border: none;
-  border-radius: 10px;
+  border-radius: 6px;
   background-color: #000;
   color: white;
   transition: var(--transition-time-smooth);
