@@ -5,7 +5,7 @@ import Pomodoro from './components/Pomodoro.jsx';
 import { useState } from 'react';
 
 export default function App() {
-  const [Tasks, setTask] = useState(["Finish reading the book", "Eat food"]);
+  const [Tasks, setTask] = useState(["Finish reading the book", "Eat food","Buy foood","Talk to friends","Clean Emails","so bored","but keep trying my best","i hope its full now","maybe"]);
   const [taskDone, setTaskDone] = useState(Tasks.map(e => false));
 
   function taskToggle(id) {

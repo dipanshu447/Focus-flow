@@ -24,11 +24,21 @@ export default function TodoList({addTask, taskDoneLength, taskLength,remainingT
                         />
                     </div>
                 </div>
+                <div className="options">
+                    <button className='newTask'>
+                        <img src="https://img.icons8.com/?size=100&id=3220&format=png&color=ffffff" alt="plusIcon" />
+                        New Task
+                    </button>
+                    <button className='filter'>
+                        <img src="https://img.icons8.com/?size=100&id=10751&format=png&color=000000" alt="plusIcon" />
+                        Filters
+                    </button>
+                </div>
                 <section>
                     {userTasks}
                 </section>
             </div>
-            <CreateTask addTask={addTask} />
+            {/* <CreateTask addTask={addTask} /> */}
         </div>
     )
 }

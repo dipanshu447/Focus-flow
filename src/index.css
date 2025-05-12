@@ -8,6 +8,7 @@
 :root {
   --progress-width : 6px;
   --transition-time-smooth : 0.5s all cubic-bezier(0.47, 0.54, 0, 1.14);
+  --option-hover-color : #ffffff;
 }
 
 #root {
@@ -83,7 +84,7 @@ section {
   flex-direction: column;
   gap: 9px;
   overflow-y: auto;
-  height: 500px;
+  height: 480px;
 }
 
 article {
@@ -309,4 +310,47 @@ header > img {
 .buttons button:hover {
   font-weight: 500;
   background-color: #000000;
+}
+
+.options{
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.options button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 11px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0px 0px 2px 0px rgb(158, 158, 158);
+  transition: var(--transition-time-smooth);
+}
+
+.options button:hover{
+  transform: scale(1.02);
+  font-weight: 600;
+}
+
+.options button img{
+  width: 15px;
+  margin-right: 8px;
+}
+
+.newTask {
+  background-color: #202020;
+  color: white;
+}
+
+.newTask:hover {
+  background-color: #000;
+}
+
+.filter {
+  background-color: white;
+  color: rgb(0, 0, 0);
 }
