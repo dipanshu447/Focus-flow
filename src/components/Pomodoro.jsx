@@ -3,20 +3,23 @@ import ProgressBar from "./todolistComponents/ProgressBar.jsx";
 import { useState, useEffect, useRef } from "react";
 
 export default function Pomodoro() {
-    // defalut settings of Pomodoro
     const defaultPomodoro = 25;
     const defaultBreak = 5;
     const defaultSessions = 1;
 
-    const [Pomodoro,setPomodoro] = useState(defaultPomodoro);
+    const [Pomodoro, setPomodoro] = useState(defaultPomodoro);
     const [Breaktime, setBreaktime] = useState(defaultBreak);
     const [Sessions, setSessions] = useState(defaultSessions);
 
-    let [intialTimer,setintialTimer] = useState(25 * 60);
+    let [intialTimer, setintialTimer] = useState(defaultPomodoro * 60);
     const [timerStart, setTimerStart] = useState(false);
     const [timer, setTimer] = useState(intialTimer);
     const intervalRef = useRef(null);
     const inputFocus = useRef(null);
+
+    const PomodoroCount = useRef(0);
+    const BreakCount = useRef(0);
+    const BreakTimer = useRef(false);
 
     function formatTimer(seconds) {
         let hour = Math.floor(seconds / 3600)
@@ -29,21 +32,38 @@ export default function Pomodoro() {
         if (timerStart) {
             intervalRef.current = setInterval(() => {
                 setTimer(prev => {
-                    if (prev <= 1) {
+                    if (prev < 1) {
                         clearInterval(intervalRef.current);
-                        setTimerStart(false);
-                        return 0;
+                        if (!BreakTimer.current) {
+                            PomodoroCount.current += 1;
+                            if (PomodoroCount.current == Sessions) {
+                                setTimerStart(false);
+                                return 0;
+                            } else {
+                                BreakTimer.current = true;
+                                setintialTimer(Breaktime * 60);
+                                setTimer(Breaktime * 60);
+                                setTimerStart(true);
+                                return Breaktime * 60;
+                            }
+                        } else {
+                            BreakCount.current += 1;
+                            BreakTimer.current = false;
+                            setintialTimer(Pomodoro * 60);
+                            setTimer(Pomodoro * 60);
+                            setTimerStart(true);
+                            return Pomodoro * 60;
+                        }
                     }
                     return prev - 1;
                 })
             }, 1000)
-        }
-        else {
+        } else {
             clearInterval(intervalRef.current);
         }
 
         return () => clearInterval(intervalRef.current);
-    }, [timerStart])
+    }, [timerStart, BreakTimer.current])
 
     function resetHandler() {
         setTimerStart(false);
@@ -59,7 +79,7 @@ export default function Pomodoro() {
     }, [showTimerSettings])
 
     function timerSettingHandler(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         let newTime = Pomodoro * 60;
         setintialTimer(newTime);
         setTimer(newTime);
@@ -77,12 +97,19 @@ export default function Pomodoro() {
             <div className="pomodoro" style={showTimerSettings ? { filter: "blur(10px) brightness(0.9)" } : {}}>
                 <Header />
                 <div className="options timerOption">
+                    <small className="studyhours">
+                        Time Studied Today : {1.2}hr
+                    </small>
                     <button onClick={toggleShowTimerSetting} className='newTask'>
-                        <img src="https://img.icons8.com/?size=100&id=359EtvQ5YRwA&format=png&color=ffffff" alt="plusIcon" />
-                        Set Pomodoro
+                        <img src="https://img.icons8.com/?size=100&id=2969&format=png&color=ffffff" alt="settingIcon" />
+                        Settings
                     </button>
                 </div>
                 <div className="timer">
+                    <div className="timertypes">
+                        <button style={!BreakTimer.current ? { borderBottomColor: "black" } : {}}>Pomodoro<b>{PomodoroCount.current}</b></button>
+                        <button style={BreakTimer.current ? { borderBottomColor: "black" } : {}}>Break<b>{BreakCount.current}</b></button>
+                    </div>
                     <ProgressBar strokeSize='15' CircleSize='350' progress={progressPercent}>
                         {formatTimer(timer)}
                     </ProgressBar>
@@ -94,7 +121,7 @@ export default function Pomodoro() {
             </div>
             {showTimerSettings && <form className="taskDialogBox timerSettings" onSubmit={timerSettingHandler}>
                 <div className="settinghead">
-                    <span>Set Pomodoro</span>
+                    <span>Settings</span>
                     <img src="https://img.icons8.com/?size=100&id=71200&format=png&color=000000" alt="closeIcon" onClick={toggleShowTimerSetting} />
                 </div>
                 <div className="settings">
