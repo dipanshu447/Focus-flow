@@ -283,6 +283,7 @@ header > img {
 .pomodoro {
   padding: 30px 50px 15px 50px;
   width: 80%;
+  transition: var(--transition-time-smooth);
 }
 
 .timer {
@@ -406,6 +407,75 @@ input:focus-visible {
   font-weight: 600;
 }
 
+.timerSettings {
+  padding: 25px;
+}
+
 .timerOption {
   margin-top: 20px;
+}
+
+.settings input {
+  border-radius: 2px;
+  padding: 8px;
+}
+
+.settings {
+  margin: 12px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.settings label {
+  width: calc(80% / 3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 0.8em;
+}
+
+.settings label small {
+  color: #202020;
+  font-weight: 400;
+}
+
+.settinghead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settinghead img {
+  width: 20px;
+  transition: var(--transition-time-smooth);
+  cursor: pointer;
+}
+
+.settinghead img:hover {
+  transform: scale(1.1);
+}
+
+.opBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.timerOp {
+  justify-content: space-between;
+}
+
+#resetbtn {
+  border: 2px solid #D64933;
+  background-color: transparent;
+  color: #D64933;
+}
+
+#resetbtn:hover {
+  color: white;
+  background-color: #D64933;
+}
+
+.timerSettings {
+  top: 35%;
 }
