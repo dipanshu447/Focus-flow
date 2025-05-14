@@ -15,6 +15,7 @@ export default function TodoList({ addTask, taskDoneLength, taskLength, remainin
        let taskInput = data.get('task');
        if(taskInput.trim() !== "") addTask(taskInput);
        e.target.reset();
+       toggleShowAddTask();
     }
 
     const [showAddTask, setshowAddTask] = useState(false);

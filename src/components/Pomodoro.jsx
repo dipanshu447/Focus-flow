@@ -134,7 +134,7 @@ export default function Pomodoro() {
                 <Header />
                 <div className="options timerOption">
                     <small className="studyhours">
-                        Time Studied Today : {(TotalStudySeconds / 3600).toFixed(1)}hr
+                        Time Studied Today : {(TotalStudySeconds / 3600).toFixed(1)} hrs
                     </small>
                     <button onClick={toggleShowTimerSetting} className='newTask'>
                         <img src="https://img.icons8.com/?size=100&id=2969&format=png&color=ffffff" alt="settingIcon" />

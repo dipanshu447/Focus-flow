@@ -1,19 +1,19 @@
 const menuItem = [
     {
         lable: "Welcome",
-        icon: "https://img.icons8.com/?size=100&id=37965&format=png&color=202020"
+        icon: "https://img.icons8.com/?size=100&id=82786&format=png&color=000000"
     },
     {
         lable: "ToDolist",
-        icon: "https://img.icons8.com/?size=100&id=f9MbZqpEUKcQ&format=png&color=202020"
+        icon: "https://img.icons8.com/?size=100&id=kGOa1reHyAdz&format=png&color=000000"
     },
     {
         lable: "Pomodoro",
-        icon: "https://img.icons8.com/?size=100&id=ggkq7ZKoggie&format=png&color=202020"
+        icon: "https://img.icons8.com/?size=100&id=x0i026nook2H&format=png&color=000000"
     },
     {
-        lable: "Coming Soon",
-        icon: "https://img.icons8.com/?size=100&id=ytYtK65QNJyO&format=png&color=202020"
+        lable: "About",
+        icon: "https://img.icons8.com/?size=100&id=3156&format=png&color=000000"
     }
 ]
 
