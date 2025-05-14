@@ -20,6 +20,10 @@ export default function Pomodoro() {
     const PomodoroCount = useRef(0);
     const BreakCount = useRef(0);
     const BreakTimer = useRef(false);
+    const [TotalStudySeconds,setTotalStudySeconds] = useState(() => {
+        const saved = localStorage.getItem("TotalStudiedSeconds");
+        return saved ? Number(saved) : 0;
+    });
 
     function formatTimer(seconds) {
         let hour = Math.floor(seconds / 3600)
@@ -36,6 +40,11 @@ export default function Pomodoro() {
                         clearInterval(intervalRef.current);
                         if (!BreakTimer.current) {
                             PomodoroCount.current += 1;
+                            setTotalStudySeconds(prev => {
+                                const updated = prev + Pomodoro * 60;
+                                localStorage.setItem("TotalStudiedSeconds",updated);
+                                return updated;
+                            });
                             if (PomodoroCount.current == Sessions) {
                                 setTimerStart(false);
                                 return 0;
@@ -98,7 +107,7 @@ export default function Pomodoro() {
                 <Header />
                 <div className="options timerOption">
                     <small className="studyhours">
-                        Time Studied Today : {1.2}hr
+                        Time Studied Today : {(TotalStudySeconds / 3600).toFixed(1)}hr
                     </small>
                     <button onClick={toggleShowTimerSetting} className='newTask'>
                         <img src="https://img.icons8.com/?size=100&id=2969&format=png&color=ffffff" alt="settingIcon" />
