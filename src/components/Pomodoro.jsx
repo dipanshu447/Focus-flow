@@ -136,17 +136,17 @@ export default function Pomodoro() {
                 <div className="settings">
                     <label>
                         Pomodoro
-                        <input value={Pomodoro} onChange={(e) => setPomodoro(e.target.value)} ref={inputFocus} type="number" />
+                        <input min={1} value={Pomodoro} onChange={(e) => setPomodoro(Number(e.target.value))} ref={inputFocus} type="number" />
                         <small>minutes</small>
                     </label>
                     <label>
                         Break
-                        <input value={Breaktime} onChange={(e) => setBreaktime(e.target.value)} type="number" />
+                        <input min={1} value={Breaktime} onChange={(e) => setBreaktime(Number(e.target.value))} type="number" />
                         <small>minutes</small>
                     </label>
                     <label>
                         Sessions
-                        <input value={Sessions} onChange={(e) => setSessions(e.target.value)} type="number" />
+                        <input min={1} value={Sessions} onChange={(e) => setSessions(Number(e.target.value))} type="number" />
                         <small>count</small>
                     </label>
                 </div>
