@@ -41,6 +41,7 @@
   height: auto;
   background-color: #fff;
   border-radius: 8px;
+  transition: var(--transition-time-smooth);
 }
 
 header {
@@ -367,7 +368,8 @@ header > img {
   left: 48%;
   width: 400px;
   padding: 20px;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
+  /* backdrop-filter: blur(20px); */
   border-radius: 10px;
   gap: 15px;  
   font-weight: 600;
@@ -395,15 +397,17 @@ input:focus-visible {
 
 .btns button{
   padding: 10px 15px;
-  border: none;
   border-radius: 6px;
-  background-color: #000;
-  color: white;
+  border:2px solid #000;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
   transition: var(--transition-time-smooth);
   cursor: pointer;
 }
 
 .btns button:hover{
+  background-color: #000000;
+  color: rgb(255, 255, 255);
   font-weight: 600;
 }
 
@@ -503,4 +507,9 @@ input:focus-visible {
   font-size: 1.3em;
   border-bottom: 2px solid rgba(244,245,244,255);
   transition: var(--transition-time-smooth);
+}
+
+.UserNameBox {
+  top: 38%;
+  left: 40%;
 }

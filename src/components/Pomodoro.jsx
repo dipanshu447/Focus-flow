@@ -2,7 +2,7 @@ import Header from "./Header.jsx";
 import ProgressBar from "./todolistComponents/ProgressBar.jsx";
 import { useState, useEffect, useRef } from "react";
 
-export default function Pomodoro() {
+export default function Pomodoro({username}) {
     const defaultPomodoro = 25;
     const defaultBreak = 5;
     const defaultSessions = 1;
@@ -131,7 +131,7 @@ export default function Pomodoro() {
     return (
         <>
             <div className="pomodoro" style={showTimerSettings ? { filter: "blur(10px) brightness(0.9)" } : {}}>
-                <Header />
+                <Header username={username} />
                 <div className="options timerOption">
                     <small className="studyhours">
                         Time Studied Today : {(TotalStudySeconds / 3600).toFixed(1)} hrs

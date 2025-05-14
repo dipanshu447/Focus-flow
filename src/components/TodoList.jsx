@@ -2,7 +2,7 @@ import Header from './Header.jsx';
 import ProgressBar from './todolistComponents/ProgressBar.jsx';
 import { useState, useRef, useEffect } from 'react';
 
-export default function TodoList({ addTask, taskLength, remainingTaskCount, userTasks }) {
+export default function TodoList({ addTask, taskLength, remainingTaskCount, userTasks, username, style }) {
 
     let taskMessage = taskLength == 0 ? "No tasks yet. Add one to get started!" : (taskLength - remainingTaskCount) == 0 ? "You're all caught up. Great job!" : `${taskLength - remainingTaskCount} Tasks Remaining.`;
 
@@ -32,7 +32,7 @@ export default function TodoList({ addTask, taskLength, remainingTaskCount, user
         <>
             <div className="todoList" style={showAddTask ? { filter: "blur(10px) brightness(0.9)" } : {}}>
                 <div className='main'>
-                    <Header />
+                    <Header username={username}/>
                     <div className="subHead">
                         <div className="leftOver">{taskMessage}</div>
                         <div className="status">

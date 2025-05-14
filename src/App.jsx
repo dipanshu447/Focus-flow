@@ -2,7 +2,7 @@ import Task from './components/todolistComponents/TaskBox.jsx';
 import Menu from './components/MenuBar.jsx';
 import TodoList from './components/TodoList.jsx';
 import Pomodoro from './components/Pomodoro.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function App() {
   const [Tasks, setTask] = useState(() => {
@@ -51,20 +51,45 @@ export default function App() {
     return count;
   }, 0);
 
-  const [page, setPage] = useState("ToDolist");
+  const [page, setPage] = useState("Welcome");
+  const [username, setUsername] = useState('User');
+  const [usernameDialogBox, setusernameDialogBox] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("UserName");
+    saved ? setUsername(saved) : setusernameDialogBox(true);
+  }, []);
+
+  function userNameHandler(e) {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+    let newUsername = formData.get('UserName');
+    setUsername(newUsername);
+    localStorage.setItem("UserName",newUsername);
+    setusernameDialogBox(false);
+  }
 
   return (
     <>
-      <Menu setPage={setPage} />
-      {page == "Welcome" && <h1>Welcome</h1>}
+      <Menu setPage={setPage} style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}/>
+      {page == "Welcome" && <h1 style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}>Welcome</h1>}
       {page == "ToDolist" && <TodoList
+        username={username}
         addTask={addTask}
         remainingTaskCount={finishedTasksCount}
         taskLength={Tasks.length}
         userTasks={userTasks}
       />}
-      {page == "Pomodoro" && <Pomodoro />}
-      {page == "Coming Soon" && <h1>Coming Soon</h1>}
+      {page == "Pomodoro" && <Pomodoro username={username} />}
+      {page == "About" && <h1>About</h1>}
+      {usernameDialogBox && <form className="taskDialogBox UserNameBox" onSubmit={userNameHandler}>
+        <label>Enter your name</label>
+        <input type="text" name='UserName' required />
+        <div className="btns">
+          <button type='button' onClick={() => setusernameDialogBox(prev => !prev)}>Back</button>
+          <button type='submit'>Add</button>
+        </div>
+      </form>}
     </>
   )
 }

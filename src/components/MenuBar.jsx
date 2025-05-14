@@ -18,7 +18,7 @@ const menuItem = [
 ]
 
 
-export default function Menu({setPage}) {
+export default function Menu({setPage, style}) {
     let menuOptions = menuItem.map((item, index) => (
         <li key={index} onClick={() => setPage(menuItem[index].lable)}>
             <img src={item.icon} alt={item.lable + " option"} />
@@ -27,7 +27,7 @@ export default function Menu({setPage}) {
     ))
 
     return (
-        <div className="menu">
+        <div className="menu" style={style}>
             <div className="heading">
                 <span>FocusFlow</span>
             </div>
