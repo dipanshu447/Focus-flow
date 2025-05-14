@@ -2,20 +2,20 @@ import Header from './Header.jsx';
 import ProgressBar from './todolistComponents/ProgressBar.jsx';
 import { useState, useRef, useEffect } from 'react';
 
-export default function TodoList({ addTask, taskDoneLength, taskLength, remainingTaskCount, userTasks }) {
+export default function TodoList({ addTask, taskLength, remainingTaskCount, userTasks }) {
 
-    let taskMessage = taskLength == 0 ? "No tasks yet. Add one to get started!" : (taskDoneLength - remainingTaskCount) == 0 ? "You're all caught up. Great job!" : `${taskDoneLength - remainingTaskCount} Tasks Remaining.`;
+    let taskMessage = taskLength == 0 ? "No tasks yet. Add one to get started!" : (taskLength - remainingTaskCount) == 0 ? "You're all caught up. Great job!" : `${taskLength - remainingTaskCount} Tasks Remaining.`;
 
-    let taskProgress = (remainingTaskCount / taskDoneLength) * 100;
+    let taskProgress = (remainingTaskCount / taskLength) * 100;
     let progressPercent = isNaN(taskProgress) ? 0 : Math.round(taskProgress);
 
-    function handleInput(e){
-       e.preventDefault();
-       let data = new FormData(e.target); 
-       let taskInput = data.get('task');
-       if(taskInput.trim() !== "") addTask(taskInput);
-       e.target.reset();
-       toggleShowAddTask();
+    function handleInput(e) {
+        e.preventDefault();
+        let data = new FormData(e.target);
+        let taskInput = data.get('task');
+        if (taskInput.trim() !== "") addTask(taskInput);
+        e.target.reset();
+        toggleShowAddTask();
     }
 
     const [showAddTask, setshowAddTask] = useState(false);
@@ -25,12 +25,12 @@ export default function TodoList({ addTask, taskDoneLength, taskLength, remainin
 
     const inputFocus = useRef(null);
     useEffect(() => {
-        if(showAddTask && inputFocus.current) inputFocus.current.focus();
-    },[showAddTask])
+        if (showAddTask && inputFocus.current) inputFocus.current.focus();
+    }, [showAddTask])
 
     return (
         <>
-            <div className="todoList" style={showAddTask ? {filter:"blur(10px) brightness(0.9)"} : {}}>
+            <div className="todoList" style={showAddTask ? { filter: "blur(10px) brightness(0.9)" } : {}}>
                 <div className='main'>
                     <Header />
                     <div className="subHead">
@@ -61,7 +61,7 @@ export default function TodoList({ addTask, taskDoneLength, taskLength, remainin
             </div>
             {showAddTask && <form className="taskDialogBox" onSubmit={handleInput}>
                 <label>Add new task</label>
-                <input ref={inputFocus} type="text" name='task'/>
+                <input ref={inputFocus} type="text" name='task' required />
                 <div className="btns">
                     <button type='button' onClick={toggleShowAddTask}>Back</button>
                     <button type='submit'>Add</button>

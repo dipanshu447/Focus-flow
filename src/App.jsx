@@ -5,42 +5,49 @@ import Pomodoro from './components/Pomodoro.jsx';
 import { useState } from 'react';
 
 export default function App() {
-  const [Tasks, setTask] = useState(["Finish reading the book", "Eat food","Buy foood","Talk to friends","Clean Emails","so bored","but keep trying my best","i hope its full now","maybe"]);
-  const [taskDone, setTaskDone] = useState(Tasks.map(e => false));
+  const [Tasks, setTask] = useState(() => {
+    try {
+      const savedTasks = JSON.parse(localStorage.getItem("Tasks"));
+      return savedTasks ? savedTasks : [];
+    } catch (error) {
+      console.log("Invalid json in local storage, " + error);
+      localStorage.removeItem("Tasks");
+      return [];
+    }
+  });
 
   function taskToggle(id) {
-    setTaskDone(prev => {
+    setTask(prev => {
       let copy = [...prev];
-      copy[id] = !copy[id];
+      copy[id].done = !copy[id].done;
+      localStorage.setItem("Tasks", JSON.stringify(copy));
       return copy;
     })
   }
 
   function addTask(newTask) {
-    setTask(prev => [...prev, newTask]);
-    setTaskDone(prev => [...prev, false]);
+    setTask(prev => {
+      const updated = [...prev, { name: newTask, done: false }];
+      localStorage.setItem("Tasks", JSON.stringify(updated));
+      return updated;
+    });
   }
 
   function removeTask(id) {
     setTask(prev => {
       let copy = [...prev];
       copy.splice(id, 1);
-      return copy;
-    })
-
-    setTaskDone(prev => {
-      let copy = [...prev];
-      copy.splice(id, 1);
+      localStorage.setItem("Tasks", JSON.stringify(copy));
       return copy;
     })
   }
 
   let userTasks = Tasks.map((task, index) => (
-    <Task key={task} id={index} deleteTask={removeTask} task={task} taskDone={taskDone[index]} taskToggle={taskToggle} />
+    <Task key={index + 1} id={index} deleteTask={removeTask} task={task.name} taskDone={task.done} taskToggle={taskToggle} />
   ));
 
-  let finishedTasksCount = taskDone.reduce((count, taskVal) => {
-    if (taskVal) count++;
+  let finishedTasksCount = Tasks.reduce((count, taskVal) => {
+    if (taskVal.done) count++;
     return count;
   }, 0);
 
@@ -48,12 +55,11 @@ export default function App() {
 
   return (
     <>
-      <Menu setPage={setPage}/>
+      <Menu setPage={setPage} />
       {page == "Welcome" && <h1>Welcome</h1>}
       {page == "ToDolist" && <TodoList
         addTask={addTask}
         remainingTaskCount={finishedTasksCount}
-        taskDoneLength={taskDone.length}
         taskLength={Tasks.length}
         userTasks={userTasks}
       />}
