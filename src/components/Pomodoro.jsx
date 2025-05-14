@@ -20,8 +20,19 @@ export default function Pomodoro() {
     const PomodoroCount = useRef(0);
     const BreakCount = useRef(0);
     const BreakTimer = useRef(false);
+    const [currentDate, setcurrentDate] = useState(new Date().toDateString());
     const [TotalStudySeconds,setTotalStudySeconds] = useState(() => {
         const saved = localStorage.getItem("TotalStudiedSeconds");
+        const savedDate = localStorage.getItem("LastStudyDate");
+        const today = new Date().toDateString();
+
+        if(savedDate !== today){
+            setcurrentDate(today);
+            localStorage.setItem("TotalStudiedSeconds",0);
+            localStorage.setItem("LastStudyDate",today);
+            return 0;
+        }
+
         return saved ? Number(saved) : 0;
     });
 
@@ -72,7 +83,23 @@ export default function Pomodoro() {
         }
 
         return () => clearInterval(intervalRef.current);
-    }, [timerStart, BreakTimer.current])
+    }, [timerStart, BreakTimer.current]);
+
+    useEffect(() => {
+        const checkDate = setInterval(() => {
+            const today = new Date().toDateString();
+
+            if(today !== currentDate){
+                setcurrentDate(today);
+                setTotalStudySeconds(0);
+                localStorage.setItem("TotalStudiedSeconds",0);
+                localStorage.setItem("LastStudyDate",today);
+            }
+
+        }, 60000)
+
+        return () => clearInterval(checkDate);
+    }, [currentDate])
 
     function resetHandler() {
         setTimerStart(false);
