@@ -75,6 +75,10 @@ header .header-menu {
   margin-bottom: 10px;
 }
 
+.head h1 span{
+  color: #4f46e5;
+}
+
 .head p {
   font-size: 15px;
   font-weight: 400;
@@ -180,14 +184,14 @@ header > img {
   position: absolute;
   width: 20px;
   height: 20px;
-  border: 2px solid #b1b1b1;
+  border: 2px solid #4f46e5;
   border-radius: 5px;
   transition: var(--transition-time-smooth);
   cursor: pointer;
 }
 
 .checkmark:hover {
-  box-shadow: 0px 0px 5px 0px rgb(92, 92, 92);
+  box-shadow: 0px 0px 5px 0px #4f46e5;
 }
 
 .custom-checkbox input:checked ~ .checkmark {
@@ -195,7 +199,7 @@ header > img {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 80%;
-  background-color: #000000;
+  background-color: #4f46e5;
 }
 
 .menu .heading {
@@ -304,7 +308,8 @@ header > img {
 
 .buttons button {
   padding: 10px 50px;
-  background-color: #202020;
+  border: none;
+  background-color: #4f46e5;
   color: white;
   border-radius: 25px;
   font-size: 1.3em;
@@ -314,7 +319,7 @@ header > img {
 
 .buttons button:hover {
   font-weight: 500;
-  background-color: #000000;
+  background-color: #3a32d3;
 }
 
 .options{
@@ -346,12 +351,12 @@ header > img {
 }
 
 .newTask {
-  background-color: #202020;
+  background-color: #4f46e5;
   color: white;
 }
 
 .newTask:hover {
-  background-color: #000;
+  color: white;
 }
 
 .filter {
@@ -369,7 +374,6 @@ header > img {
   width: 400px;
   padding: 20px;
   background-color: white;
-  /* backdrop-filter: blur(20px); */
   border-radius: 10px;
   gap: 15px;  
   font-weight: 600;
@@ -398,15 +402,15 @@ input:focus-visible {
 .btns button{
   padding: 10px 15px;
   border-radius: 6px;
-  border:2px solid #000;
+  border:2px solid #4f46e5;
   background-color: #ffffff;
-  color: rgb(0, 0, 0);
+  color: #4f46e5;
   transition: var(--transition-time-smooth);
   cursor: pointer;
 }
 
 .btns button:hover{
-  background-color: #000000;
+  background-color: #4f46e5;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
@@ -509,7 +513,96 @@ input:focus-visible {
   transition: var(--transition-time-smooth);
 }
 
+.timertypes button b {
+  color: #4f46e5;
+}
+
 .UserNameBox {
   top: 38%;
   left: 40%;
+}
+
+.welcome { 
+  width: 80%; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 30px 50px 15px 50px;
+}
+
+.welcome h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.welcome p {
+  font-size: 1.1rem;
+  max-width: 800px;
+  line-height: 1.8;
+  color: #555;
+  text-align: center;
+}
+
+.welcome h1 span {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.welcome-quote {
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 1rem 0;
+  color: #6c757d;
+  max-width: 600px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.welcome-features {
+  list-style: none;
+  margin: 1.5rem 0;
+  text-align: left;
+  max-width: 500px;
+}
+
+.welcome-features li {
+  padding: 0.6rem 0;
+  position: relative;
+  padding-left: 1.6rem;
+  color: #333;
+  font-size: 1.05rem;
+}
+
+.welcome-features li::before {
+  content: '✓';
+  color: #4f46e5;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.welcome-footer {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.start-button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.start-button:hover {
+  background-color: #4338ca; 
 }

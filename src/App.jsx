@@ -2,6 +2,7 @@ import Task from './components/todolistComponents/TaskBox.jsx';
 import Menu from './components/MenuBar.jsx';
 import TodoList from './components/TodoList.jsx';
 import Pomodoro from './components/Pomodoro.jsx';
+import Welcome from './components/Welcome.jsx';
 import { useEffect, useState } from 'react';
 
 export default function App() {
@@ -72,7 +73,7 @@ export default function App() {
   return (
     <>
       <Menu setPage={setPage} style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}/>
-      {page == "Welcome" && <h1 style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}>Welcome</h1>}
+      {page == "Welcome" && <Welcome style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}/>}
       {page == "ToDolist" && <TodoList
         username={username}
         addTask={addTask}

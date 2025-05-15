@@ -19,7 +19,7 @@ export default function Header({username}) {
     return (
         <header>
             <div className="head">
-                <h1>{greeting}, {username}!</h1>
+                <h1>{greeting}, <span>{username}!</span></h1>
                 <p>Today, {`${formattedDate} ${date.getFullYear()}`}</p>
             </div>
             <button className="header-menu"><img src="https://img.icons8.com/?size=100&id=120374&format=png&color=000000" alt="menu" /></button>

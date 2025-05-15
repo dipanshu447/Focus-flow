@@ -1,4 +1,4 @@
-export default function ProgressBar({ strokeSize, CircleSize, progress, children }) {
+export default function ProgressBar({ strokeSize, CircleSize, progress, children, color }) {
     const stroke = strokeSize;
     const radius = (CircleSize - stroke) / 2;
     const normalizedRadius = radius - stroke / 2;
@@ -29,7 +29,7 @@ export default function ProgressBar({ strokeSize, CircleSize, progress, children
                     cy={center}
                     strokeWidth={stroke}
                     r={normalizedRadius}
-                    stroke='#202020'
+                    stroke='#4f46e5'
                     fill='transparent'
                     strokeDasharray={circumference}
                     strokeDashoffset={offSet}
