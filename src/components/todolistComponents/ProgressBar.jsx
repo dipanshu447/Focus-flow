@@ -30,6 +30,7 @@ export default function ProgressBar({ strokeSize, CircleSize, progress, children
                     strokeWidth={stroke}
                     r={normalizedRadius}
                     stroke='#4f46e5'
+                    strokeLinecap="round"
                     fill='transparent'
                     strokeDasharray={circumference}
                     strokeDashoffset={offSet}
