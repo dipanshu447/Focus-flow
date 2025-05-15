@@ -6,15 +6,15 @@
 }
 
 :root {
-  --transition-time-smooth : 0.5s all cubic-bezier(0.47, 0.54, 0, 1.14);
-  --theme-color : #4f46e5;
+  --transition-time-smooth: 0.5s all cubic-bezier(0.47, 0.54, 0, 1.14);
+  --theme-color: #4f46e5;
 }
 
 #root {
   width: 100vw;
   height: 100vh;
   min-height: 100vh;
-  background-color: rgba(244,245,244,255);
+  background-color: rgba(244, 245, 244, 255);
   display: flex;
   padding: 10px;
   position: relative;
@@ -29,7 +29,7 @@
   justify-content: space-between;
   align-items: center;
   transition: var(--transition-time-smooth);
-  background-color: rgba(244,245,244,255);
+  background-color: rgba(244, 245, 244, 255);
 }
 
 .main {
@@ -50,32 +50,13 @@ header {
   align-items: center;
 }
 
-header .header-menu img {
-  width: 25px;
-  height: 25px;
-  object-fit: contain;
-}
-
-header .header-menu {
-  border-radius: 6px;
-  border: none;
-  padding: 21px;
-  cursor: pointer;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 0;
-  height: 0;
-}
-
-.head h1{
+.head h1 {
   font-size: 25px;
   font-weight: 500;
   margin-bottom: 10px;
 }
 
-.head h1 span{
+.head h1 span {
   color: var(--theme-color);
 }
 
@@ -83,6 +64,58 @@ header .header-menu {
   font-size: 15px;
   font-weight: 400;
   color: gray;
+}
+
+.switch {
+  display: block;
+  --width-of-switch: 3.5em;
+  --height-of-switch: 2em;
+  --size-of-icon: 1.4em;
+  --slider-offset: 0.3em;
+  position: relative;
+  width: var(--width-of-switch);
+  height: var(--height-of-switch);
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f4f4f5;
+  transition: .4s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: var(--size-of-icon, 1.4em);
+  width: var(--size-of-icon, 1.4em);
+  border-radius: 20px;
+  left: var(--slider-offset, 0.3em);
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(40deg, #ff0080, #ff8c00 70%);
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: #303136;
+}
+
+input:checked+.slider:before {
+  left: calc(100% - (var(--size-of-icon, 1.4em) + var(--slider-offset, 0.3em)));
+  background: #303136;
+  box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
 }
 
 section {
@@ -119,7 +152,7 @@ article footer button {
   transition: var(--transition-time-smooth);
 }
 
-article footer button:hover{
+article footer button:hover {
   box-shadow: 0px 0px 5px 0px rgb(92, 92, 92);
 }
 
@@ -127,7 +160,7 @@ article footer button img {
   width: 1.3rem;
 }
 
-header > img {
+header>img {
   width: 30px;
   margin-right: 10px;
 }
@@ -138,7 +171,7 @@ header > img {
   height: 20px;
 }
 
-.custom-checkbox > input {
+.custom-checkbox>input {
   width: 0;
   height: 0;
   opacity: 0;
@@ -158,7 +191,7 @@ header > img {
   box-shadow: 0px 0px 5px 0px var(--theme-color);
 }
 
-.custom-checkbox input:checked ~ .checkmark {
+.custom-checkbox input:checked~.checkmark {
   background-image: url('https://img.icons8.com/?size=100&id=82769&format=png&color=ffffff');
   background-position: center center;
   background-repeat: no-repeat;
@@ -167,11 +200,11 @@ header > img {
 }
 
 .menu .heading {
-  border-bottom:1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
   padding: 15px 20px;
 }
 
-.menu .heading span{
+.menu .heading span {
   font-size: 1.3rem;
   font-family: "Kanchenjunga", sans-serif;
   font-weight: 600;
@@ -191,18 +224,18 @@ header > img {
   padding: 10px 15px;
   transition: var(--transition-time-smooth);
   cursor: pointer;
-  color:#202020;
+  color: #202020;
   font-size: 15px;
   font-weight: 400;
   border-radius: 10px;
 }
 
-.menu-options ul li:hover{
+.menu-options ul li:hover {
   background-color: #dddddd;
   font-weight: 600;
 }
 
-.menu-options ul li img{
+.menu-options ul li img {
   width: 1.2rem;
   margin-right: 15px;
 }
@@ -211,7 +244,7 @@ header > img {
 ::-webkit-scrollbar {
   width: 8px;
   border-radius: 10px;
-  background-color:#b1b1b1;
+  background-color: #b1b1b1;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -228,7 +261,7 @@ header > img {
 .status {
   display: flex;
   align-items: center;
-  gap:2px;
+  gap: 2px;
 }
 
 .subHead {
@@ -285,12 +318,12 @@ header > img {
   background-color: #3a32d3;
 }
 
-.options{
+.options {
   display: flex;
   gap: 10px;
 }
 
-.options button{
+.options button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -303,12 +336,12 @@ header > img {
   transition: var(--transition-time-smooth);
 }
 
-.options button:hover{
+.options button:hover {
   transform: scale(1.02);
   font-weight: 600;
 }
 
-.options button img{
+.options button img {
   width: 15px;
   margin-right: 8px;
 }
@@ -338,7 +371,7 @@ header > img {
   padding: 20px;
   background-color: white;
   border-radius: 10px;
-  gap: 15px;  
+  gap: 15px;
   font-weight: 600;
   font-size: 20px;
   box-shadow: 0px 0px 2px 0px rgb(158, 158, 158);
@@ -362,17 +395,17 @@ input:focus-visible {
   gap: 10px;
 }
 
-.btns button{
+.btns button {
   padding: 10px 15px;
   border-radius: 6px;
-  border:2px solid var(--theme-color);
+  border: 2px solid var(--theme-color);
   background-color: #ffffff;
   color: var(--theme-color);
   transition: var(--transition-time-smooth);
   cursor: pointer;
 }
 
-.btns button:hover{
+.btns button:hover {
   background-color: var(--theme-color);
   color: rgb(255, 255, 255);
   font-weight: 600;
@@ -389,7 +422,7 @@ input:focus-visible {
   margin-top: 20px;
 }
 
-.studyhours{
+.studyhours {
   font-style: italic;
   font-weight: 500;
   color: #383838;
@@ -460,7 +493,7 @@ input:focus-visible {
   top: 35%;
 }
 
-.timertypes{
+.timertypes {
   margin-bottom: 15px;
   display: flex;
 }
@@ -472,7 +505,7 @@ input:focus-visible {
   background-color: inherit;
   padding: 0px 20px 20px;
   font-size: 1.3em;
-  border-bottom: 2px solid rgba(244,245,244,255);
+  border-bottom: 2px solid rgba(244, 245, 244, 255);
   transition: var(--transition-time-smooth);
 }
 
@@ -485,8 +518,8 @@ input:focus-visible {
   left: 40%;
 }
 
-.welcome { 
-  width: 80%; 
+.welcome {
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -558,8 +591,8 @@ input:focus-visible {
   background-color: var(--theme-color);
   color: white;
   padding: 0.75rem 1.5rem;
-  border-radius: 1rem; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
   border: none;
   cursor: pointer;
@@ -567,7 +600,7 @@ input:focus-visible {
 }
 
 .start-button:hover {
-  background-color: #4338ca; 
+  background-color: #4338ca;
   font-weight: 500;
 }
 
