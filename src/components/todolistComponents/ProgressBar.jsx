@@ -1,4 +1,4 @@
-export default function ProgressBar({ strokeSize, CircleSize, progress, children, color }) {
+export default function ProgressBar({ strokeSize, CircleSize, progress, children }) {
     const stroke = strokeSize;
     const radius = (CircleSize - stroke) / 2;
     const normalizedRadius = radius - stroke / 2;
@@ -6,15 +6,15 @@ export default function ProgressBar({ strokeSize, CircleSize, progress, children
     const offSet = circumference - (progress / 100) * circumference;
     const center = CircleSize / 2;
     return (
-        <div style={{ 
-            position: "relative", 
-            width: CircleSize, 
+        <div style={{
+            position: "relative",
+            width: CircleSize,
             height: CircleSize,
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            flexDirection:"column"
-         }}>
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column"
+        }}>
             <svg className="progressBar" width={CircleSize} height={CircleSize}>
                 <circle
                     cx={center}
@@ -40,7 +40,8 @@ export default function ProgressBar({ strokeSize, CircleSize, progress, children
                 position: 'absolute',
                 width: CircleSize,
                 height: CircleSize,
-                fontSize:"3rem"
+                fontSize: "3rem",
+                color: "#4f46e5"
             }}>
                 {children}
             </div>}
