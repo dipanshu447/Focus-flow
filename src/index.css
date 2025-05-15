@@ -127,42 +127,6 @@ article footer button img {
   width: 1.3rem;
 }
 
-.createTask {
-  position: absolute;
-  bottom: 15px;
-  min-width: 350px;
-  width: 28%;
-  padding: 15px 20px;
-  background-color: black;
-  border-radius: 25px;
-}
-
-.createTask > div {
-  display: flex;
-  gap: 10px;
-}
-
-.createTask > div input {
-  background: none;
-  border: none;
-  color: white;
-  width: 380px;
-}
-
-.createTask > div input:focus-visible {
-  background: none;
-  border: none;
-  outline: none;
-}
-
-.createTask > div input::placeholder{
-  color: white;
-}
-
-.createTask > div img {
-  width: 1rem;
-}
-
 header > img {
   width: 30px;
   margin-right: 10px;
@@ -244,7 +208,6 @@ header > img {
 }
 
 /* scroll bar formatting */
-
 ::-webkit-scrollbar {
   width: 8px;
   border-radius: 10px;
