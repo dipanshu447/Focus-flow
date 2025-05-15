@@ -564,6 +564,8 @@ input:focus-visible {
   align-items: center;
   justify-content: space-evenly;
   padding: 30px 50px 15px 50px;
+  transition: var(--transition-time-smooth);
+  filter: blur(0px) 
 }
 
 .welcome h1 {
@@ -620,10 +622,10 @@ input:focus-visible {
   font-weight: bold;
 }
 
-.welcome-footer {
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: #aaa;
+.EditName {
+  position: fixed;
+  top: 20px;
+  right: 15px;
 }
 
 .start-button {

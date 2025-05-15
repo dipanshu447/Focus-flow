@@ -77,6 +77,7 @@ export default function App() {
       {page == "Welcome" && <Welcome 
         style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}
         startFocus={setPage}
+        editName={setUsername}
       />}
       {page == "Pomodoro" && <Pomodoro username={username} />}
       {page == "ToDolist" && <TodoList
