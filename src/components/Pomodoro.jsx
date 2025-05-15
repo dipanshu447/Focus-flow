@@ -21,6 +21,7 @@ export default function Pomodoro({ username }) {
     const BreakCount = useRef(0);
     const BreakTimer = useRef(false);
     const [currentDate, setcurrentDate] = useState(new Date().toDateString());
+    const [showsesstionComplete, setshowsesstionComplete] = useState(false);
     const [TotalStudySeconds, setTotalStudySeconds] = useState(() => {
         const saved = localStorage.getItem("TotalStudiedSeconds");
         const savedDate = localStorage.getItem("LastStudyDate");
@@ -57,6 +58,7 @@ export default function Pomodoro({ username }) {
                                 return updated;
                             });
                             if (PomodoroCount.current == Sessions) {
+                                setshowsesstionComplete(true);
                                 setTimerStart(false);
                                 return 0;
                             } else {
@@ -101,6 +103,19 @@ export default function Pomodoro({ username }) {
         return () => clearInterval(checkDate);
     }, [currentDate])
 
+    useEffect(() => {
+        let timer;
+        if (showsesstionComplete) {
+            timer = setTimeout(() => {
+                setshowsesstionComplete(false);
+                PomodoroCount.current = 0;
+            BreakCount.current = 0;
+            }, 3000);
+        }
+
+        return () => clearTimeout(timer);
+    }, [showsesstionComplete])
+
     function resetHandler() {
         setTimerStart(false);
         setTimer(intialTimer);
@@ -136,63 +151,68 @@ export default function Pomodoro({ username }) {
         boxShadow: "0 0 5px 0px"
     }
 
-return (
-    <>
-        <div className="pomodoro" style={showTimerSettings ? { filter: "blur(10px) brightness(0.9)" } : {}}>
-            <Header username={username} />
-            <div className="options timerOption">
-                <small className="studyhours">
-                    Time Studied Today : {(TotalStudySeconds / 3600).toFixed(1)} hrs
-                </small>
-                <button onClick={toggleShowTimerSetting} className='newTask'>
-                    <img src="https://img.icons8.com/?size=100&id=2969&format=png&color=ffffff" alt="settingIcon" />
-                    Settings
-                </button>
-            </div>
-            <div className="timer">
-                <div className="timertypes">
-                    <button style={!BreakTimer.current ? { borderBottomColor: "#4f46e5" } : {}}>Pomodoro<b>{PomodoroCount.current}</b></button>
-                    <button style={BreakTimer.current ? { borderBottomColor: "#4f46e5" } : {}}>Break<b>{BreakCount.current}</b></button>
+    return (
+        <>
+            <div className="pomodoro" style={showTimerSettings || showsesstionComplete ? { filter: "blur(10px) brightness(0.9)" } : {}}>
+                <Header username={username} />
+                <div className="options timerOption">
+                    <small className="studyhours">
+                        Time Studied Today : {(TotalStudySeconds / 3600).toFixed(1)} hrs
+                    </small>
+                    <button onClick={toggleShowTimerSetting} className='newTask'>
+                        <img src="https://img.icons8.com/?size=100&id=2969&format=png&color=ffffff" alt="settingIcon" />
+                        Settings
+                    </button>
                 </div>
-                <ProgressBar strokeSize='15' CircleSize='350' progress={progressPercent}>
-                    {formatTimer(timer)}
-                </ProgressBar>
-                <div className="buttons">
-                    <button onClick={() => setTimerStart(prev => !prev)} style={timerStart ? pauseCssObj : {}}>{timerStart ? "Pause" : "Start"}</button>
-                    <button onClick={resetHandler}>Reset</button>
-                </div>
-            </div>
-        </div>
-        {showTimerSettings && <form className="taskDialogBox timerSettings" onSubmit={timerSettingHandler}>
-            <div className="settinghead">
-                <span>Settings</span>
-                <img src="https://img.icons8.com/?size=100&id=71200&format=png&color=000000" alt="closeIcon" onClick={toggleShowTimerSetting} />
-            </div>
-            <div className="settings">
-                <label>
-                    Pomodoro
-                    <input min={1} value={Pomodoro} onChange={(e) => setPomodoro(Number(e.target.value))} ref={inputFocus} type="number" />
-                    <small>minutes</small>
-                </label>
-                <label>
-                    Break
-                    <input min={1} value={Breaktime} onChange={(e) => setBreaktime(Number(e.target.value))} type="number" />
-                    <small>minutes</small>
-                </label>
-                <label>
-                    Sessions
-                    <input min={1} value={Sessions} onChange={(e) => setSessions(Number(e.target.value))} type="number" />
-                    <small>count</small>
-                </label>
-            </div>
-            <div className="btns timerOp">
-                <button onClick={settingsResetter} type="button" id="resetbtn">Reset All</button>
-                <div className="opBtns">
-                    <button type="button" onClick={toggleShowTimerSetting}>Close</button>
-                    <button type="submit">Save Changes</button>
+                <div className="timer">
+                    <div className="timertypes">
+                        <button style={!BreakTimer.current ? { borderBottomColor: "#4f46e5" } : {}}>Pomodoro<b>{PomodoroCount.current}</b></button>
+                        <button style={BreakTimer.current ? { borderBottomColor: "#4f46e5" } : {}}>Break<b>{BreakCount.current}</b></button>
+                    </div>
+                    <ProgressBar strokeSize='15' CircleSize='350' progress={progressPercent}>
+                        {formatTimer(timer)}
+                    </ProgressBar>
+                    <div className="buttons">
+                        <button onClick={() => setTimerStart(prev => !prev)} style={timerStart ? pauseCssObj : {}}>{timerStart ? "Pause" : "Start"}</button>
+                        <button onClick={resetHandler}>Reset</button>
+                    </div>
                 </div>
             </div>
-        </form>}
-    </>
-)
+            {showTimerSettings && <form className="taskDialogBox timerSettings" onSubmit={timerSettingHandler}>
+                <div className="settinghead">
+                    <span>Settings</span>
+                    <img src="https://img.icons8.com/?size=100&id=71200&format=png&color=000000" alt="closeIcon" onClick={toggleShowTimerSetting} />
+                </div>
+                <div className="settings">
+                    <label>
+                        Pomodoro
+                        <input min={1} value={Pomodoro} onChange={(e) => setPomodoro(Number(e.target.value))} ref={inputFocus} type="number" />
+                        <small>minutes</small>
+                    </label>
+                    <label>
+                        Break
+                        <input min={1} value={Breaktime} onChange={(e) => setBreaktime(Number(e.target.value))} type="number" />
+                        <small>minutes</small>
+                    </label>
+                    <label>
+                        Sessions
+                        <input min={1} value={Sessions} onChange={(e) => setSessions(Number(e.target.value))} type="number" />
+                        <small>count</small>
+                    </label>
+                </div>
+                <div className="btns timerOp">
+                    <button onClick={settingsResetter} type="button" id="resetbtn">Reset All</button>
+                    <div className="opBtns">
+                        <button type="button" onClick={toggleShowTimerSetting}>Close</button>
+                        <button type="submit">Save Changes</button>
+                    </div>
+                </div>
+            </form>}
+            {showsesstionComplete && <div className="sessionComplete">
+                <h1>{Sessions} Sessions Complete!!</h1>
+                <p className="congratsText">You've focused for {Sessions * Pomodoro} minutes today. Great work!</p>
+                <p className="motivationalQuote">"Your productivity today shapes your success tomorrow."</p>
+            </div>}
+        </>
+    )
 }
