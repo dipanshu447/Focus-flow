@@ -1,6 +1,6 @@
-export default function Welcome({startFocus}) {
+export default function Welcome({ startFocus, style }) {
     return (
-        <div className="welcome">
+        <div className="welcome" style={style}>
             <h1>Welcome to <span>FocusFlow!</span></h1>
 
             <p> FocusFlow is a minimalistic productivity tool designed to help you truly focus on what matters your work, your study, your growth. In a world full of distractions and bloated features, FocusFlow keeps it simple and purposeful.</p>

@@ -3,6 +3,7 @@ import Menu from './components/MenuBar.jsx';
 import TodoList from './components/TodoList.jsx';
 import Pomodoro from './components/Pomodoro.jsx';
 import Welcome from './components/Welcome.jsx';
+import About from './components/About.jsx';
 import { useEffect, useState } from 'react';
 
 export default function App() {
@@ -85,13 +86,12 @@ export default function App() {
         taskLength={Tasks.length}
         userTasks={userTasks}
       />}
-      {page == "About" && <h1>About</h1>}
+      {page == "About" && <About/>}
       {usernameDialogBox && <form className="taskDialogBox UserNameBox" onSubmit={userNameHandler}>
-        <label>Enter your name</label>
+        <label>What's your name</label>
         <input type="text" name='UserName' required />
         <div className="btns">
-          <button type='button' onClick={() => setusernameDialogBox(prev => !prev)}>Back</button>
-          <button type='submit'>Add</button>
+          <button type='submit'>Start Grinding!</button>
         </div>
       </form>}
     </>
