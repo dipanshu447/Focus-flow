@@ -73,7 +73,11 @@ export default function App() {
   return (
     <>
       <Menu setPage={setPage} style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}/>
-      {page == "Welcome" && <Welcome style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}/>}
+      {page == "Welcome" && <Welcome 
+        style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}
+        startFocus={setPage}
+      />}
+      {page == "Pomodoro" && <Pomodoro username={username} />}
       {page == "ToDolist" && <TodoList
         username={username}
         addTask={addTask}
@@ -81,7 +85,6 @@ export default function App() {
         taskLength={Tasks.length}
         userTasks={userTasks}
       />}
-      {page == "Pomodoro" && <Pomodoro username={username} />}
       {page == "About" && <h1>About</h1>}
       {usernameDialogBox && <form className="taskDialogBox UserNameBox" onSubmit={userNameHandler}>
         <label>Enter your name</label>

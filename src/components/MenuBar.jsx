@@ -4,12 +4,12 @@ const menuItem = [
         icon: "https://img.icons8.com/?size=100&id=82786&format=png&color=4f46e5"
     },
     {
-        lable: "ToDolist",
-        icon: "https://img.icons8.com/?size=100&id=kGOa1reHyAdz&format=png&color=4f46e5"
-    },
-    {
         lable: "Pomodoro",
         icon: "https://img.icons8.com/?size=100&id=x0i026nook2H&format=png&color=4f46e5"
+    },
+    {
+        lable: "ToDolist",
+        icon: "https://img.icons8.com/?size=100&id=kGOa1reHyAdz&format=png&color=4f46e5"
     },
     {
         lable: "About",

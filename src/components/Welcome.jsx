@@ -1,4 +1,4 @@
-export default function Welcome() {
+export default function Welcome({startFocus}) {
     return (
         <div className="welcome">
             <h1>Welcome to <span>FocusFlow!</span></h1>
@@ -21,10 +21,7 @@ export default function Welcome() {
                 “Focus on being productive instead of busy.”<br /> — Tim Ferriss
             </div>
 
-            <button
-                onClick={() => window.location.href = '/dashboard'}
-                className="start-button"
-            >
+            <button onClick={() => startFocus("Pomodoro")} className="start-button">
                 Start Focusing
             </button>
         </div>
