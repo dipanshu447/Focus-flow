@@ -29,7 +29,7 @@ export default function TodoList({ addTask, taskLength, remainingTaskCount, user
     }, [showAddTask])
 
     return (
-        <>
+        <div className='todoList-container'>
             <div className="todoList" style={showAddTask ? { filter: "blur(10px) brightness(0.9)" } : {}}>
                 <div className='main'>
                     <Header username={username}/>
@@ -67,6 +67,6 @@ export default function TodoList({ addTask, taskLength, remainingTaskCount, user
                     <button type='submit'>Add</button>
                 </div>
             </form>}
-        </>
+        </div>
     )
 }

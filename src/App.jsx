@@ -71,7 +71,7 @@ export default function App() {
     setusernameDialogBox(false);
   }
 
-  const [collapsed, setcollapsed] = useState(false);
+  const [collapsed, setcollapsed] = useState(true);
   const toggleCollapse = () => setcollapsed(prev => !prev);
 
   return (

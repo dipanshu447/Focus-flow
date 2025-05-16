@@ -20,9 +20,15 @@
   position: relative;
 }
 
-.todoList {
-  padding: 30px 50px 15px 50px;
+.todoList-container{
   flex: 8;
+  overflow-y: auto;
+  height: 100%;
+  padding: 30px 50px 15px 50px;
+  position: relative;
+}
+
+.todoList {
   height: auto;
   display: flex;
   flex-direction: column;
@@ -315,10 +321,15 @@ header>img {
   transform: rotate(-90deg);
 }
 
-.pomodoro {
-  position: relative;
-  padding: 30px 50px 15px 50px;
+.pomodoro-container{
   flex: 8;
+  overflow-y: auto;
+  height: 100%;
+  padding: 30px 50px 15px 50px;
+  position: relative;
+}
+
+.pomodoro {
   transition: var(--transition-time-smooth);
 }
 
@@ -397,11 +408,14 @@ header>img {
 
 .taskDialogBox {
   position: absolute;
-  top: 41%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  left: 48%;
+
   width: 400px;
   padding: 20px;
   background-color: white;
@@ -524,10 +538,6 @@ input:focus-visible {
   background-color: #D64933;
 }
 
-.timerSettings {
-  top: 35%;
-}
-
 .timertypes {
   margin-bottom: 15px;
   display: flex;
@@ -602,10 +612,13 @@ input:focus-visible {
   flex: 8;
   overflow-y: auto;
   height: 100%;
-  padding: 30px 50px 15px 50px
+  padding: 30px 50px 15px 50px;
+  position: relative;
 }
 
 .welcome {
+  position: relative;
+  z-index: 0;
   display: flex;
   flex-direction: column;
   align-items: center;

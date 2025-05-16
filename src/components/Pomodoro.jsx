@@ -152,7 +152,7 @@ export default function Pomodoro({ username }) {
     }
 
     return (
-        <>
+        <div className="pomodoro-container">
             <div className="pomodoro" style={showTimerSettings || showsesstionComplete ? { filter: "blur(10px) brightness(0.9)" } : {}}>
                 <Header username={username} />
                 <div className="options timerOption">
@@ -213,6 +213,6 @@ export default function Pomodoro({ username }) {
                 <p className="congratsText">You've focused for {Sessions * Pomodoro} minutes today. Great work!</p>
                 <p className="motivationalQuote">"Your productivity today shapes your success tomorrow."</p>
             </div>}
-        </>
+        </div>
     )
 }
