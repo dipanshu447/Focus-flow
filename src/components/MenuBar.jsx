@@ -30,6 +30,7 @@ export default function Menu({setPage, style}) {
         <div className="menu" style={style}>
             <div className="heading">
                 <span>FocusFlow</span>
+                <img src="https://img.icons8.com/?size=100&id=HbCR7y4bJB52&format=png&color=000000" alt="collapseIcon" />
             </div>
             <div className="menu-options">
                 <ul>

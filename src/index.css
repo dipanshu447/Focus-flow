@@ -22,7 +22,7 @@
 
 .todoList {
   padding: 30px 50px 15px 50px;
-  width: 80%;
+  flex: 8;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -30,6 +30,7 @@
   align-items: center;
   transition: var(--transition-time-smooth);
   background-color: rgba(244, 245, 244, 255);
+  overflow-y: auto;
 }
 
 .main {
@@ -37,7 +38,7 @@
 }
 
 .menu {
-  width: 20%;
+  flex: 2;
   height: auto;
   background-color: #fff;
   border-radius: 8px;
@@ -124,7 +125,6 @@ section {
   flex-direction: column;
   gap: 9px;
   overflow-y: auto;
-  height: 480px;
 }
 
 article {
@@ -202,6 +202,9 @@ header>img {
 .menu .heading {
   border-bottom: 1px solid #dbdbdb;
   padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .menu .heading span {
@@ -209,6 +212,12 @@ header>img {
   font-family: "Kanchenjunga", sans-serif;
   font-weight: 600;
   color: #383838;
+}
+
+.menu .heading img {
+  width: 20px;
+  filter: drop-shadow(0 0 0px black);
+  cursor: pointer;
 }
 
 .menu-options {
@@ -284,7 +293,7 @@ header>img {
 .pomodoro {
   position: relative;
   padding: 30px 50px 15px 50px;
-  width: 80%;
+  flex: 8;
   transition: var(--transition-time-smooth);
 }
 
@@ -531,8 +540,15 @@ input:focus-visible {
 }
 
 @keyframes fadeIn {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0px); opacity: 1; }
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
 
 .sessionComplete h1 {
@@ -557,15 +573,21 @@ input:focus-visible {
   left: 40%;
 }
 
+.welcome-container {
+  flex: 8;
+  overflow-y: auto;
+  height: 100%;
+}
+
 .welcome {
-  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   padding: 30px 50px 15px 50px;
   transition: var(--transition-time-smooth);
-  filter: blur(0px) 
+  filter: blur(0px);
+  height: inherit;
 }
 
 .welcome h1 {
@@ -646,7 +668,7 @@ input:focus-visible {
 }
 
 .about {
-  width: 80%;
+  flex: 8;
   display: flex;
   flex-direction: column;
   align-items: center;

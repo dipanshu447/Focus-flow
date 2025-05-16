@@ -14,7 +14,7 @@ export default function Welcome({ startFocus, style, editName }) {
     }
 
     return (
-        <>
+        <div className="welcome-container">
             <div className="welcome" style={Object.keys(style).length === 0 && showEditName ? { filter: "blur(10px) brightness(0.9)" } : style}>
                 <h1>Welcome to <span>FocusFlow!</span></h1>
 
@@ -54,6 +54,6 @@ export default function Welcome({ startFocus, style, editName }) {
                     <button type='submit'>Save</button>
                 </div>
             </form>}
-        </>
+        </div>
     )
 }
