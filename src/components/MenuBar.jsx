@@ -28,7 +28,7 @@ export default function Menu({ setPage, style, collapse, changeCollapse }) {
 
     return (
         <>
-            <div className="menu" style={Object.keys(style).length === 0 && collapse ? { flex: "0" } : style}>
+            <div className={"menu " +(collapse ? "open" : "")} style={style}>
                 <div className="heading">
                     <span>FocusFlow</span>
                     <img src="https://img.icons8.com/?size=100&id=HbCR7y4bJB52&format=png&color=000000" onClick={changeCollapse} alt="collapseIcon" />
