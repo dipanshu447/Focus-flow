@@ -18,7 +18,7 @@ const menuItem = [
 ]
 
 
-export default function Menu({setPage, style}) {
+export default function Menu({ setPage, style, collapse, changeCollapse }) {
     let menuOptions = menuItem.map((item, index) => (
         <li key={index} onClick={() => setPage(menuItem[index].lable)}>
             <img src={item.icon} alt={item.lable + " option"} />
@@ -27,16 +27,18 @@ export default function Menu({setPage, style}) {
     ))
 
     return (
-        <div className="menu" style={style}>
-            <div className="heading">
-                <span>FocusFlow</span>
-                <img src="https://img.icons8.com/?size=100&id=HbCR7y4bJB52&format=png&color=000000" alt="collapseIcon" />
+        <>
+            <div className="menu" style={Object.keys(style).length === 0 && collapse ? { flex: "0" } : style}>
+                <div className="heading">
+                    <span>FocusFlow</span>
+                    <img src="https://img.icons8.com/?size=100&id=HbCR7y4bJB52&format=png&color=000000" onClick={changeCollapse} alt="collapseIcon" />
+                </div>
+                <div className="menu-options">
+                    <ul>
+                        {menuOptions}
+                    </ul>
+                </div>
             </div>
-            <div className="menu-options">
-                <ul>
-                    {menuOptions}
-                </ul>
-            </div>
-        </div>
+        </>
     )
 }

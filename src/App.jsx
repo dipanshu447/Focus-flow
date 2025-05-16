@@ -67,14 +67,22 @@ export default function App() {
     let formData = new FormData(e.target);
     let newUsername = formData.get('UserName');
     setUsername(newUsername);
-    localStorage.setItem("UserName",newUsername);
+    localStorage.setItem("UserName", newUsername);
     setusernameDialogBox(false);
   }
 
+  const [collapsed, setcollapsed] = useState(false);
+  const toggleCollapse = () => setcollapsed(prev => !prev);
+
   return (
     <>
-      <Menu setPage={setPage} style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}/>
-      {page == "Welcome" && <Welcome 
+      <Menu
+        setPage={setPage}
+        collapse={collapsed}
+        changeCollapse={toggleCollapse}
+        style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}
+      />
+      {page == "Welcome" && <Welcome
         style={usernameDialogBox ? { filter: "blur(10px) brightness(0.9)" } : {}}
         startFocus={setPage}
         editName={setUsername}
@@ -87,7 +95,7 @@ export default function App() {
         taskLength={Tasks.length}
         userTasks={userTasks}
       />}
-      {page == "About" && <About/>}
+      {page == "About" && <About />}
       {usernameDialogBox && <form className="taskDialogBox UserNameBox" onSubmit={userNameHandler}>
         <label>What's your name</label>
         <input type="text" name='UserName' required />
@@ -95,6 +103,9 @@ export default function App() {
           <button type='submit'>Start Grinding!</button>
         </div>
       </form>}
+      {collapsed && <button className="openCollapse" onClick={toggleCollapse}>
+        <img src="https://img.icons8.com/?size=100&id=PpSBa7iaIak3&format=png&color=ffffff" alt="menuIcon" />
+      </button>}
     </>
   )
 }
