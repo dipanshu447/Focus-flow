@@ -109,12 +109,25 @@ export default function Pomodoro({ username }) {
             timer = setTimeout(() => {
                 setshowsesstionComplete(false);
                 PomodoroCount.current = 0;
-            BreakCount.current = 0;
+                BreakCount.current = 0;
             }, 3000);
         }
 
         return () => clearTimeout(timer);
     }, [showsesstionComplete])
+
+    useEffect(() => {
+        let message = "";
+        if (!BreakTimer.current) {
+            message = "LOCK IN";
+        } else {
+            message = "Relax time";
+        }
+
+        document.title = `${formatTimer(timer)} - ${message}`;
+
+        return () => document.title = "FocusFlow";
+    }, [timer, BreakTimer.current])
 
     function resetHandler() {
         setTimerStart(false);
