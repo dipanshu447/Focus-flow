@@ -48,15 +48,22 @@ export default function Pomodoro({ username }) {
         return `${hour ? (hour < 10 ? '0' : '') + hour + ':' : ''}${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
     }
 
-    const buttonSound = new Audio(buttonClick);
-    const sesstionCompleteSound = new Audio(sesstionSound);
-    const alarmSound = new Audio(AlarmSound);
-    const breakTimeSound = new Audio(breakEnd);
+    const buttonSound = useRef(new Audio(buttonClick));
+    const sesstionCompleteSound = useRef(new Audio(sesstionSound));
+    const alarmSound = useRef(new Audio(AlarmSound));
+    const breakTimeSound = useRef(new Audio(breakEnd));
+
+    function playSound(ref) {
+        const audio = ref.current;
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play().catch((e) => console.error("Audio play failed", e));
+    }
+
 
     function startPauseBtnHandler() {
         setTimerStart(prev => !prev);
-        buttonSound.currentTime = 0;
-        buttonSound.play();
+        playSound(buttonSound);
     }
 
     useEffect(() => {
@@ -67,8 +74,7 @@ export default function Pomodoro({ username }) {
                         clearInterval(intervalRef.current);
                         if (!BreakTimer.current) {
                             PomodoroCount.current += 1;
-                            alarmSound.currentTime = 0;
-                            alarmSound.play();
+                            playSound(alarmSound);
                             setTotalStudySeconds(prev => {
                                 const updated = prev + Pomodoro * 60;
                                 localStorage.setItem("TotalStudiedSeconds", updated);
@@ -77,9 +83,7 @@ export default function Pomodoro({ username }) {
                             if (PomodoroCount.current == Sessions) {
                                 setshowsesstionComplete(true);
                                 setTimerStart(false);
-                                alarmSound.pause();
-                                sesstionCompleteSound.currentTime = 0;
-                                sesstionCompleteSound.play();
+                                playSound(sesstionCompleteSound);
                                 return 0;
                             } else {
                                 BreakTimer.current = true;
@@ -94,8 +98,7 @@ export default function Pomodoro({ username }) {
                             setintialTimer(Pomodoro * 60);
                             setTimer(Pomodoro * 60);
                             setTimerStart(true);
-                            breakTimeSound.currentTime = 0;
-                            breakTimeSound.play();
+                            playSound(breakTimeSound);
                             return Pomodoro * 60;
                         }
                     }
@@ -154,8 +157,7 @@ export default function Pomodoro({ username }) {
     function resetHandler() {
         setTimerStart(false);
         setTimer(intialTimer);
-        buttonSound.currentTime = 0;
-        buttonSound.play();
+        playSound(buttonSound);
     }
 
     let progressPercent = ((intialTimer - timer) / intialTimer) * 100;
