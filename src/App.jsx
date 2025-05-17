@@ -4,7 +4,7 @@ import TodoList from './components/TodoList.jsx';
 import Pomodoro from './components/Pomodoro.jsx';
 import Welcome from './components/Welcome.jsx';
 import About from './components/About.jsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function App() {
   const [Tasks, setTask] = useState(() => {
@@ -74,6 +74,31 @@ export default function App() {
   const [collapsed, setcollapsed] = useState(true);
   const toggleCollapse = () => setcollapsed(prev => !prev);
 
+  const noficationPerms = useRef(false);
+  useEffect(() => {
+    async function getNotifyPerms() {
+      if (Notification.permission === 'granted') {
+        noficationPerms.current = true;
+      } else if (Notification.permission !== 'denied') {
+        let perms = await Notification.requestPermission();
+        noficationPerms.current = perms === 'granted' ? true : false;
+      }
+    }
+    getNotifyPerms();
+  }, []);
+
+  function showNotify(title, bodyText) {
+    if (noficationPerms.current) {
+      const pomoNotify = new Notification(title, {
+        body: bodyText
+      });
+
+      setTimeout(() => {
+        pomoNotify.close();
+      }, 5000);
+    }
+  }
+
   return (
     <>
       <Menu
@@ -87,13 +112,14 @@ export default function App() {
         startFocus={setPage}
         editName={setUsername}
       />}
-      {page == "Pomodoro" && <Pomodoro username={username} />}
+      {page == "Pomodoro" && <Pomodoro username={username} showNotify={showNotify} />}
       {page == "ToDolist" && <TodoList
         username={username}
         addTask={addTask}
         remainingTaskCount={finishedTasksCount}
         taskLength={Tasks.length}
         userTasks={userTasks}
+        showNotify={showNotify}
       />}
       {page == "About" && <About />}
       {usernameDialogBox && <form className="taskDialogBox UserNameBox" onSubmit={userNameHandler}>

@@ -6,7 +6,7 @@ import sesstionSound from '../assets/sounds-effects/sesstion_complete.mp3';
 import AlarmSound from '../assets/sounds-effects/digital-alarm.mp3';
 import breakEnd from '../assets/sounds-effects/break_time.mp3';
 
-export default function Pomodoro({ username }) {
+export default function Pomodoro({ username, showNotify }) {
     const defaultPomodoro = 25;
     const defaultBreak = 5;
     const defaultSessions = 1;
@@ -66,6 +66,8 @@ export default function Pomodoro({ username }) {
         playSound(buttonSound);
     }
 
+    
+
     useEffect(() => {
         if (timerStart) {
             intervalRef.current = setInterval(() => {
@@ -90,6 +92,7 @@ export default function Pomodoro({ username }) {
                                 setintialTimer(Breaktime * 60);
                                 setTimer(Breaktime * 60);
                                 setTimerStart(true);
+                                showNotify("You've earned this rest", "This break is part of your progress.");
                                 return Breaktime * 60;
                             }
                         } else {
@@ -99,6 +102,7 @@ export default function Pomodoro({ username }) {
                             setTimer(Pomodoro * 60);
                             setTimerStart(true);
                             playSound(breakTimeSound);
+                            showNotify(`${Pomodoro} mins. No distractions.`, "Or keep daydreaming while others hustle. Your call!");
                             return Pomodoro * 60;
                         }
                     }

@@ -2,7 +2,7 @@ import Header from './Header.jsx';
 import ProgressBar from './todolistComponents/ProgressBar.jsx';
 import { useState, useRef, useEffect } from 'react';
 
-export default function TodoList({ addTask, taskLength, remainingTaskCount, userTasks, username, style }) {
+export default function TodoList({ addTask, taskLength, remainingTaskCount, userTasks, username, showNotify }) {
 
     let taskMessage = taskLength == 0 ? "No tasks yet. Add one to get started!" : (taskLength - remainingTaskCount) == 0 ? "You're all caught up. Great job!" : `${taskLength - remainingTaskCount} Tasks Remaining.`;
 
@@ -27,6 +27,12 @@ export default function TodoList({ addTask, taskLength, remainingTaskCount, user
     useEffect(() => {
         if (showAddTask && inputFocus.current) inputFocus.current.focus();
     }, [showAddTask])
+
+    useEffect(() => {
+        if((taskLength - remainingTaskCount) == 0){
+            showNotify("All Tasks Done","Grind complete. Rest well, champ.")
+        }
+    },[userTasks])
 
     return (
         <div className='todoList-container'>
