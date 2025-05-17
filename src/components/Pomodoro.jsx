@@ -1,6 +1,10 @@
 import Header from "./Header.jsx";
-import ProgressBar from "./todolistComponents/ProgressBar.jsx";
 import { useState, useEffect, useRef } from "react";
+import ProgressBar from "./todolistComponents/ProgressBar.jsx";
+import buttonClick from '../assets/sounds-effects/button-click.wav';
+import sesstionSound from '../assets/sounds-effects/sesstion_complete.mp3';
+import AlarmSound from '../assets/sounds-effects/digital-alarm.mp3';
+import breakEnd from '../assets/sounds-effects/break_time.mp3';
 
 export default function Pomodoro({ username }) {
     const defaultPomodoro = 25;
@@ -44,6 +48,17 @@ export default function Pomodoro({ username }) {
         return `${hour ? (hour < 10 ? '0' : '') + hour + ':' : ''}${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
     }
 
+    const buttonSound = new Audio(buttonClick);
+    const sesstionCompleteSound = new Audio(sesstionSound);
+    const alarmSound = new Audio(AlarmSound);
+    const breakTimeSound = new Audio(breakEnd);
+
+    function startPauseBtnHandler() {
+        setTimerStart(prev => !prev);
+        buttonSound.currentTime = 0;
+        buttonSound.play();
+    }
+
     useEffect(() => {
         if (timerStart) {
             intervalRef.current = setInterval(() => {
@@ -52,6 +67,8 @@ export default function Pomodoro({ username }) {
                         clearInterval(intervalRef.current);
                         if (!BreakTimer.current) {
                             PomodoroCount.current += 1;
+                            alarmSound.currentTime = 0;
+                            alarmSound.play();
                             setTotalStudySeconds(prev => {
                                 const updated = prev + Pomodoro * 60;
                                 localStorage.setItem("TotalStudiedSeconds", updated);
@@ -60,6 +77,9 @@ export default function Pomodoro({ username }) {
                             if (PomodoroCount.current == Sessions) {
                                 setshowsesstionComplete(true);
                                 setTimerStart(false);
+                                alarmSound.pause();
+                                sesstionCompleteSound.currentTime = 0;
+                                sesstionCompleteSound.play();
                                 return 0;
                             } else {
                                 BreakTimer.current = true;
@@ -74,6 +94,8 @@ export default function Pomodoro({ username }) {
                             setintialTimer(Pomodoro * 60);
                             setTimer(Pomodoro * 60);
                             setTimerStart(true);
+                            breakTimeSound.currentTime = 0;
+                            breakTimeSound.play();
                             return Pomodoro * 60;
                         }
                     }
@@ -132,6 +154,8 @@ export default function Pomodoro({ username }) {
     function resetHandler() {
         setTimerStart(false);
         setTimer(intialTimer);
+        buttonSound.currentTime = 0;
+        buttonSound.play();
     }
 
     let progressPercent = ((intialTimer - timer) / intialTimer) * 100;
@@ -186,7 +210,7 @@ export default function Pomodoro({ username }) {
                         {formatTimer(timer)}
                     </ProgressBar>
                     <div className="buttons">
-                        <button onClick={() => setTimerStart(prev => !prev)} style={timerStart ? pauseCssObj : {}}>{timerStart ? "Pause" : "Start"}</button>
+                        <button onClick={startPauseBtnHandler} style={timerStart ? pauseCssObj : {}}>{timerStart ? "Pause" : "Start"}</button>
                         <button onClick={resetHandler}>Reset</button>
                     </div>
                 </div>
