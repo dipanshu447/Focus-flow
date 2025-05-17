@@ -17,7 +17,7 @@ export default function Header({ username }) {
     let greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
 
     return (
-        <header>
+        <header className='pomoHead'>
             <div className="head">
                 <h1>{greeting}, <span>{username}!</span></h1>
                 <p>Today, {`${formattedDate} ${date.getFullYear()}`}</p>

@@ -841,3 +841,14 @@ input:focus-visible {
     padding: 10px 9px;
   }
 }
+
+@media only screen and (max-width: 370px) {
+  .pomoHead {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .timerOption{
+    justify-content: space-evenly;
+  }
+}

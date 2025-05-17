@@ -29,7 +29,7 @@ export default function TodoList({ addTask, taskLength, remainingTaskCount, user
     }, [showAddTask])
 
     useEffect(() => {
-        if((taskLength - remainingTaskCount) == 0){
+        if((taskLength - remainingTaskCount) == 0 && !(taskLength == 0)){
             showNotify("All Tasks Done","Grind complete. Rest well, champ.")
         }
     },[userTasks])
