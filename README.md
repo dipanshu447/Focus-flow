@@ -1,6 +1,5 @@
 # FocusFlow - Minimalist Productivity Tool
 
-
 FocusFlow is a clean, distraction-free productivity tool designed to help you focus on what truly matters - your work, study, and personal growth. Built with intentional simplicity, it provides just the essential features you need without the clutter of bloated apps. Part of my [#100DaysOfCode](https://github.com/dipanshu447/100-days-of-reactjs) challenge journey.
 
 ![FocusFlow Screenshot](./public/preview.gif)
@@ -22,7 +21,7 @@ FocusFlow is a clean, distraction-free productivity tool designed to help you fo
 - Clean visual dashboard
 - Persistent data (local storage)
 
-### My Learning Journey
+## My Learning Journey
 This project represents my first fully-developed React application, created during my [#100DaysOfCode](https://github.com/dipanshu447/100-days-of-reactjs) challenge. Here's what I gained:
 
 - Mastered React hooks (useState, useEffect, useRef)
