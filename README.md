@@ -19,3 +19,10 @@
 - and just understood how perfect typescript is and how much better web app i can make using ts
 - I also tried making routes using react router in tsx react project and obv it gave me error so I will figure it out tmrw
 - made notes of everything i learned
+
+## Day 4 (18/4/2026)
+- leanred about function return types and its common return types
+- also learend about utility types
+- learned about generics and its explicit type generic function call
+- and completed ts fundamentals
+- made notes of everything i learned
