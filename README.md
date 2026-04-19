@@ -26,3 +26,6 @@
 - learned about generics and its explicit type generic function call
 - and completed ts fundamentals
 - made notes of everything i learned
+
+## Day 5 (19/4/2026)
+- revised typescript fundamentals
