@@ -29,3 +29,10 @@
 
 ## Day 5 (19/4/2026)
 - revised typescript fundamentals
+
+## Day 6 (20/4/2026)
+- revised typescript fundamentals practically
+- learned about how to use ts in reactjs
+- learned about typing react component and how to import that specific type from react for type checking
+- learned how to type react props and practiced it practically
+- converted my focusflow 2.0 jsx code to tsx code and its done
