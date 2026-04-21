@@ -36,3 +36,7 @@
 - learned about typing react component and how to import that specific type from react for type checking
 - learned how to type react props and practiced it practically
 - converted my focusflow 2.0 jsx code to tsx code and its done
+
+## Day 7 (21/4/2026)
+- learned about typing function props and revised react ts concepts
+- finished react typescript module in scrimba
