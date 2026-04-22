@@ -40,3 +40,8 @@
 ## Day 7 (21/4/2026)
 - learned about typing function props and revised react ts concepts
 - finished react typescript module in scrimba
+
+## Day 8 (22/4/2026)
+- started working on welcome page
+- made changes and made the hero page even better with a new bg image generated using ai
+- couldnt do more cause of empty mind but did my best but i know i can do better
