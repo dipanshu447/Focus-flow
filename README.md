@@ -45,3 +45,7 @@
 - started working on welcome page
 - made changes and made the hero page even better with a new bg image generated using ai
 - couldnt do more cause of empty mind but did my best but i know i can do better
+
+## Day 9 (23/4/2026)
+- worked on landing page completed the hero page
+- finished all the sections of landing page except 2
