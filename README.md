@@ -49,3 +49,7 @@
 ## Day 9 (23/4/2026)
 - worked on landing page completed the hero page
 - finished all the sections of landing page except 2
+
+## Day 10 (29/4/2026)
+- finished working on landing page and its all done
+- just dark mode left and also i made a landing page done commit
