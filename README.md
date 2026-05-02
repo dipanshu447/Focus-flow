@@ -53,3 +53,6 @@
 ## Day 10 (29/4/2026)
 - finished working on landing page and its all done
 - just dark mode left and also i made a landing page done commit
+
+## Day 11 (2/5/2026)
+- worked on light mode for landing page almost done just need some ideas
