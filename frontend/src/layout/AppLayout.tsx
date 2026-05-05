@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar.tsx";
 import { useState, useEffect } from "react";
 import Grainient from '../components/reactbits/Grainient.tsx';
 import type { JSX } from "react";
+import Footer from '../components/Footer.tsx';
 
 export default function AppLayout(): JSX.Element {
   const [darkMode, setDarkMode] = useState<string | boolean>((): (string | boolean) => {
@@ -21,7 +22,7 @@ export default function AppLayout(): JSX.Element {
   }, [darkMode])
 
   return (
-    <div className="relative flex justify-center font-[Inter] min-h-screen overflow-hidden">
+    <div className="relative flex flex-col justify-center items-center font-[Inter] min-h-screen overflow-hidden">
       <div className='fixed inset-0 -z-10'>
         {!darkMode ? <Grainient
           color1="#ffffff"
@@ -89,6 +90,7 @@ export default function AppLayout(): JSX.Element {
       </div>
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <Outlet />
+      <Footer />
     </div>
   )
 }
