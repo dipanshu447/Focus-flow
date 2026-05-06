@@ -1,10 +1,12 @@
-import { StrictMode } from 'react';
+import { StrictMode, useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import './index.css';
 import AppLayout from './layout/AppLayout.tsx';
 import About from './pages/About.tsx';
 import Welcome from './pages/Welcome.tsx';
+import Error from './pages/Error.tsx';
+import { DarkModeProvider } from './context/DarkModeContext.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -17,6 +19,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
@@ -32,6 +35,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <DarkModeProvider>
+      <RouterProvider router={router} />
+    </DarkModeProvider>
   </StrictMode>,
 )

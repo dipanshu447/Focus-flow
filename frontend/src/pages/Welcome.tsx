@@ -119,7 +119,7 @@ export default function Welcome() {
                     ))}
                 </div>
             </div>
-            <div className="relative my-20 text-center text-neutral-950 dark:text-white py-40 flex flex-col items-center z-10 border-b border-b-neutral-800">
+            <div className="relative text-center text-neutral-950 dark:text-white py-40 flex flex-col items-center z-10 border-b border-b-neutral-800">
                 <div
                     className="absolute inset-0 bg-cover bg-center mask-[linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] -z-10 opacity-25 dark:opacity-10"
                     style={{ backgroundImage: `url(${landingBg})` }}

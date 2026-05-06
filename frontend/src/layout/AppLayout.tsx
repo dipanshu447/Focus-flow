@@ -1,26 +1,13 @@
 import { Outlet } from "react-router";
 import Navbar from "../components/Navbar.tsx";
-import { useState, useEffect } from "react";
 import Grainient from '../components/reactbits/Grainient.tsx';
-import type { JSX } from "react";
+import { type JSX } from "react";
 import Footer from '../components/Footer.tsx';
+import useDarkMode from "../hooks/useDarkMode.ts";
+import type { DarkModeObj } from "../types/DarkModeObj.ts";
 
 export default function AppLayout(): JSX.Element {
-  const [darkMode, setDarkMode] = useState<string | boolean>((): (string | boolean) => {
-    return localStorage.getItem("theme") || document.documentElement.classList.contains("dark");
-  });
-  const toggleDarkMode = (): void => setDarkMode(prev => !prev);
-
-  useEffect((): void => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode])
-
+  const {darkMode, toggleDarkMode}: DarkModeObj = useDarkMode();
   return (
     <div className="relative flex flex-col justify-center items-center font-[Inter] min-h-screen overflow-hidden">
       <div className='fixed inset-0 -z-10'>
