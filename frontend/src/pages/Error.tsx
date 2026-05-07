@@ -78,15 +78,16 @@ export default function Error() {
                 />}
             </div>
             <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-            <div className="relative z-2 py-50 flex flex-col bg-top bg-no-repeat text-neutral-950 dark:text-white w-full">
+            <div className="relative z-2 py-45 flex flex-col bg-top bg-no-repeat text-neutral-950 dark:text-white w-full">
                 <div className="flex flex-col items-center justify-center">
                     <ImCross className="size-30 dark:fill-neutral-800" />
                     <h1 className="text-3xl font-black mt-8 mb-2">Something went wrong.</h1>
                     <span className="text-lg text-gray-400">An unexpected error occurred. It's not you, it's us.</span>
-                    <div className="flex gap-6 items-center">
+                    <div className="flex gap-4 items-center">
                         <Link to='signup' className="flex gap-2 items-center bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all duration-200 shadow-sm hover:shadow-md font-medium px-5 py-3 rounded-full text-sm self-baseline mt-6">Try Again <MdLoop className="size-4"/> </Link>
                         <Link to='/' className="flex gap-2 items-center bg-black dark:text-white hover:bg-neutral-800 dark:bg-neutral-950 border border-neutral-800 text-black dark:hover:bg-neutral-900 transition-all duration-200 shadow-sm hover:shadow-md font-medium px-5 py-3 rounded-full text-sm self-baseline mt-6">Go Home</Link>
                     </div>
+                    <small className="text-xs mt-5 text-neutral-500">If this keeps happening, <Link to="/contact" className="underline">let us know.</Link></small>
                 </div>
             </div>
             <Footer />
