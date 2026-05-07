@@ -4,7 +4,6 @@ import Grainient from "../components/reactbits/Grainient";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { ImCross } from "react-icons/im";
-import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router";
 import { MdLoop } from "react-icons/md";
 

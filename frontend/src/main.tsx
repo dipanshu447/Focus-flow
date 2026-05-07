@@ -1,4 +1,4 @@
-import { StrictMode, useState, useEffect } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import './index.css';
@@ -7,6 +7,7 @@ import About from './pages/About.tsx';
 import Welcome from './pages/Welcome.tsx';
 import Error from './pages/Error.tsx';
 import { DarkModeProvider } from './context/DarkModeContext.tsx';
+import Guide from './pages/Guide.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: 'about',
         element: <About />
+      },
+      {
+        path: 'guide',
+        element: <Guide />
       }
     ]
   }
