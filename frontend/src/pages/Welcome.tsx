@@ -45,9 +45,7 @@ export default function Welcome() {
     ];
 
     return (
-        <div
-            className="relative z-2 pb-20 flex flex-col bg-top bg-no-repeat text-neutral-950 dark:text-white w-full"
-        >
+        <div className="relative z-2 pb-20 flex flex-col bg-top bg-no-repeat text-neutral-950 dark:text-white w-full">
             <div className="w-full py-35 text-center text-neutral-950 dark:text-white flex flex-col items-center gap-1 self-center relative z-10 border-b border-b-neutral-800">
                 <div
                     className="absolute inset-0 bg-cover bg-center mask-[linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] -z-10 opacity-35 dark:opacity-10"
