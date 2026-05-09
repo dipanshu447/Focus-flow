@@ -21,8 +21,8 @@ export default function Footer() {
                     </div>
                     <div className='flex flex-col gap-4'>
                         <span className="text-neutral-500 font-light tracking-wider text-sm uppercase">Company</span>
-                        <Link to="/" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">About</Link>
-                        <Link to="/" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">Contact</Link>
+                        <Link to="/about" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">About</Link>
+                        <Link to="/contact" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">Contact</Link>
                     </div>
                 </div>
             </div>

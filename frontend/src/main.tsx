@@ -8,6 +8,7 @@ import Welcome from './pages/Welcome.tsx';
 import Error from './pages/Error.tsx';
 import { DarkModeProvider } from './context/DarkModeContext.tsx';
 import Guide from './pages/Guide.tsx';
+import Contact from './pages/Contact.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'guide',
         element: <Guide />
+      },
+      {
+        path: 'contact',
+        element: <Contact />
       }
     ]
   }
