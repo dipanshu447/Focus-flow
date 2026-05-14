@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
-  Play, Pause, RotateCcw, CheckCircle, BarChart2, 
-  Sparkles, Settings, PanelLeftClose, PanelLeftOpen, 
-  Target, Zap, Command
-} from 'lucide-react';
+  FiTarget, FiCheckCircle, FiBarChart2, FiCommand, 
+  FiZap, FiPlay, FiPause, FiRefreshCcw, FiSettings,
+  FiChevronLeft, FiChevronRight
+} from 'react-icons/fi';
+import { BsStars } from 'react-icons/bs';
 
-export default function FocusFlowDashboard() {
+export default function Focus() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [timerState, setTimerState] = useState('idle'); // idle, running, paused
   const [timeLeft, setTimeLeft] = useState(90 * 60); // 90 minutes default
@@ -19,18 +20,14 @@ export default function FocusFlowDashboard() {
   };
 
   const navItems = [
-    { id: 'focus', icon: Target, label: 'Focus' },
-    { id: 'tasks', icon: CheckCircle, label: 'Tasks' },
-    { id: 'analytics', icon: BarChart2, label: 'Analytics' },
-    { id: 'ai', icon: Sparkles, label: 'Assistant' },
+    { id: 'focus', icon: FiTarget, label: 'Focus' },
+    { id: 'tasks', icon: FiCheckCircle, label: 'Tasks' },
+    { id: 'analytics', icon: FiBarChart2, label: 'Analytics' },
+    { id: 'ai', icon: BsStars, label: 'Assistant' },
   ];
 
   return (
-    <div className="w-full text-[#e5e5e5] flex font-sans selection:bg-white/20 py-30">
-      
-      {/* ================= DESKTOP SIDEBAR ================= */}
-      
-
+    <div className="w-full text-[#e5e5e5] flex font-sans selection:bg-white/20">
       {/* ================= MAIN WORKSPACE ================= */}
       <main className="flex-1 flex flex-col relative overflow-hidden">
         
@@ -41,11 +38,11 @@ export default function FocusFlowDashboard() {
           </div>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.02] backdrop-blur-md text-xs text-white/50">
-              <Command size={12} />
+              <FiCommand size={12} />
               <span>K</span>
             </div>
             <div className="flex items-center gap-2 text-xs font-medium text-white/40">
-              <Zap size={14} className="text-white/60" />
+              <FiZap size={14} className="text-white/60 fill-current" />
               <span>Day 12 Streak</span>
             </div>
           </div>
@@ -81,7 +78,7 @@ export default function FocusFlowDashboard() {
           {/* Primary Controls */}
           <div className="flex items-center gap-6">
             <button className="w-12 h-12 rounded-full border border-white/[0.08] flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-all">
-              <RotateCcw size={18} />
+              <FiRefreshCcw size={18} />
             </button>
             
             <button 
@@ -90,19 +87,19 @@ export default function FocusFlowDashboard() {
             >
               {timerState === 'running' ? (
                 <>
-                  <Pause size={20} fill="currentColor" />
+                  <FiPause size={20} className="fill-current" />
                   <span>Pause Session</span>
                 </>
               ) : (
                 <>
-                  <Play size={20} fill="currentColor" />
+                  <FiPlay size={20} className="fill-current" />
                   <span>Start Focus</span>
                 </>
               )}
             </button>
 
             <button className="w-12 h-12 rounded-full border border-white/[0.08] flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-all">
-              <CheckCircle size={18} />
+              <FiCheckCircle size={18} />
             </button>
           </div>
         </div>
@@ -110,7 +107,7 @@ export default function FocusFlowDashboard() {
         {/* AI Command / Stats Footer */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-md px-6 hidden md:block">
           <div className="h-12 w-full rounded-2xl border border-white/[0.08] bg-black/40 backdrop-blur-xl flex items-center px-4 overflow-hidden shadow-2xl">
-            <Sparkles size={16} className="text-white/30 mr-3 shrink-0" />
+            <BsStars size={16} className="text-white/30 mr-3 shrink-0" />
             <input 
               type="text" 
               placeholder="Ask AI to break down this task..." 
@@ -121,26 +118,6 @@ export default function FocusFlowDashboard() {
       </main>
 
       {/* ================= MOBILE BOTTOM NAV ================= */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full h-20 border-t border-white/[0.06] bg-[#050505]/80 backdrop-blur-xl flex items-center justify-around px-6 z-50">
-        {navItems.map((item) => {
-          const isActive = activeTab === item.id;
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center gap-1.5 transition-colors p-2 ${
-                isActive ? 'text-white' : 'text-white/30'
-              }`}
-            >
-              <Icon size={22} className={isActive ? 'opacity-100' : 'opacity-80'} />
-              <span className="text-[10px] font-medium tracking-wider uppercase opacity-80">
-                {item.label}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
       
     </div>
   );

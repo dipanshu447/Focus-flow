@@ -11,8 +11,9 @@ import Guide from './pages/Guide.tsx';
 import Contact from './pages/Contact.tsx';
 import SignUp from './pages/SignUp.tsx';
 import NotFound from './pages/NotFound.tsx';
-import FocusFlowDashboard from './pages/FocusFlowDashboard.tsx';
 import AppLayout from './layout/AppLayout.tsx';
+import Overview from './pages/app/Overview.tsx';
+import Focus from './pages/app/Focus.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -51,7 +52,7 @@ const router = createBrowserRouter([
         path: "*",
         element: <NotFound />
       },
-      
+
     ],
   },
   {
@@ -61,7 +62,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <FocusFlowDashboard />
+        element: <Overview />
+      },
+      {
+        path: 'focus',
+        element: <Focus />
       }
     ]
   }
