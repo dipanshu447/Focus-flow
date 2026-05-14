@@ -2,13 +2,17 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import './index.css';
-import AppLayout from './layout/AppLayout.tsx';
+import Landinglayout from './layout/Landinglayout.tsx';
 import About from './pages/About.tsx';
 import Welcome from './pages/Welcome.tsx';
 import Error from './pages/Error.tsx';
 import { DarkModeProvider } from './context/DarkModeContext.tsx';
 import Guide from './pages/Guide.tsx';
 import Contact from './pages/Contact.tsx';
+import SignUp from './pages/SignUp.tsx';
+import NotFound from './pages/NotFound.tsx';
+import FocusFlowDashboard from './pages/FocusFlowDashboard.tsx';
+import AppLayout from './layout/AppLayout.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -20,7 +24,7 @@ if (theme == "dark") {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <AppLayout />,
+    element: <Landinglayout />,
     errorElement: <Error />,
     children: [
       {
@@ -38,6 +42,26 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <Contact />
+      },
+      {
+        path: 'signup',
+        element: <SignUp />
+      },
+      {
+        path: "*",
+        element: <NotFound />
+      },
+      
+    ],
+  },
+  {
+    path: '/app',
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [
+      {
+        index: true,
+        element: <FocusFlowDashboard />
       }
     ]
   }
