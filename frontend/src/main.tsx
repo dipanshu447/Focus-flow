@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound.tsx';
 import AppLayout from './layout/AppLayout.tsx';
 import Overview from './pages/app/Overview.tsx';
 import Focus from './pages/app/Focus.tsx';
+import Tasks from './pages/app/Tasks.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: 'focus',
         element: <Focus />
+      },
+      {
+        path: 'tasks',
+        element: <Tasks />
       }
     ]
   }
