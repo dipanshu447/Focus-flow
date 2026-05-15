@@ -15,6 +15,7 @@ import AppLayout from './layout/AppLayout.tsx';
 import Overview from './pages/app/Overview.tsx';
 import Focus from './pages/app/Focus.tsx';
 import Tasks from './pages/app/Tasks.tsx';
+import Analytics from './pages/app/Analytics.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: 'tasks',
         element: <Tasks />
+      },
+      {
+        path: 'analytics',
+        element: <Analytics />
       }
     ]
   }
