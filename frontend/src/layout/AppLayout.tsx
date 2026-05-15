@@ -75,9 +75,8 @@ export default function AppLayout() {
             </div>
             <div className="flex items-start w-full">
                 <SideBar />
-                <div className="flex-1 w-full">
-
-                <Outlet />
+                <div className="w-full">
+                    <Outlet />
                 </div>
             </div>
         </div>
