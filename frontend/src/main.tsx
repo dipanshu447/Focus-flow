@@ -16,6 +16,7 @@ import Overview from './pages/app/Overview.tsx';
 import Focus from './pages/app/Focus.tsx';
 import Tasks from './pages/app/Tasks.tsx';
 import Analytics from './pages/app/Analytics.tsx';
+import Profile from './pages/app/Profile.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme == "dark") {
@@ -54,7 +55,6 @@ const router = createBrowserRouter([
         path: "*",
         element: <NotFound />
       },
-
     ],
   },
   {
@@ -77,7 +77,11 @@ const router = createBrowserRouter([
       {
         path: 'analytics',
         element: <Analytics />
-      }
+      },
+      {
+        path: 'profile',
+        element: <Profile />
+      },
     ]
   }
 ])

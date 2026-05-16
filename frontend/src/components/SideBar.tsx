@@ -12,7 +12,6 @@ export default function SideBar() {
         { route: 'focus', icon: LuTarget, label: 'Focus' },
         { route: 'tasks', icon: FaCheckCircle, label: 'Tasks' },
         { route: 'analytics', icon: MdBarChart, label: 'Analytics' },
-        { route: 'ai', icon: LuSparkles, label: 'Assistant' },
     ];
 
     return (
@@ -69,14 +68,14 @@ export default function SideBar() {
                         </span>
                     </Link>
                     <div className={`flex items-center mt-3 px-3 py-2.5 rounded-xl border border-transparent hover:border-white/4 bg-white/1 hover:bg-white/2 transition-all duration-300 ${isSidebarCollapsed ? 'justify-center' : 'justify-between'}`}>
-                        <div className="flex items-center gap-3">
+                        <Link to="profile" className="flex items-center gap-3">
                             <div className="w-6 h-6 rounded-full bg-linear-to-tr from-white/10 to-white/5 border border-white/10 flex items-center justify-center text-[10px] text-white/80 shrink-0">
                                 DS
                             </div>
                             <span className={`text-xs font-medium text-white/60 whitespace-nowrap ${isSidebarCollapsed ? 'hidden' : 'block'}`}>
                                 Dipanshu Sahu
                             </span>
-                        </div>
+                        </Link>
                         {!isSidebarCollapsed && (
                             <button onClick={() => setIsSidebarCollapsed(true)} className="text-white/20 hover:text-white/80 transition-colors p-1">
                                 <LuPanelRightClose size={14} />
