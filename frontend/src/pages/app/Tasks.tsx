@@ -2,23 +2,15 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiCheckCircle, FiCircle, FiTrash2} from 'react-icons/fi';
 import TaskRow from '../../components/TaskRow';
-import type { Task } from '../../types/TaskObj';
 import type { Variants } from 'framer-motion';
+import useFocus from '../../hooks/useFocus';
+import type { FocusContextType, Task } from '../../types/Focus.ts';
 
 export default function TasksPage() {
   const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
+  const {tasks, setTasks}: FocusContextType = useFocus();
   const [isAddingTask, setIsAddingTask] = useState(false);
-  
   const [newTitle, setNewTitle] = useState('');
-  const [newSessions, setNewSessions] = useState<number | ''>('');
-  
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: '1', title: 'Mera App - Production Build', completed: false, sessionsCompleted: 2, sessionsTotal: 5 },
-    { id: '2', title: 'Design System Polish', completed: false, sessionsCompleted: 0, sessionsTotal: 2 },
-    { id: '3', title: 'Landing Page Content Update', completed: false, sessionsCompleted: 1, sessionsTotal: 3 },
-    { id: '4', title: 'Refactor Auth Provider', completed: false, sessionsCompleted: 0, sessionsTotal: 1 },
-    { id: '5', title: 'Morning Emails & Admin', completed: true, sessionsCompleted: 1, sessionsTotal: 1 },
-  ]);
 
   const activeTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
@@ -33,21 +25,19 @@ export default function TasksPage() {
     setTasks(prev => prev.filter(t => t.id !== id));
   };
 
-  const handleAddTask = (e: React.FormEvent) => {
+  const handleAddTask = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
     
     const newTask: Task = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       title: newTitle,
       completed: false,
-      sessionsCompleted: 0,
-      sessionsTotal: typeof newSessions === 'number' && newSessions > 0 ? newSessions : 1,
+      createdAt: new Date().toISOString()
     };
     
     setTasks([newTask, ...tasks]);
     setNewTitle('');
-    setNewSessions('');
     setIsAddingTask(false);
   };
 
