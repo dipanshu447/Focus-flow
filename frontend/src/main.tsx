@@ -17,9 +17,10 @@ import Focus from './pages/app/Focus.tsx';
 import Tasks from './pages/app/Tasks.tsx';
 import Analytics from './pages/app/Analytics.tsx';
 import Profile from './pages/app/Profile.tsx';
+import { FocusProvider } from './context/FocusContext.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
-if (theme == "dark") {
+if (theme === "dark") {
   document.documentElement.classList.add("dark");
 } else {
   document.documentElement.classList.remove("dark");
@@ -59,7 +60,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/app',
-    element: <AppLayout />,
+    element: (
+      <FocusProvider>
+        <AppLayout />
+      </FocusProvider>
+    ),
     errorElement: <Error />,
     children: [
       {

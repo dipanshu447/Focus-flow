@@ -5,7 +5,7 @@ import { Outlet } from "react-router";
 import SideBar from "../components/SideBar";
 
 export default function AppLayout() {
-    const { darkMode, toggleDarkMode }: DarkModeObj = useDarkMode();
+    const { darkMode }: DarkModeObj = useDarkMode();
     return (
         <div className="relative font-[Inter] h-screen">
             <div className='fixed inset-0 -z-10'>
