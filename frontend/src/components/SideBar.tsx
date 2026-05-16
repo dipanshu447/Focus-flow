@@ -26,7 +26,7 @@ export default function SideBar() {
 
     return (
         <div className="text-[#e5e5e5] flex sticky top-0 h-screen">
-            <aside className={`hidden md:flex flex-col border-r border-white/5 bg-[#050505] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarCollapsed ? 'w-18' : 'w-60'}`}>
+            <aside className={`hidden md:flex flex-col border-r border-white/5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarCollapsed ? 'w-18' : 'w-60'}`}>
                 <Link to="." className="h-20 flex items-center px-6 border-b border-white/3 shrink-0">
                     <div className="size-7 rounded-lg bg-white text-black flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-transform hover:scale-105">
                         <img src={logo} alt="logo" />
