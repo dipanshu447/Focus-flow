@@ -5,10 +5,11 @@ import TaskRow from '../../components/TaskRow';
 import type { Variants } from 'framer-motion';
 import useFocus from '../../hooks/useFocus';
 import type { FocusContextType, Task } from '../../types/Focus.ts';
+import totalStudiedTime from '../../utils/totalStudiedTIme.ts';
 
 export default function TasksPage() {
   const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
-  const {tasks, setTasks}: FocusContextType = useFocus();
+  const {tasks, setTasks, sessions}: FocusContextType = useFocus();
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [newTitle, setNewTitle] = useState('');
 
@@ -72,7 +73,7 @@ export default function TasksPage() {
           <div className="flex items-center gap-12 text-white/50">
             <div className="flex flex-col gap-1.5 cursor-default">
               <span className="text-[9px] tracking-[0.3em] uppercase text-white/40">Focused Today</span>
-              <span className="text-xl font-light text-white/90">4h 20m</span>
+              <span className="text-xl font-light text-white/90">{totalStudiedTime(sessions)}</span>
             </div>
             <div className="w-px h-8 bg-neutral-900" />
             <div className="flex flex-col gap-1.5 cursor-default">
