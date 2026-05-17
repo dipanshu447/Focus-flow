@@ -5,6 +5,8 @@ import {
   FiCheckCircle, FiChevronDown, FiLogOut, FiMoon, FiSun, FiEdit2, FiCheck, FiTrash2
 } from 'react-icons/fi';
 import ConfirmationModal from '../../components/ConfirmationModal';
+import { totalStudiedHour, weeklyFocusTime } from '../../utils/analytics';
+import useFocus from '../../hooks/useFocus';
 
 type Role = 'Student' | 'Professional' | 'Freelancer' | 'Competitive Exam Aspirant' | 'Other';
 
@@ -14,6 +16,8 @@ export default function ProfilePage() {
   const [role, setRole] = useState<Role>('Student');
   const [avatarUrl, setAvatarUrl] = useState('');
   const [avatarError, setAvatarError] = useState(false);
+  const {tasks,sessions} = useFocus();
+  const taskDone = tasks.filter(task => task.completed).length;
 
   const [isEditing, setIsEditing] = useState(false);
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
@@ -22,10 +26,10 @@ export default function ProfilePage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const stats = [
-    { label: "Total Focus", value: "142h", icon: FiClock },
-    { label: "This Week", value: "18h 45m", icon: FiActivity },
-    { label: "Total Sessions", value: "128", icon: FiCheckCircle },
-    { label: "Tasks Done", value: "45", icon: FiCheckCircle },
+    { label: "Total Focus", value: totalStudiedHour(sessions), icon: FiClock },
+    { label: "This Week", value: weeklyFocusTime(sessions), icon: FiActivity },
+    { label: "Total Sessions", value: sessions.length, icon: FiCheckCircle },
+    { label: "Tasks Done", value: taskDone, icon: FiCheckCircle },
   ];
 
   const roles: Role[] = [
