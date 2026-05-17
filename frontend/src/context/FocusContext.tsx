@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
-import type { FocusContextType, Session, Task } from "../types/Focus";
+import type { FocusContextType, Session, Task } from "../types/Focus.ts";
 
 
 export const FocusContext = createContext<FocusContextType | undefined>(undefined);

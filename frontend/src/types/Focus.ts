@@ -7,7 +7,8 @@ export interface Task {
 
 export interface Session {
   id: string
-  taskId: string
+  taskId: string | undefined
+  taskTitle: string | undefined
   duration: number
   completedAt: string
 }
