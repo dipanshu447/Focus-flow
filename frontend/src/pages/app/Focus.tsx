@@ -3,12 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlay, FiPause, FiRefreshCcw, FiCircle } from 'react-icons/fi';
 import useFocus from '../../hooks/useFocus';
 import type { FocusContextType } from '../../types/Focus';
-import { useBlocker } from 'react-router';
+import { useBlocker, useSearchParams } from 'react-router';
 import ConfirmationModal from '../../components/ConfirmationModal.tsx';
 import { IoIosClose } from "react-icons/io";
 import totalStudiedTime from '../../utils/totalStudiedTIme.ts';
 
 export default function FocusPage() {
+  const [searchParams] = useSearchParams();
   const [timerState, setTimerState] = useState<'idle' | 'running' | 'paused'>('idle');
   const [timerPhase, setTimerPhase] = useState<'focus' | 'break'>('focus');
 
@@ -23,7 +24,7 @@ export default function FocusPage() {
   const [pendingSettings, setPendingSettings] = useState<{ type: 'focus' | 'break' | 'count', val: number } | null>(null);
 
   const { tasks, setTasks, sessions, setSessions }: FocusContextType = useFocus();
-  const [activeTaskId, setActiveTaskId] = useState<String | null>(null);
+  const [activeTaskId, setActiveTaskId] = useState<String | null>(searchParams.get('activeTaskId'));
 
   const blocker = useBlocker(({ currentLocation, nextLocation }) => timerState === "running" && currentLocation.pathname !== nextLocation.pathname);
 
