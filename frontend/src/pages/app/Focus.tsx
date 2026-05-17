@@ -6,7 +6,7 @@ import type { FocusContextType } from '../../types/Focus';
 import { useBlocker, useSearchParams } from 'react-router';
 import ConfirmationModal from '../../components/ConfirmationModal.tsx';
 import { IoIosClose } from "react-icons/io";
-import totalStudiedTime from '../../utils/totalStudiedTIme.ts';
+import { todayStudiedTime } from '../../utils/analytics.ts';
 
 export default function FocusPage() {
   const [searchParams] = useSearchParams();
@@ -371,7 +371,7 @@ export default function FocusPage() {
             <div className="mt-8 pt-8 border-t border-neutral-900 shrink-0">
               <div className="flex flex-col gap-2">
                 <span className="text-[9px] tracking-[0.4em] text-white/20 uppercase">Focused Today</span>
-                <span className="text-2xl font-light text-white/60">{totalStudiedTime(sessions)}</span>
+                <span className="text-2xl font-light text-white/60">{todayStudiedTime(sessions)}</span>
               </div>
               <p className="text-xs font-light tracking-wide text-white/30 mt-6 italic pr-4">
                 "Small focused hours build remarkable work."

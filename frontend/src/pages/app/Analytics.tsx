@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
-import {
-    FiClock, FiCalendar, FiTarget, FiActivity, FiLock
-} from 'react-icons/fi';
+import { FiLock } from 'react-icons/fi';
+import { getUserConsistency, monthlyFocusTime, todayStudiedTime, totalStudiedHour, weeklyFocusTime } from '../../utils/analytics.ts';
+import useFocus from '../../hooks/useFocus.ts';
+import type { FocusContextType } from '../../types/Focus.ts';
+import { formatTime } from '../../utils/time.ts';
 
 type Timeframe = 'week' | 'month' | 'year' | 'all';
 
@@ -16,33 +18,22 @@ export default function AnalyticsPage() {
     const [activeChartTab, setActiveChartTab] = useState<Timeframe>('week');
     const [hoveredPoint, setHoveredPoint] = useState<ChartPoint | null>(null);
     const [hoveredHeatmap, setHoveredHeatmap] = useState<{ date: string, duration: string } | null>(null);
+    const { sessions }: FocusContextType = useFocus();
 
     const accountAgeDays = 45; // Set >30 to unlock all tabs for preview
 
     const overviewStats = [
-        { label: "Overall Focus", value: "142h" },
-        { label: "Today's Focus", value: "4h 20m" },
-        { label: "Weekly Focus", value: "18h 45m" },
-        { label: "Monthly Focus", value: "64h" },
+        { label: "Overall Focus", value: totalStudiedHour(sessions) },
+        { label: "Today's Focus", value: todayStudiedTime(sessions) },
+        { label: "Weekly Focus", value: weeklyFocusTime(sessions) },
+        { label: "Monthly Focus", value: monthlyFocusTime(sessions) },
         {
             label: "Consistency",
-            value: "88%",
-            subtext: "Focused on 22 of the last 25 days"
+            value: `${getUserConsistency(sessions)}%`,
         },
     ];
 
-    const insights = [
-        { label: "Best Focus Time", value: "8:00 AM - 11:00 AM", icon: FiClock },
-        { label: "Most Productive", value: "Tuesday", icon: FiCalendar },
-        { label: "Avg. Duration", value: "52m per session", icon: FiTarget },
-        { label: "Consistency Trend", value: "Rising", icon: FiActivity },
-    ];
-
-    const recentSessions = [
-        { task: "Mera Saashu App - Production Build", duration: "90m" },
-        { task: "Design System Polish", duration: "50m" },
-        { task: "API Route Refactoring", duration: "1h 12m" },
-    ];
+    const recentSessions = sessions.slice(sessions.length - 3, sessions.length);
 
     const chartTabs = [
         { id: 'week', label: 'This Week', locked: false },
@@ -51,79 +42,197 @@ export default function AnalyticsPage() {
         { id: 'all', label: 'All Time', locked: accountAgeDays < 30 }
     ] as const;
 
+    const weeklyChartData = () => {
+        const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun",];
+        const weeklyTotals = [0, 0, 0, 0, 0, 0, 0];
+
+        sessions.forEach((session) => {
+            const day = new Date(session.completedAt).getDay();
+            const index = day === 0 ? 6 : day - 1;
+            weeklyTotals[index] += session.duration;
+        });
+
+        const maxSeconds = Math.max(...weeklyTotals);
+
+        return days.map((day, index) => {
+            const seconds = weeklyTotals[index];
+            return {
+                label: day,
+                value: maxSeconds > 0 ? (seconds / maxSeconds) * 100 : 0,
+                displayValue: formatTime(seconds),
+            };
+        });
+    };
+
+    const monthlyChartData = () => {
+        const weeks = ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5",];
+        const monthlyTotals = [0, 0, 0, 0, 0];
+        const now = new Date();
+
+        sessions.forEach((session) => {
+            const sesstionDate = new Date(session.completedAt);
+            const sameMonth = sesstionDate.getMonth() === now.getMonth() && sesstionDate.getFullYear() === now.getFullYear();
+
+            if (!sameMonth) return;
+
+            const dayofMonth = sesstionDate.getDate();
+            const weekIndex = Math.floor((dayofMonth - 1) / 7);
+            monthlyTotals[weekIndex] += session.duration;
+        });
+
+        const maxSeconds = Math.max(...monthlyTotals);
+
+        return weeks.map((week, index) => {
+            const seconds = monthlyTotals[index];
+            return {
+                label: week,
+                value: maxSeconds > 0 ? (seconds / maxSeconds) * 100 : 0,
+                displayValue: formatTime(seconds),
+            };
+        });
+    };
+
+    const yearlyChartData = () => {
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const yearlyTotals = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        const now = new Date();
+
+        sessions.forEach((session) => {
+            const sesstionDate = new Date(session.completedAt);
+            const sameYear = sesstionDate.getFullYear() === now.getFullYear();
+
+            if (!sameYear) return;
+
+            const monthIndex = sesstionDate.getMonth();
+            yearlyTotals[monthIndex] += session.duration;
+        });
+
+        const maxSeconds = Math.max(...yearlyTotals);
+
+        return months.map((month, index) => {
+            const seconds = yearlyTotals[index];
+            return {
+                label: month,
+                value: maxSeconds > 0 ? (seconds / maxSeconds) * 100 : 0,
+                displayValue: formatTime(seconds),
+            };
+        });
+    };
+
+    const allTimeChartData = () => {
+        const yearlyMap: Record<string, number> = {};
+
+        sessions.forEach((session) => {
+            const year = new Date(session.completedAt).getFullYear().toString();
+            yearlyMap[year] = (yearlyMap[year] || 0) + session.duration;
+        });
+
+        const years = Object.keys(yearlyMap).sort();
+
+        const maxSeconds = Math.max(...Object.values(yearlyMap));
+
+        return years.map((year) => {
+            const seconds = yearlyMap[year];
+            return {
+                label: year,
+                value: maxSeconds > 0 ? (seconds / maxSeconds) * 100 : 0,
+                displayValue: formatTime(seconds),
+            };
+        });
+    };
+    console.log(weeklyChartData())
+    console.log(monthlyChartData())
+    console.log(yearlyChartData())
+    console.log(allTimeChartData())
+
     const chartData: Record<Timeframe, ChartPoint[]> = {
-        week: [
-            { label: 'Mon', value: 40, displayValue: '3h 12m' },
-            { label: 'Tue', value: 80, displayValue: '5h 45m' },
-            { label: 'Wed', value: 45, displayValue: '3h 30m' },
-            { label: 'Thu', value: 95, displayValue: '6h 10m' },
-            { label: 'Fri', value: 60, displayValue: '4h 15m' },
-            { label: 'Sat', value: 20, displayValue: '1h 30m' },
-            { label: 'Sun', value: 10, displayValue: '45m' },
-        ],
-        month: [
-            { label: 'Week 1', value: 65, displayValue: '18h 30m' },
-            { label: 'Week 2', value: 85, displayValue: '24h 15m' },
-            { label: 'Week 3', value: 45, displayValue: '14h 00m' },
-            { label: 'Week 4', value: 75, displayValue: '21h 45m' },
-        ],
-        year: [
-            { label: 'Jan', value: 30, displayValue: '42h' }, { label: 'Feb', value: 45, displayValue: '56h' },
-            { label: 'Mar', value: 80, displayValue: '84h' }, { label: 'Apr', value: 60, displayValue: '68h' },
-            { label: 'May', value: 90, displayValue: '92h' }, { label: 'Jun', value: 0, displayValue: '0h' },
-            { label: 'Jul', value: 0, displayValue: '0h' }, { label: 'Aug', value: 0, displayValue: '0h' },
-            { label: 'Sep', value: 0, displayValue: '0h' }, { label: 'Oct', value: 0, displayValue: '0h' },
-            { label: 'Nov', value: 0, displayValue: '0h' }, { label: 'Dec', value: 0, displayValue: '0h' },
-        ],
-        all: [
-            { label: '2024', value: 20, displayValue: '120h' },
-            { label: '2025', value: 80, displayValue: '345h' },
-            { label: '2026', value: 100, displayValue: '412h' },
-        ]
+        week: weeklyChartData(),
+        month: monthlyChartData(),
+        year: yearlyChartData(),
+        all: allTimeChartData()
     };
 
     const activeData = chartData[activeChartTab];
 
-    // Helper to generate SVG path from data points
     const generatePath = (data: ChartPoint[]) => {
+
         if (data.length === 0) return '';
+
+        // HANDLE SINGLE POINT
+        if (data.length === 1) {
+
+            const y =
+                300 - (data[0].value / 100) * 250;
+
+            return `M 500,${y}`;
+        }
+
         const points = data.map((d, i) => {
-            const x = (i / (data.length - 1)) * 1000;
-            // Invert Y axis: 0 is bottom (300), 100 is top (50)
-            const y = 300 - (d.value / 100) * 250;
+
+            const x =
+                (i / (data.length - 1)) * 1000;
+
+            const y =
+                300 - (d.value / 100) * 250;
+
             return { x, y };
         });
 
-        let path = `M ${points[0].x},${points[0].y}`;
+        let path =
+            `M ${points[0].x},${points[0].y}`;
+
         for (let i = 0; i < points.length - 1; i++) {
+
             const curr = points[i];
             const next = points[i + 1];
-            const cp1x = curr.x + (next.x - curr.x) / 2;
+
+            const cp1x =
+                curr.x + (next.x - curr.x) / 2;
+
             const cp1y = curr.y;
-            const cp2x = curr.x + (next.x - curr.x) / 2;
+
+            const cp2x =
+                curr.x + (next.x - curr.x) / 2;
+
             const cp2y = next.y;
-            path += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${next.x},${next.y}`;
+
+            path +=
+                ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${next.x},${next.y}`;
         }
+
         return path;
     };
 
     const activePath = generatePath(activeData);
     const heatmapWeeks = useMemo(() => {
+        const sesstionByDate: Record<string, number> = {};
+
+        sessions.forEach(session => {
+            const dateKey = session.completedAt.slice(0, 10);
+            sesstionByDate[dateKey] = (sesstionByDate[dateKey] || 0) + session.duration;
+        });
+
         return Array.from({ length: 12 }).map((_, weekIdx) => {
             return Array.from({ length: 7 }).map((_, dayIdx) => {
-                // Calculate a dummy date string
                 const dateObj = new Date();
                 dateObj.setDate(dateObj.getDate() - ((11 - weekIdx) * 7 + (6 - dayIdx)));
                 const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-                const r = Math.random();
+                const dateKey = dateObj.toISOString().slice(0, 10);
+                const totalSeconds = sesstionByDate[dateKey] || 0;
                 let intensity = 0;
-                let duration = "No focus sessions";
 
-                if (r > 0.4 && r < 0.6) { intensity = 1; duration = "1h 15m focused"; }
-                else if (r >= 0.6 && r < 0.8) { intensity = 2; duration = "3h 40m focused"; }
-                else if (r >= 0.8) { intensity = 3; duration = "6h 20m focused"; }
+                if (totalSeconds > 0 && totalSeconds < 3600) {
+                    intensity = 1;
+                }
+                else if (totalSeconds >= 3600 && totalSeconds < 7200) {
+                    intensity = 2;
+                }
+                else if (totalSeconds >= 7200) {
+                    intensity = 3;
+                }
 
+                const duration = formatTime(totalSeconds) || "No focus sessions";
                 return { intensity, dateStr, duration };
             });
         });
@@ -160,9 +269,6 @@ export default function AnalyticsPage() {
                                     <span className="text-[9px] tracking-[0.3em] uppercase text-white/30">{stat.label}</span>
                                     <div className="flex flex-col">
                                         <span className="text-2xl md:text-3xl font-light tracking-tight text-white/80">{stat.value}</span>
-                                        {stat.subtext && (
-                                            <span className="text-[10px] text-white/20 font-light mt-1 tracking-wide">{stat.subtext}</span>
-                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -171,7 +277,7 @@ export default function AnalyticsPage() {
                     {/* ================= MAIN ANALYTICS GRAPH ================= */}
                     <motion.section variants={itemVariants} className="flex flex-col gap-8">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                            <h3 className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Focus Trajectory</h3>
+                            <h3 className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Focus Rhythm</h3>
                             {/* Tab Filters */}
                             <div className="flex items-center gap-2">
                                 {chartTabs.map((tab) => (
@@ -212,12 +318,12 @@ export default function AnalyticsPage() {
                                             </defs>
                                             {/* Gradient Fill */}
                                             <path
-                                                d={`${activePath} L 1000,300 L 0,300 Z`}
+                                                d={activePath ? `${activePath} L 1000,300 L 0,300 Z` : ''}
                                                 fill="url(#waveGradient)"
                                                 className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                                             {/* Crisp Line */}
                                             <path
-                                                d={activePath}
+                                                d={activePath || ''}
                                                 fill="none"
                                                 stroke="rgba(255, 255, 255, 0.4)"
                                                 strokeWidth="2"
@@ -271,28 +377,22 @@ export default function AnalyticsPage() {
                         {/* Left: Behavioral Insights & Recent Sessions */}
                         <div className="lg:col-span-7 flex flex-col gap-16">
                             <motion.section variants={itemVariants} className="flex flex-col gap-6">
-                                <h3 className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Deep Work Insights</h3>
-                                <div className="grid grid-cols-2 gap-4">
-                                    {insights.map((insight, i) => (
-                                        <div key={i} className="p-6 rounded-2xl bg-[#0a0a0a] border border-neutral-900 flex items-start gap-4">
-                                            <div className="mt-1 text-white/20"><insight.icon size={16} /></div>
-                                            <div className="flex flex-col gap-1.5">
-                                                <span className="text-[9px] uppercase tracking-[0.2em] text-white/30">{insight.label}</span>
-                                                <span className="text-sm font-light text-white/80">{insight.value}</span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </motion.section>
-                            <motion.section variants={itemVariants} className="flex flex-col gap-6">
                                 <h3 className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Recent Sessions</h3>
                                 <div className="flex flex-col gap-2">
-                                    {recentSessions.map((session, i) => (
-                                        <div key={i} className="flex items-center justify-between p-4 rounded-xl hover:bg-neutral-950 transition-colors cursor-default border border-transparent">
-                                            <span className="text-sm font-light text-white/70">{session.task}</span>
-                                            <span className="text-xs font-mono text-white/40">{session.duration}</span>
-                                        </div>
-                                    ))}
+                                    {
+                                        recentSessions.length > 1 ? (
+                                            recentSessions.map((session) => (
+                                                <div key={session.id} className="flex items-center justify-between p-4 rounded-xl hover:bg-neutral-950 transition-colors cursor-default border border-transparent">
+                                                    <span className="text-sm font-light text-white/70">{session?.taskTitle ? session.taskTitle : "No Task Sesstion"}</span>
+                                                    <span className="text-xs font-mono text-white/40">{formatTime(session.duration)}</span>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className='pt-15 text-xs text-center text-neutral-500'>
+                                                Start a focus session to begin building your reflection history.
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </motion.section>
                         </div>

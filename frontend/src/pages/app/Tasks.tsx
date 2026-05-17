@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiPlus, FiCheckCircle, FiCircle, FiTrash2} from 'react-icons/fi';
+import { FiPlus, FiCheckCircle, FiCircle, FiTrash2 } from 'react-icons/fi';
 import TaskRow from '../../components/TaskRow';
 import type { Variants } from 'framer-motion';
 import useFocus from '../../hooks/useFocus';
 import type { FocusContextType, Task } from '../../types/Focus.ts';
-import totalStudiedTime from '../../utils/totalStudiedTIme.ts';
+import { todayStudiedTime } from '../../utils/analytics.ts';
 
 export default function TasksPage() {
   const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
-  const {tasks, setTasks, sessions}: FocusContextType = useFocus();
+  const { tasks, setTasks, sessions }: FocusContextType = useFocus();
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [newTitle, setNewTitle] = useState('');
 
@@ -17,7 +17,7 @@ export default function TasksPage() {
   const completedTasks = tasks.filter(t => t.completed);
 
   const handleToggleComplete = (id: string) => {
-    setTasks(prev => prev.map(t => 
+    setTasks(prev => prev.map(t =>
       t.id === id ? { ...t, completed: !t.completed } : t
     ));
   };
@@ -29,14 +29,14 @@ export default function TasksPage() {
   const handleAddTask = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newTitle.trim()) return;
-    
+
     const newTask: Task = {
       id: crypto.randomUUID(),
       title: newTitle,
       completed: false,
       createdAt: new Date().toISOString()
     };
-    
+
     setTasks([newTask, ...tasks]);
     setNewTitle('');
     setIsAddingTask(false);
@@ -56,7 +56,7 @@ export default function TasksPage() {
     <div className="h-screen w-full text-[#e5e5e5] font-sans selection:bg-white/20 relative overflow-hidden flex flex-col">
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar w-full px-8 pt-16 md:px-16 lg:px-24 mx-auto">
-        <motion.header 
+        <motion.header
           initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
           className="flex flex-col mb-16 md:mb-20">
           <div className="flex items-end justify-between gap-6 mb-10">
@@ -64,7 +64,7 @@ export default function TasksPage() {
               <h1 className="text-4xl md:text-5xl font-light tracking-wide text-white/90 mb-3">Tasks</h1>
               <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/40 font-medium">Clarity creates momentum.</p>
             </div>
-            <button 
+            <button
               onClick={() => setIsAddingTask(true)}
               className="group flex items-center gap-3 px-6 py-3 bg-transparent text-white/60 hover:text-white rounded-full transition-all text-[10px] uppercase tracking-[0.2em] font-medium">
               <FiPlus size={14} className="group-hover:rotate-90 transition-transform duration-500" /> New Task
@@ -73,7 +73,7 @@ export default function TasksPage() {
           <div className="flex items-center gap-12 text-white/50">
             <div className="flex flex-col gap-1.5 cursor-default">
               <span className="text-[9px] tracking-[0.3em] uppercase text-white/40">Focused Today</span>
-              <span className="text-xl font-light text-white/90">{totalStudiedTime(sessions)}</span>
+              <span className="text-xl font-light text-white/90">{todayStudiedTime(sessions)}</span>
             </div>
             <div className="w-px h-8 bg-neutral-900" />
             <div className="flex flex-col gap-1.5 cursor-default">
@@ -84,13 +84,13 @@ export default function TasksPage() {
         </motion.header>
         {/* ================= TABS ================= */}
         <div className="flex items-center gap-8 mb-8 border-b border-neutral-900 pb-4">
-          <button 
+          <button
             onClick={() => setActiveTab('active')}
             className={`relative text-[10px] tracking-[0.3em] uppercase font-medium transition-colors ${activeTab === 'active' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}>
             Active
             {activeTab === 'active' && <motion.div layoutId="taskTabIndicator" className="absolute -bottom-4.25 left-0 w-full h-px bg-white/60" />}
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('completed')}
             className={`relative text-[10px] tracking-[0.3em] uppercase font-medium transition-colors ${activeTab === 'completed' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}>
             Completed
@@ -99,20 +99,20 @@ export default function TasksPage() {
         </div>
         <AnimatePresence>
           {isAddingTask && activeTab === 'active' && (
-            <motion.form 
+            <motion.form
               initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
               onSubmit={handleAddTask}
               className="mb-12 overflow-hidden">
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 py-4 border-b border-neutral-800 focus-within:border-neutral-600 transition-colors group">
                 <div className="flex items-center gap-6 flex-1">
                   <FiCircle size={22} className="text-white/20 shrink-0" />
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     autoFocus
-                    placeholder="Set a new task..." 
+                    placeholder="Set a new task..."
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full bg-transparent text-xl font-light text-white/90 placeholder-white/30 focus:outline-none"/>
+                    className="w-full bg-transparent text-xl font-light text-white/90 placeholder-white/30 focus:outline-none" />
                 </div>
                 <div className="flex items-center gap-4 pl-12 sm:pl-0 shrink-0">
                   <button type="button" onClick={() => setIsAddingTask(false)} className="text-[10px] text-white/40 hover:text-white uppercase tracking-widest font-medium transition-colors">Cancel</button>
@@ -151,7 +151,7 @@ export default function TasksPage() {
                         <span className="text-lg font-light text-white line-through decoration-white/20">{task.title}</span>
                       </div>
                     </div>
-                    <button onClick={() => handleDelete(task.id)} className="text-white/10 hover:text-white/50 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={18}/></button>
+                    <button onClick={() => handleDelete(task.id)} className="text-white/10 hover:text-white/50 opacity-0 group-hover:opacity-100 transition-all"><FiTrash2 size={18} /></button>
                   </motion.div>
                 ))
               ) : (
