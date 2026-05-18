@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { api } from '../service/api.ts';
 
 type FormResObj = {
     name: string
@@ -9,15 +10,25 @@ type FormResObj = {
 
 export default function Contact() {
     const [formData, setFormData] = useState<FormResObj>({ name: '', email: '', message: '' });
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     }
 
-    function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log(formData);
+        setStatus('loading');
+        try {
+            const response = await api.post('/contact', formData);
+            setStatus('success');
+            console.log(response);
+            setFormData({ name: '', email: '', message: '' });
+        } catch (error) {
+            console.error("Submission failed:", error);
+            setStatus('error');
+        }
     }
 
     return (
@@ -63,10 +74,13 @@ export default function Contact() {
             <div className="px-20 pt-10 pb-20 flex flex-col border-b-neutral-800 border-b">
                 <span className="uppercase text-neutral-500 tracking-wider text-sm">Send a message</span>
                 <form onSubmit={handleSubmit}>
-                    <input onChange={handleChange} name="name" type="text" placeholder="Your name" className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" />
-                    <input onChange={handleChange} name="email" type="text" placeholder="Email address" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" />
-                    <textarea onChange={handleChange} name="message" placeholder="Your message" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" rows={4} cols={4} />
-                    <button type="submit" className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-100 text-black hover:bg-neutral-200 cursor-pointer transition-all duration-200 ease text-sm">Send message</button>
+                    <input value={formData.name} onChange={handleChange} name="name" type="text" placeholder="Your name" className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" required />
+                    <input value={formData.email} onChange={handleChange} name="email" type="text" placeholder="Email address" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" required />
+                    <textarea value={formData.message} onChange={handleChange} name="message" placeholder="Your message" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" required rows={4} cols={4} />
+                    <button type="submit" disabled={status === "loading"} className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-100 text-black hover:bg-neutral-200 cursor-pointer transition-all duration-200 ease text-sm">{status === 'loading' ? 'Sending...' : 'Send message'}</button>
+                    {/* Status Messages */}
+                    {status === 'success' && <p className="mt-4 text-green-400 text-sm">Message sent successfully! We will get back to you soon.</p>}
+                    {status === 'error' && <p className="mt-4 text-red-400 text-sm">Something went wrong. Please try again later.</p>}
                 </form>
             </div>
         </div>
