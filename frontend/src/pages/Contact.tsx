@@ -1,6 +1,25 @@
+import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
+type FormResObj = {
+    name: string
+    email: string
+    message: string
+}
+
 export default function Contact() {
+    const [formData, setFormData] = useState<FormResObj>({ name: '', email: '', message: '' });
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    }
+
+    function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+        e.preventDefault();
+        console.log(formData);
+    }
+
     return (
         <div className="relative z-2 flex flex-col w-full mb-20">
             <div className="relative my-20 dark:text-white pt-20 pb-20 flex flex-col px-20 w-5xl">
@@ -43,10 +62,10 @@ export default function Contact() {
             </div>
             <div className="px-20 pt-10 pb-20 flex flex-col border-b-neutral-800 border-b">
                 <span className="uppercase text-neutral-500 tracking-wider text-sm">Send a message</span>
-                <form action="#">
-                    <input type="text" placeholder="Your name" className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" />
-                    <input type="text" placeholder="Email address" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" />
-                    <textarea placeholder="Your message" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" rows={4} cols={4} />
+                <form onSubmit={handleSubmit}>
+                    <input onChange={handleChange} name="name" type="text" placeholder="Your name" className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" />
+                    <input onChange={handleChange} name="email" type="text" placeholder="Email address" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" />
+                    <textarea onChange={handleChange} name="message" placeholder="Your message" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" rows={4} cols={4} />
                     <button type="submit" className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-100 text-black hover:bg-neutral-200 cursor-pointer transition-all duration-200 ease text-sm">Send message</button>
                 </form>
             </div>

@@ -1,16 +1,14 @@
 import express from 'express';
+import { contactSchema } from '../validators/contact.validator.js';
+import { sendContactEmail } from '../services/email.service.js';
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     try {
-        const { name, email, message } = req.body;
+        const validatedData = contactSchema.parse(req.body);
 
-        console.log({
-            name,
-            email,
-            message,
-        });
+        await sendContactEmail(validatedData);
 
         return res.status(200).json({
             success: true,
@@ -19,9 +17,9 @@ router.post("/", (req, res) => {
     } catch (error) {
         console.error(error);
 
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
-            message: "Internal server error",
+            message: "Failed to send message",
         });
     }
 })
