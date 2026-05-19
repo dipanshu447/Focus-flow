@@ -7,6 +7,7 @@ import {
 import ConfirmationModal from '../../components/ConfirmationModal';
 import { totalStudiedHour, weeklyFocusTime } from '../../utils/analytics';
 import useFocus from '../../hooks/useFocus';
+import { useNavigate } from 'react-router';
 
 type Role = 'Student' | 'Professional' | 'Freelancer' | 'Competitive Exam Aspirant' | 'Other';
 
@@ -18,6 +19,7 @@ export default function ProfilePage() {
   const [avatarError, setAvatarError] = useState(false);
   const {tasks,sessions} = useFocus();
   const taskDone = tasks.filter(task => task.completed).length;
+  const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
@@ -48,8 +50,10 @@ export default function ProfilePage() {
   };
 
   const handleLogout = () => {
-    console.log("Logging out...");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setShowLogoutModal(false);
+    navigate("/signup");
   };
 
   const handleDeleteAccount = () => {

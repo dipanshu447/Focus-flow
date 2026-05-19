@@ -18,6 +18,9 @@ import Tasks from './pages/app/Tasks.tsx';
 import Analytics from './pages/app/Analytics.tsx';
 import Profile from './pages/app/Profile.tsx';
 import { FocusProvider } from './context/FocusContext.tsx';
+import ProtectedRoute from './routes/ProtectedRoute.tsx';
+import PublicRoute from './routes/PublicRoute.tsx';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme === "dark") {
@@ -50,7 +53,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'signup',
-        element: <SignUp />
+        element: (
+          <PublicRoute>
+            <SignUp />
+          </PublicRoute>
+        )
       },
       {
         path: "*",
@@ -61,9 +68,11 @@ const router = createBrowserRouter([
   {
     path: '/app',
     element: (
-      <FocusProvider>
-        <AppLayout />
-      </FocusProvider>
+      <ProtectedRoute>
+        <FocusProvider>
+          <AppLayout />
+        </FocusProvider>
+      </ProtectedRoute>
     ),
     errorElement: <Error />,
     children: [
@@ -93,8 +102,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <DarkModeProvider>
-      <RouterProvider router={router} />
-    </DarkModeProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <DarkModeProvider>
+        <RouterProvider router={router} />
+      </DarkModeProvider>
+    </GoogleOAuthProvider>
   </StrictMode>,
 )
