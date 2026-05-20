@@ -14,8 +14,8 @@ app.use(express.json());
 
 app.use("/api/contact", contactRoutes);
 app.use("/api/user", authMiddleware, userRoutes);
-app.use("/api/tasks", taskRoutes);
-app.use("/api/sessions", sessionRoutes);
+app.use("/api/tasks", authMiddleware, taskRoutes);
+app.use("/api/sessions", authMiddleware, sessionRoutes);
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {

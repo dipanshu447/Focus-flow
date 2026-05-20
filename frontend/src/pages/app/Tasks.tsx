@@ -4,42 +4,63 @@ import { FiPlus, FiCheckCircle, FiCircle, FiTrash2 } from 'react-icons/fi';
 import TaskRow from '../../components/TaskRow';
 import type { Variants } from 'framer-motion';
 import useFocus from '../../hooks/useFocus';
-import type { FocusContextType, Task } from '../../types/Focus.ts';
+import type { FocusContextType } from '../../types/Focus.ts';
 import { todayStudiedTime } from '../../utils/analytics.ts';
+import { createTask, deleteTask, toggleTask } from '../../api/tasks.ts';
 
 export default function TasksPage() {
   const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
   const { tasks, setTasks, sessions }: FocusContextType = useFocus();
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [newTitle, setNewTitle] = useState('');
+  console.log(tasks)
 
   const activeTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
 
-  const handleToggleComplete = (id: string) => {
+  const handleToggleComplete = async (id: string) => {
+    const task = tasks.find(t => t.id === id);
+
+    if (!task) return;
+
     setTasks(prev => prev.map(t =>
-      t.id === id ? { ...t, completed: !t.completed } : t
+      t.id === id ? { ...t, completed: !task.completed } : t
     ));
+
+    try {
+      await toggleTask(id, task.completed);
+    } catch (error) {
+      console.error(error);
+      setTasks(prev => prev.map(t =>
+        t.id === id ? { ...t, completed: task.completed } : t
+      ));
+    }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
+    const previousTasks = tasks;
     setTasks(prev => prev.filter(t => t.id !== id));
+    try {
+      await deleteTask(id);
+    } catch (error) {
+      console.error(error);
+      setTasks(previousTasks);
+    }
   };
 
-  const handleAddTask = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleAddTask = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!newTitle.trim()) return;
+    try {
+      if (!newTitle.trim()) return;
 
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title: newTitle,
-      completed: false,
-      createdAt: new Date().toISOString()
-    };
+      const data = await createTask(newTitle);
 
-    setTasks([newTask, ...tasks]);
-    setNewTitle('');
-    setIsAddingTask(false);
+      setTasks(prev => [data.task, ...prev]);
+      setNewTitle('');
+      setIsAddingTask(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const listVariants: Variants = {
