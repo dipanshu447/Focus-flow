@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import {
   FiCamera, FiClock, FiActivity,
@@ -8,16 +8,13 @@ import ConfirmationModal from '../../components/ConfirmationModal';
 import { totalStudiedHour, weeklyFocusTime } from '../../utils/analytics';
 import useFocus from '../../hooks/useFocus';
 import { useNavigate } from 'react-router';
+import { deleteAccount, getUser, updateProfile } from '../../api/user';
+import type { userDataObj, Role } from '../../types/userTypes';
 
-type Role = 'Student' | 'Professional' | 'Freelancer' | 'Competitive Exam Aspirant' | 'Other';
 
 export default function ProfilePage() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [name, setName] = useState('Dipanshu Sahu');
-  const [role, setRole] = useState<Role>('Student');
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [avatarError, setAvatarError] = useState(false);
-  const {tasks,sessions} = useFocus();
+  const [userData, setUserData] = useState<userDataObj | null>(null);
+  const { tasks, sessions } = useFocus();
   const taskDone = tasks.filter(task => task.completed).length;
   const navigate = useNavigate();
 
@@ -42,11 +39,32 @@ export default function ProfilePage() {
     'Other'
   ];
 
-  const handleSaveProfile = () => {
-    // API request would go here
-    console.log("Saving profile data...", { name, role, avatarUrl, theme });
-    setIsEditing(false);
-    setIsRoleDropdownOpen(false);
+  function formatDate(ISOdate: string) {
+    const date = new Date(ISOdate);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      month: 'short',
+      year: 'numeric'
+    });
+    return formattedDate;
+  }
+
+  useEffect(() => {
+    async function fetchUser() {
+      const data = await getUser();
+      setUserData(data.user);
+      console.log(data.user);
+    }
+    fetchUser()
+  }, []);
+
+  const handleSaveProfile = async () => {
+    try {
+      await updateProfile(userData);
+      setIsEditing(false);
+      setIsRoleDropdownOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleLogout = () => {
@@ -56,9 +74,21 @@ export default function ProfilePage() {
     navigate("/signup");
   };
 
-  const handleDeleteAccount = () => {
-    console.log("Deleting account...");
-    setShowDeleteModal(false);
+  const handleDeleteAccount = async () => {
+    try {
+      const data = await deleteAccount();
+      
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      console.log(data);
+
+      setShowDeleteModal(false);
+
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const pageVariants: Variants = {
@@ -78,7 +108,7 @@ export default function ProfilePage() {
   );
 
   return (
-    <div className={`${theme === 'dark' ? 'dark' : ''} h-screen w-full overflow-hidden`}>
+    <div className={`h-screen w-full overflow-hidden`}>
       {/* --- Logout Modal --- */}
       <AnimatePresence>
         {showLogoutModal && (
@@ -105,15 +135,14 @@ export default function ProfilePage() {
               {/* Avatar Area - Perfectly round for an organic identity feel */}
               <div className="flex flex-col gap-5 shrink-0">
                 <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-linear-to-br from-black/6 to-transparent dark:from-white/6 dark:to-transparent border border-black/5 dark:border-neutral-900 flex items-center justify-center overflow-hidden relative group">
-                  {avatarUrl && !avatarError ? (
+                  {userData?.avatarUrl ? (
                     <img
-                      src={avatarUrl}
+                      src={userData.avatarUrl}
                       alt="Profile"
-                      onError={() => setAvatarError(true)}
-                      className="w-full h-full object-cover" />
+                      className="w-full h-full object-cover grayscale" />
                   ) : (
                     <span className="text-5xl md:text-6xl font-light text-black/20 dark:text-white/20 uppercase">
-                      {name ? name.charAt(0) : '?'}
+                      {userData?.name ? userData.name.charAt(0) : '?'}
                     </span>
                   )}
                   {/* Avatar Overlay (Only active/visible in Edit mode) */}
@@ -128,28 +157,13 @@ export default function ProfilePage() {
                     )}
                   </AnimatePresence>
                 </div>
-                {/* Avatar URL Input (Only visible in Edit mode) */}
-                <AnimatePresence>
-                  {isEditing && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-                      className="relative overflow-hidden">
-                      <input
-                        type="text"
-                        placeholder="Paste image URL..."
-                        value={avatarUrl}
-                        onChange={(e) => { setAvatarUrl(e.target.value); setAvatarError(false); }}
-                        className="w-full bg-transparent border-b border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 py-2 text-[9px] uppercase tracking-widest font-light text-black/60 dark:text-white/60 placeholder-black/20 dark:placeholder-white/20 focus:outline-none focus:border-black/50 dark:focus:border-white/50 transition-colors text-center"/>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
               {/* Info & Inputs Area */}
               <div className="flex flex-col gap-8 w-full max-w-md pt-2">
                 {/* Header & Edit Toggle */}
                 <div className="flex items-center justify-between w-full">
-                  <span className="text-[10px] tracking-[0.2em] uppercase font-light text-black/30 dark:text-white/20">
-                    Member since Oct 2025
+                  <span className="text-[10px] tracking-[0.2em] uppercase font-light text-black/30 dark:text-neutral-500">
+                    {userData?.createdAt && `Member since ${formatDate(userData.createdAt)}`}
                   </span>
                   <button
                     onClick={isEditing ? handleSaveProfile : () => setIsEditing(true)}
@@ -166,29 +180,29 @@ export default function ProfilePage() {
                   {isEditing ? (
                     <input
                       type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      value={userData?.name}
+                      onChange={(e) => setUserData(prev => (!prev ? null : { ...prev, name: e.target.value }))}
                       placeholder="Enter your name"
-                      className="w-full bg-transparent border-b border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 py-2 text-2xl font-light text-black/90 dark:text-white/90 placeholder-black/20 dark:placeholder-white/20 focus:outline-none focus:border-black/50 dark:focus:border-white/50 transition-colors"/>
+                      className="w-full bg-transparent border-b border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 py-2 text-2xl font-light text-black/90 dark:text-white/90 placeholder-black/20 dark:placeholder-white/20 focus:outline-none focus:border-black/50 dark:focus:border-white/50 transition-colors" />
                   ) : (
                     <h2 className="py-2 text-2xl font-light text-black/90 dark:text-white/90 border-b border-transparent">
-                      {name || 'Unknown'}
+                      {userData?.name || 'Unknown'}
                     </h2>
                   )}
                 </div>
                 {/* Role */}
-                <div className="flex flex-col gap-2 relative">
+                {(userData?.role || isEditing) && <div className="flex flex-col gap-2 relative">
                   <label className="text-[9px] uppercase tracking-[0.3em] font-medium text-black/40 dark:text-white/30 ml-1">Primary Role</label>
                   {isEditing ? (
                     <button
                       onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
                       className="w-full flex items-center justify-between bg-transparent border-b border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 py-2 text-lg font-light text-black/80 dark:text-white/80 transition-colors focus:outline-none text-left">
-                      {role}
+                      {userData?.role}
                       <FiChevronDown size={16} className={`transition-transform duration-300 opacity-50 ${isRoleDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
                   ) : (
                     <p className="py-2 text-lg font-light text-black/60 dark:text-white/60 border-b border-transparent">
-                      {role}
+                      {userData?.role}
                     </p>
                   )}
                   <AnimatePresence>
@@ -199,15 +213,15 @@ export default function ProfilePage() {
                         {roles.map(r => (
                           <button
                             key={r}
-                            onClick={() => { setRole(r); setIsRoleDropdownOpen(false); }}
-                            className={`px-5 py-3 text-sm font-light text-left transition-colors ${role === r ? 'bg-black/3 dark:bg-white/3 text-black dark:text-white' : 'text-black/60 dark:text-white/60 hover:bg-black/2 dark:hover:bg-white/2'}`}>
+                            onClick={() => { setUserData(prev => (!prev ? null : { ...prev, role: r })); setIsRoleDropdownOpen(false); }}
+                            className={`px-5 py-3 text-sm font-light text-left transition-colors ${userData?.role === r ? 'bg-black/3 dark:bg-white/3 text-black dark:text-white' : 'text-black/60 dark:text-white/60 hover:bg-black/2 dark:hover:bg-white/2'}`}>
                             {r}
                           </button>
                         ))}
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </div>}
               </div>
             </motion.section>
             {/* ================= FOCUS SUMMARY ================= */}
@@ -232,28 +246,28 @@ export default function ProfilePage() {
                 <h3 className="text-[9px] tracking-[0.3em] uppercase text-black/40 dark:text-white/30 font-medium ml-1">Appearance</h3>
                 <div className={`flex items-center p-1 rounded-full w-fit border transition-colors duration-300 ${isEditing ? 'bg-black/3 dark:bg-white/3 border-black/5 dark:border-white/2' : 'bg-transparent border-transparent'}`}>
                   <button
-                    onClick={() => isEditing && setTheme('light')}
+                    onClick={() => isEditing && setUserData(prev => (!prev ? prev : { ...prev, theme: 'light' }))}
                     disabled={!isEditing}
                     className={`flex items-center gap-2 px-5 py-2 rounded-full text-[9px] uppercase tracking-widest font-medium transition-all
-                      ${theme === 'light'
+                      ${userData?.theme === 'light'
                         ? 'bg-white text-black shadow-sm dark:bg-[#1a1a1a] dark:text-white'
                         : 'text-black/40 dark:text-white/40'
                       }
-                      ${!isEditing && theme !== 'light' ? 'opacity-30 cursor-default' : ''}
-                      ${isEditing && theme !== 'light' ? 'hover:text-black/70 dark:hover:text-white/70 cursor-pointer' : ''}
+                      ${!isEditing && userData?.theme !== 'light' ? 'opacity-30 cursor-default' : ''}
+                      ${isEditing && userData?.theme !== 'light' ? 'hover:text-black/70 dark:hover:text-white/70 cursor-pointer' : ''}
                     `}>
                     <FiSun size={12} /> Light
                   </button>
                   <button
-                    onClick={() => isEditing && setTheme('dark')}
+                    onClick={() => isEditing && setUserData(prev => (!prev ? prev : { ...prev, theme: 'dark' }))}
                     disabled={!isEditing}
                     className={`flex items-center gap-2 px-5 py-2 rounded-full text-[9px] uppercase tracking-widest font-medium transition-all
-                      ${theme === 'dark'
+                      ${userData?.theme === 'dark'
                         ? 'bg-[#1a1a1a] text-white shadow-sm dark:bg-white dark:text-black'
                         : 'text-black/40 dark:text-white/40'
                       }
-                      ${!isEditing && theme !== 'dark' ? 'opacity-30 cursor-default' : ''}
-                      ${isEditing && theme !== 'dark' ? 'hover:text-black/70 dark:hover:text-white/70 cursor-pointer' : ''}
+                      ${!isEditing && userData?.theme !== 'dark' ? 'opacity-30 cursor-default' : ''}
+                      ${isEditing && userData?.theme !== 'dark' ? 'hover:text-black/70 dark:hover:text-white/70 cursor-pointer' : ''}
                     `}>
                     <FiMoon size={12} /> Dark
                   </button>

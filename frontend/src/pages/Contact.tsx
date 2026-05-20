@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { api } from '../service/api.ts';
+import api from '../service/api.ts';
 
 type FormResObj = {
     name: string

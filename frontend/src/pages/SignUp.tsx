@@ -89,6 +89,7 @@ export default function SignUp() {
                         <input
                             type="text"
                             placeholder="Your name"
+                            autoComplete="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className={inputClass}
@@ -98,6 +99,7 @@ export default function SignUp() {
                     <input
                         type="email"
                         placeholder="Email address"
+                        autoComplete="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className={inputClass}
@@ -107,6 +109,7 @@ export default function SignUp() {
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
+                            autoComplete="new-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className={`${inputClass} pr-12`}

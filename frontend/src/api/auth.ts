@@ -1,4 +1,4 @@
-import { api } from '../service/api.ts';
+import api from '../service/api.ts';
 import type { AuthUserobj } from '../types/AuthUserobj.ts';
 import type { CredentialResponse } from '@react-oauth/google';
 
