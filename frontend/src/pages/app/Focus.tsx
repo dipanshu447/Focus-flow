@@ -31,7 +31,7 @@ export default function FocusPage() {
   const blocker = useBlocker(({ currentLocation, nextLocation }) => timerState === "running" && currentLocation.pathname !== nextLocation.pathname);
 
   const handleToggleTimer = () => {
-    if(timerState !== 'running' && !startedAt){
+    if (timerState !== 'running' && !startedAt) {
       setStartedAt(new Date());
     }
 
@@ -43,7 +43,7 @@ export default function FocusPage() {
 
   const addSession = async () => {
     try {
-      if(!startedAt) return;
+      if (!startedAt) return;
 
       const data = await createSessions({
         duration: sessionDuration * 60,
@@ -200,6 +200,8 @@ export default function FocusPage() {
     { mins: 20, label: 'Long Break' }
   ];
 
+  console.log(pendingTasks.length ? "task list" : "back")
+
   return (
     <div className="h-screen w-full text-[#e5e5e5] font-sans selection:bg-white/20 relative overflow-hidden flex flex-col transition-all duration-200 ease">
       <AnimatePresence>
@@ -298,18 +300,25 @@ export default function FocusPage() {
                     className="flex flex-col gap-8 pb-6">
                     {/* Pending Tasks */}
                     <div className="flex flex-col gap-1 shrink-0">
-                      {pendingTasks.map(task => (
-                        <div
-                          key={task.id}
-                          className="flex items-center gap-4 py-2.5 cursor-pointer">
-                          <button onClick={() => handleToggleComplete(task.id)} className={`transition-colors cursor-pointer ${activeTaskId === task.id ? 'text-white/60' : 'text-white/10 hover:text-white/30'}`}>
-                            <FiCircle size={14} />
-                          </button>
-                          <span onClick={() => setActiveTaskId(task.id)} className={`text-sm transition-all ${activeTaskId === task.id ? 'text-white/80 font-medium' : 'text-white/40 font-light hover:text-white/60'}`}>
-                            {task.title}
-                          </span>
+                      {pendingTasks.length ? (
+                        pendingTasks.map(task => (
+                          <div
+                            key={task.id}
+                            className="flex items-center gap-4 py-2.5 cursor-pointer">
+                            <button onClick={() => handleToggleComplete(task.id)} className={`transition-colors cursor-pointer ${activeTaskId === task.id ? 'text-white/60' : 'text-white/10 hover:text-white/30'}`}>
+                              <FiCircle size={14} />
+                            </button>
+                            <span onClick={() => setActiveTaskId(task.id)} className={`text-sm transition-all ${activeTaskId === task.id ? 'text-white/80 font-medium' : 'text-white/40 font-light hover:text-white/60'}`}>
+                              {task.title}
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <div className='text-neutral-600 text-xs mt-30 flex flex-col items-center justify-center gap-1'>
+                          <span>All clear for now.</span>
+                          <span>Start a focus session or add your next task.</span>
                         </div>
-                      ))}
+                      )}
                     </div>
                   </motion.div>
                 )}
