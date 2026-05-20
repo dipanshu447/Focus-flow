@@ -140,10 +140,6 @@ export default function AnalyticsPage() {
             };
         });
     };
-    console.log(weeklyChartData())
-    console.log(monthlyChartData())
-    console.log(yearlyChartData())
-    console.log(allTimeChartData())
 
     const chartData: Record<Timeframe, ChartPoint[]> = {
         week: weeklyChartData(),

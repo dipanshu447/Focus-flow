@@ -52,7 +52,6 @@ export default function ProfilePage() {
     async function fetchUser() {
       const data = await getUser();
       setUserData(data.user);
-      console.log(data.user);
     }
     fetchUser()
   }, []);

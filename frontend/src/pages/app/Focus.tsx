@@ -7,6 +7,7 @@ import { useBlocker, useSearchParams } from 'react-router';
 import ConfirmationModal from '../../components/ConfirmationModal.tsx';
 import { IoIosClose } from "react-icons/io";
 import { todayStudiedTime } from '../../utils/analytics.ts';
+import { createSessions } from '../../api/sessions.ts';
 
 export default function FocusPage() {
   const [searchParams] = useSearchParams();
@@ -18,6 +19,7 @@ export default function FocusPage() {
   const [sessionCount, setSessionCount] = useState(1); // Default 1 sessions
   const [currentSession, setCurrentSession] = useState(1);
   const [timeLeft, setTimeLeft] = useState(sessionDuration * 60);
+  const [startedAt, setStartedAt] = useState<Date | null>(null);
 
   const [activeTab, setActiveTab] = useState<'tasks' | 'flow'>('tasks');
   const [showResetWarning, setShowResetWarning] = useState(false);
@@ -28,19 +30,34 @@ export default function FocusPage() {
 
   const blocker = useBlocker(({ currentLocation, nextLocation }) => timerState === "running" && currentLocation.pathname !== nextLocation.pathname);
 
+  const handleToggleTimer = () => {
+    if(timerState !== 'running' && !startedAt){
+      setStartedAt(new Date());
+    }
+
+    setTimerState(prev => prev === 'running' ? 'paused' : 'running');
+  };
+
   const activeTask = tasks.find(t => t.id === activeTaskId);
   const pendingTasks = tasks.filter(t => !t.completed);
 
-  const addSession = () => {
-    const newSession = {
-      id: crypto.randomUUID(),
-      taskId: activeTask?.id,
-      taskTitle: activeTask?.title,
-      duration: sessionDuration * 60,
-      completedAt: new Date().toISOString(),
-    };
+  const addSession = async () => {
+    try {
+      if(!startedAt) return;
 
-    setSessions(prev => [...prev, newSession]);
+      const data = await createSessions({
+        duration: sessionDuration * 60,
+        startedAt: startedAt.toISOString(),
+        completedAt: new Date().toISOString(),
+        taskId: activeTask?.id,
+      })
+
+      setSessions(prev => [...prev, data.session]);
+      setStartedAt(null);
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // --- Cycle Logic ---
@@ -113,10 +130,6 @@ export default function FocusPage() {
 
   const handleClearTask = () => {
     setActiveTaskId(null);
-  };
-
-  const handleToggleTimer = () => {
-    setTimerState(prev => prev === 'running' ? 'paused' : 'running');
   };
 
   const handleResetTimer = () => {

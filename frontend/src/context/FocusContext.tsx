@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import type { FocusContextType, Session, Task } from "../types/Focus.ts";
 import { getTasks } from "../api/tasks.ts";
+import { getSessions } from "../api/sessions.ts";
 
 export const FocusContext = createContext<FocusContextType | undefined>(undefined);
 
@@ -10,11 +11,7 @@ type props = {
 
 export function FocusProvider({ children }: props) {
     const [tasks, setTasks] = useState<Task[]>([]);
-
-    const [sessions, setSessions] = useState<Session[]>(() => {
-        const stored = localStorage.getItem("sessions")
-        return stored ? JSON.parse(stored) : []
-    });
+    const [sessions, setSessions] = useState<Session[]>([]);
 
     async function fetchTasks() {
         try {
@@ -25,13 +22,20 @@ export function FocusProvider({ children }: props) {
         }
     }
 
-    useEffect(() => {
-        fetchTasks();
-    }, [])
+    async function fetchSessions() {
+        try {
+            const sessionData = await getSessions();
+            console.log(sessionData)
+            setSessions(sessionData)
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     useEffect(() => {
-        localStorage.setItem("sessions", JSON.stringify(sessions))
-    }, [sessions])
+        fetchTasks();
+        fetchSessions();
+    }, []);
 
     return (
         <FocusContext.Provider value={{ tasks, setTasks, sessions, setSessions }}>{children}</FocusContext.Provider>
