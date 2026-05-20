@@ -25,7 +25,6 @@ export function FocusProvider({ children }: props) {
     async function fetchSessions() {
         try {
             const sessionData = await getSessions();
-            console.log(sessionData)
             setSessions(sessionData)
         } catch (error) {
             console.error(error);

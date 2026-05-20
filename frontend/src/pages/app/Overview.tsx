@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { FiPlay } from 'react-icons/fi';
+import { Link } from 'react-router';
 
 type PerformanceState = 'low' | 'building' | 'high' | 'late_night';
 
 export default function Overview() {
     const [performance] = useState<PerformanceState>('building');
     const [greeting, setGreeting] = useState("GOOD AFTERNOON");
+    const userData = localStorage.getItem("user");
+    const user = userData ? JSON.parse(userData) : null;
 
     useEffect(() => {
         const hour = new Date().getHours();
@@ -87,7 +90,7 @@ export default function Overview() {
                     animate="visible"
                     className="flex flex-col items-start">
                     <motion.p variants={itemVariants} className="text-xs md:text-sm tracking-[0.3em] font-medium text-white/30 uppercase mb-8 md:mb-12">
-                        {greeting}, Dipanshu.
+                        {greeting}, {user?.name ? user.name : "User"}.
                     </motion.p>
                     <motion.div variants={itemVariants} className="flex flex-col gap-2">
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white/90 leading-[1.1]">
@@ -98,15 +101,15 @@ export default function Overview() {
                         </h2>
                     </motion.div>
                     <motion.div variants={itemVariants} className="mt-16 md:mt-24">
-                        <button className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-full font-bold tracking-[0.15em] text-sm uppercase overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                        <Link to="focus" className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-full font-bold tracking-[0.15em] text-sm uppercase overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98]">
                             <div className="absolute inset-0 w-full h-full bg-white/50 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             <FiPlay size={18} className="fill-current relative z-10" />
                             <span className="relative z-10">Begin Focus</span>
-                        </button>
+                        </Link>
                     </motion.div>
                 </motion.div>
             </div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 2 }} className="absolute bottom-10 left-0 w-full px-8 md:px-16">
+            {/* <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 2 }} className="absolute bottom-10 left-0 w-full px-8 md:px-16">
                 <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 text-[10px] md:text-xs tracking-[0.2em] text-white/20 uppercase font-medium">
                     <p className="hover:text-white/40 transition-colors cursor-default">
                         Most focused hours this week: 10PM – 1AM
@@ -116,7 +119,7 @@ export default function Overview() {
                         Average distraction rate decreased by 12%
                     </p>
                 </div>
-            </motion.div>
+            </motion.div> */}
         </div>
     );
 }
