@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import prisma from "../config/db.js";
 import jwt from 'jsonwebtoken';
 import gclient from '../config/oauth.js';
+import crypto from 'crypto';
+import { resend } from "../config/resend.js";
 
 const router = express.Router();
 
@@ -141,6 +143,310 @@ router.post("/google", async (req, res) => {
 
     res.status(500).json({
       message: "Google authentication failed",
+    });
+  }
+});
+
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email
+      },
+    });
+
+    if (!user) {
+      return res.status(200).json({
+        message:
+          "If an account exists, a reset link has been sent.",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const expiry = new Date(Date.now() + 15 * 60 * 1000);
+
+    await prisma.user.update({
+      where: { email },
+      data: {
+        resetPasswordToken: hashedToken,
+        resetPasswordExpiry: expiry,
+      }
+    });
+
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      // from: process.env.RESEND_FROM_EMAIL,
+      to: email,
+      subject: "Reset Your FocusFlow Password",
+      html: `
+<div style="
+  background:#000000;
+  padding:40px 20px;
+  font-family:Inter,Arial,sans-serif;
+  color:#ffffff;
+">
+
+  <div style="
+    max-width:600px;
+    margin:0 auto;
+    background:#0a0a0a;
+    border:1px solid #1a1a1a;
+    border-radius:24px;
+    overflow:hidden;
+  ">
+
+    <!-- Header -->
+    <div style="
+      padding:48px 32px 36px;
+      text-align:center;
+      border-bottom:1px solid #1a1a1a;
+    ">
+
+      <img
+        src="YOUR_LOGO_URL"
+        width="64"
+        alt="FocusFlow"
+        style="margin-bottom:20px;"
+      />
+
+      <h1 style="
+        margin:0;
+        font-size:42px;
+        font-weight:700;
+        letter-spacing:-1px;
+        color:#ffffff;
+      ">
+        FocusFlow
+      </h1>
+
+      <p style="
+        margin-top:8px;
+        color:#8a8a8a;
+        font-size:18px;
+      ">
+        Focus better. Build consistency.
+      </p>
+
+    </div>
+
+    <!-- Content -->
+    <div style="padding:48px 32px;">
+
+      <h2 style="
+        margin:0 0 28px;
+        font-size:30px;
+        color:#ffffff;
+        letter-spacing:-1px;
+      ">
+        Reset Your Password
+      </h2>
+
+      <p style="
+        color:#b3b3b3;
+        font-size:18px;
+        line-height:1.9;
+        margin-bottom:24px;
+      ">
+        Hello ${user.name},
+      </p>
+
+      <p style="
+        color:#b3b3b3;
+        font-size:18px;
+        line-height:1.9;
+        margin-bottom:36px;
+      ">
+        We received a request to reset your FocusFlow password.
+        Click the button below to continue.
+      </p>
+
+      <!-- Button -->
+      <div style="text-align:center; margin:42px 0;">
+
+        <a
+          href="${resetUrl}"
+          style="
+            display:inline-block;
+            background:#ffffff;
+            color:#000000;
+            padding:18px 34px;
+            border-radius:14px;
+            text-decoration:none;
+            font-weight:700;
+            font-size:16px;
+          "
+        >
+          Reset Password
+        </a>
+
+      </div>
+
+      <div style="
+        margin-top:42px;
+        color:#7a7a7a;
+        font-size:15px;
+        line-height:1.8;
+      ">
+        <p>
+          This reset link expires in 15 minutes.
+        </p>
+
+        <p>
+          If you didn’t request this, you can safely ignore this email.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div style="
+      border-top:1px solid #1a1a1a;
+      padding:32px;
+      text-align:center;
+    ">
+
+      <p style="
+        color:#ffffff;
+        font-size:20px;
+        margin-bottom:8px;
+        font-weight:600;
+      ">
+        Stay focused. Keep building.
+      </p>
+
+      <p style="
+        color:#7a7a7a;
+        margin-bottom:28px;
+        font-size:15px;
+      ">
+        — The FocusFlow Team
+      </p>
+
+      <div style="
+        width:180px;
+        height:1px;
+        background:#1f1f1f;
+        margin:0 auto 28px;
+      "></div>
+
+      <p style="
+        color:#6a6a6a;
+        font-size:14px;
+        margin-bottom:18px;
+      ">
+        Built with focus by Dipanshu Sahu
+      </p>
+
+      <div>
+
+        <a
+          href="https://www.itsdipanshu.dev"
+          style="
+            color:#9a9a9a;
+            text-decoration:none;
+            margin:0 10px;
+            font-size:14px;
+          "
+        >
+          Portfolio
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/dipanshu447"
+          style="
+            color:#9a9a9a;
+            text-decoration:none;
+            margin:0 10px;
+            font-size:14px;
+          "
+        >
+          LinkedIn
+        </a>
+
+        <a
+          href="https://github.com/dipanshu447"
+          style="
+            color:#9a9a9a;
+            text-decoration:none;
+            margin:0 10px;
+            font-size:14px;
+          "
+        >
+          GitHub
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+`
+    });
+
+    return res.status(200).json({
+      message:
+        "If an account exists, a reset link has been sent.",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await prisma.user.findFirst({
+      where: {
+        resetPasswordToken: hashedToken,
+        resetPasswordExpiry: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid or expired token",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpiry: null,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Password reset successful",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Something went wrong",
     });
   }
 });

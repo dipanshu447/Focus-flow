@@ -21,6 +21,8 @@ import { FocusProvider } from './context/FocusContext.tsx';
 import ProtectedRoute from './routes/ProtectedRoute.tsx';
 import PublicRoute from './routes/PublicRoute.tsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import ForgotPassword from './pages/ForgotPassword.tsx';
+import ResetPassword from './pages/ResetPassword.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme === "dark") {
@@ -58,6 +60,22 @@ const router = createBrowserRouter([
             <SignUp />
           </PublicRoute>
         )
+      },
+      {
+        path: 'forgot-password',
+        element: (
+          <PublicRoute>
+            <ForgotPassword />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: 'reset-password',
+        element: (
+          <PublicRoute>
+            <ResetPassword />
+          </PublicRoute>
+        ),
       },
       {
         path: "*",

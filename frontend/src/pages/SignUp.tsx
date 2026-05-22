@@ -126,9 +126,9 @@ export default function SignUp() {
 
                     {mode === "login" && (
                         <div className="flex justify-end">
-                            <button type="button" className="text-xs text-neutral-500 hover:text-black dark:hover:text-white transition-colors">
+                            <Link to="/forgot-password" type="button" className="text-xs text-neutral-500 hover:text-black dark:hover:text-white transition-colors">
                                 Forgot password?
-                            </button>
+                            </Link>
                         </div>
                     )}
 
