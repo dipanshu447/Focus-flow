@@ -10,6 +10,7 @@ import useFocus from '../../hooks/useFocus';
 import { useNavigate } from 'react-router';
 import { deleteAccount, getUser, updateProfile } from '../../api/user';
 import type { userDataObj, Role } from '../../types/userTypes';
+import useDarkMode from '../../hooks/useDarkMode';
 
 
 export default function ProfilePage() {
@@ -17,6 +18,7 @@ export default function ProfilePage() {
   const { tasks, sessions } = useFocus();
   const taskDone = tasks.filter(task => task.completed).length;
   const navigate = useNavigate();
+  const { setTheme } = useDarkMode();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
@@ -59,6 +61,7 @@ export default function ProfilePage() {
   const handleSaveProfile = async () => {
     try {
       await updateProfile(userData);
+      if (userData?.theme) setTheme(userData.theme);
       setIsEditing(false);
       setIsRoleDropdownOpen(false);
     } catch (error) {
@@ -76,7 +79,7 @@ export default function ProfilePage() {
   const handleDeleteAccount = async () => {
     try {
       const data = await deleteAccount();
-      
+
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
@@ -131,7 +134,6 @@ export default function ProfilePage() {
           <motion.div variants={pageVariants} initial="hidden" animate="visible" className="flex flex-col gap-16">
             {/* ================= PROFILE INFO (VIEW & EDIT MODE) ================= */}
             <motion.section variants={itemVariants} className="flex flex-col md:flex-row gap-10 md:gap-14 items-start">
-              {/* Avatar Area - Perfectly round for an organic identity feel */}
               <div className="flex flex-col gap-5 shrink-0">
                 <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-linear-to-br from-black/6 to-transparent dark:from-white/6 dark:to-transparent border border-black/5 dark:border-neutral-900 flex items-center justify-center overflow-hidden relative group">
                   {userData?.avatarUrl ? (
@@ -144,7 +146,6 @@ export default function ProfilePage() {
                       {userData?.name ? userData.name.charAt(0) : '?'}
                     </span>
                   )}
-                  {/* Avatar Overlay (Only active/visible in Edit mode) */}
                   <AnimatePresence>
                     {isEditing && (
                       <motion.div
@@ -157,23 +158,20 @@ export default function ProfilePage() {
                   </AnimatePresence>
                 </div>
               </div>
-              {/* Info & Inputs Area */}
               <div className="flex flex-col gap-8 w-full max-w-md pt-2">
-                {/* Header & Edit Toggle */}
                 <div className="flex items-center justify-between w-full">
                   <span className="text-[10px] tracking-[0.2em] uppercase font-light text-black/30 dark:text-neutral-500">
                     {userData?.createdAt && `Member since ${formatDate(userData.createdAt)}`}
                   </span>
                   <button
                     onClick={isEditing ? handleSaveProfile : () => setIsEditing(true)}
-                    className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] uppercase tracking-widest font-medium transition-all border ${isEditing
+                    className={`cursor-pointer flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] uppercase tracking-widest font-medium transition-all border ${isEditing
                       ? 'bg-black text-white dark:bg-white dark:text-black border-transparent shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
                       : 'bg-transparent text-black/40 dark:text-white/40 border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 hover:text-black/80 dark:hover:text-white/80'
                       }`}>
                     {isEditing ? <><FiCheck size={12} /> Save</> : <><FiEdit2 size={10} /> Edit</>}
                   </button>
                 </div>
-                {/* Name */}
                 <div className="flex flex-col gap-2">
                   <label className="text-[9px] uppercase tracking-[0.3em] font-medium text-black/40 dark:text-white/30 ml-1">Full Name</label>
                   {isEditing ? (
@@ -189,7 +187,6 @@ export default function ProfilePage() {
                     </h2>
                   )}
                 </div>
-                {/* Role */}
                 {(userData?.role || isEditing) && <div className="flex flex-col gap-2 relative">
                   <label className="text-[9px] uppercase tracking-[0.3em] font-medium text-black/40 dark:text-white/30 ml-1">Primary Role</label>
                   {isEditing ? (
@@ -240,12 +237,11 @@ export default function ProfilePage() {
             </motion.section>
             {/* ================= APPEARANCE & MOTIVATION ================= */}
             <motion.section variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-8 pt-10 border-t border-black/4 dark:border-white/3">
-              {/* Conditional Appearance Toggle (Locked when viewing, Active when editing) */}
               <div className="flex flex-col gap-4 shrink-0">
                 <h3 className="text-[9px] tracking-[0.3em] uppercase text-black/40 dark:text-white/30 font-medium ml-1">Appearance</h3>
                 <div className={`flex items-center p-1 rounded-full w-fit border transition-colors duration-300 ${isEditing ? 'bg-black/3 dark:bg-white/3 border-black/5 dark:border-white/2' : 'bg-transparent border-transparent'}`}>
                   <button
-                    onClick={() => isEditing && setUserData(prev => (!prev ? prev : { ...prev, theme: 'light' }))}
+                    onClick={() => { isEditing && setUserData(prev => (!prev ? prev : { ...prev, theme: 'light' })); localStorage.setItem("theme", "light"); }}
                     disabled={!isEditing}
                     className={`flex items-center gap-2 px-5 py-2 rounded-full text-[9px] uppercase tracking-widest font-medium transition-all
                       ${userData?.theme === 'light'
@@ -258,16 +254,14 @@ export default function ProfilePage() {
                     <FiSun size={12} /> Light
                   </button>
                   <button
-                    onClick={() => isEditing && setUserData(prev => (!prev ? prev : { ...prev, theme: 'dark' }))}
+                    onClick={() => { isEditing && setUserData(prev => (!prev ? prev : { ...prev, theme: 'dark' })); localStorage.setItem("theme", "dark"); }}
                     disabled={!isEditing}
                     className={`flex items-center gap-2 px-5 py-2 rounded-full text-[9px] uppercase tracking-widest font-medium transition-all
                       ${userData?.theme === 'dark'
                         ? 'bg-[#1a1a1a] text-white shadow-sm dark:bg-white dark:text-black'
-                        : 'text-black/40 dark:text-white/40'
-                      }
+                        : 'text-black/40 dark:text-white/40'}
                       ${!isEditing && userData?.theme !== 'dark' ? 'opacity-30 cursor-default' : ''}
-                      ${isEditing && userData?.theme !== 'dark' ? 'hover:text-black/70 dark:hover:text-white/70 cursor-pointer' : ''}
-                    `}>
+                      ${isEditing && userData?.theme !== 'dark' ? 'hover:text-black/70 dark:hover:text-white/70 cursor-pointer' : ''}`}>
                     <FiMoon size={12} /> Dark
                   </button>
                 </div>

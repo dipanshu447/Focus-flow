@@ -9,6 +9,7 @@ export type ResAuthUserObj = {
     user: {
         id: string
         name: string
-        email: string
+        email: string,
+        theme: "dark" | "light",
     }
 }

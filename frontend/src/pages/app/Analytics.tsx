@@ -1,17 +1,21 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import { FiLock } from 'react-icons/fi';
 import { getUserConsistency, monthlyFocusTime, todayStudiedTime, totalStudiedHour, weeklyFocusTime } from '../../utils/analytics.ts';
 import useFocus from '../../hooks/useFocus.ts';
 import type { FocusContextType } from '../../types/Focus.ts';
 import { formatTime } from '../../utils/time.ts';
+import { FaLock } from "react-icons/fa";
+import { getUser } from '../../api/user.ts';
+import type { userDataObj } from '../../types/userTypes.ts';
+import useDarkMode from '../../hooks/useDarkMode.ts';
 
 type Timeframe = 'week' | 'month' | 'year' | 'all';
 
 interface ChartPoint {
     label: string;
-    value: number; // For relative curve height
-    displayValue: string; // For tooltip (e.g., "4h 20m")
+    value: number;
+    displayValue: string;
 }
 
 export default function AnalyticsPage() {
@@ -19,8 +23,23 @@ export default function AnalyticsPage() {
     const [hoveredPoint, setHoveredPoint] = useState<ChartPoint | null>(null);
     const [hoveredHeatmap, setHoveredHeatmap] = useState<{ date: string, duration: string } | null>(null);
     const { sessions }: FocusContextType = useFocus();
+    const [userData, setUserData] = useState<userDataObj | null>(null);
+    const { setTheme } = useDarkMode();
 
-    const accountAgeDays = 45; // Set >30 to unlock all tabs for preview
+    const currentYear = new Date();
+    const userjoinedAt = userData?.createdAt && new Date(userData.createdAt);
+    const hasYearlyAnalytics = userjoinedAt ? (currentYear.getFullYear() > userjoinedAt.getFullYear()) : null;
+    const hasAllTimeAnalytics = userjoinedAt && currentYear.getTime() - userjoinedAt.getTime() >= 365 * 24 * 60 * 60 * 1000;
+    const showRnAnalytics = (activeChartTab === "year" && !hasYearlyAnalytics) || (activeChartTab === "all" && !hasAllTimeAnalytics);
+
+    useEffect(() => {
+        async function fetchUser() {
+            const data = await getUser();
+            setUserData(data.user);
+            if (data.user.theme) setTheme(data.user.theme);
+        }
+        fetchUser()
+    }, []);
 
     const overviewStats = [
         { label: "Overall Focus", value: totalStudiedHour(sessions) },
@@ -38,8 +57,8 @@ export default function AnalyticsPage() {
     const chartTabs = [
         { id: 'week', label: 'This Week', locked: false },
         { id: 'month', label: 'This Month', locked: false },
-        { id: 'year', label: 'This Year', locked: accountAgeDays < 30 },
-        { id: 'all', label: 'All Time', locked: accountAgeDays < 30 }
+        { id: 'year', label: 'This Year', locked: !hasYearlyAnalytics },
+        { id: 'all', label: 'All Time', locked: !hasAllTimeAnalytics }
     ] as const;
 
     const weeklyChartData = () => {
@@ -279,10 +298,9 @@ export default function AnalyticsPage() {
                                 {chartTabs.map((tab) => (
                                     <button
                                         key={tab.id}
-                                        onClick={() => !tab.locked && setActiveChartTab(tab.id)}
+                                        onClick={() => setActiveChartTab(tab.id)}
                                         className={`relative px-4 py-2 rounded-full text-[9px] uppercase tracking-widest font-medium transition-colors flex items-center gap-2
-                                ${tab.locked ? 'text-white/20 cursor-not-allowed' :
-                                                activeChartTab === tab.id ? 'text-white' : 'text-white/40 hover:text-white/70'}`}>
+                                ${activeChartTab === tab.id ? 'text-white' : 'text-white/40 hover:text-white/70'}`}>
                                         {activeChartTab === tab.id && (
                                             <motion.div layoutId="chartTab" className="absolute inset-0 bg-neutral-900 border border-neutral-900 rounded-full z-[-1]" />
                                         )}
@@ -294,6 +312,10 @@ export default function AnalyticsPage() {
                         </div>
                         {/* Immersive Wave Chart Area */}
                         <div className="relative w-full h-80 rounded-4xl bg-linear-to-b from-[#0a0a0a] to-transparent border border-neutral-900 flex flex-col group cursor-crosshair">
+                            {showRnAnalytics && <div className='absolute inset-0 backdrop-blur-xs z-10 rounded-4xl flex flex-col items-center justify-center gap-2 text-neutral-500'>
+                                <FaLock className='size-6' />
+                                {activeChartTab === "year" ? "Yearly insights become available next calendar year." : activeChartTab === "all" && "All-time analytics unlock after one year of focus history."}
+                            </div>}
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={activeChartTab}
@@ -361,12 +383,6 @@ export default function AnalyticsPage() {
                                 )}
                             </AnimatePresence>
                         </div>
-                        {/* Locked Empty State Messaging */}
-                        {accountAgeDays < 30 && activeChartTab === 'month' && (
-                            <p className="text-[10px] uppercase tracking-widest font-light text-white/30 text-center mt-2">
-                                Long-term trajectories unlock after 30 days.
-                            </p>
-                        )}
                     </motion.section>
                     {/* ================= LOWER SECTIONS ================= */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12">

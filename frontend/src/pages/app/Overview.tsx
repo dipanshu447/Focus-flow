@@ -2,24 +2,52 @@ import { useState, useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { FiPlay } from 'react-icons/fi';
 import { Link } from 'react-router';
+import useFocus from '../../hooks/useFocus';
+import type { Session } from '../../types/Focus';
+import useDarkMode from '../../hooks/useDarkMode';
 
 type PerformanceState = 'low' | 'building' | 'high' | 'late_night';
 
 export default function Overview() {
-    const [performance] = useState<PerformanceState>('building');
+    const { sessions } = useFocus();
+    const performance = getPerformanceState(sessions);
     const [greeting, setGreeting] = useState("GOOD AFTERNOON");
     const userData = localStorage.getItem("user");
     const user = userData ? JSON.parse(userData) : null;
+    const { setTheme } = useDarkMode();
+    if (user.theme) setTheme(user.theme);
 
     useEffect(() => {
         const hour = new Date().getHours();
-        if (hour >= 22 || hour < 4) setGreeting("GOOD EVENING"); // Late night
+        if (hour >= 22 || hour < 4) setGreeting("GOOD EVENING");
         else if (hour < 12) setGreeting("GOOD MORNING");
         else if (hour < 18) setGreeting("GOOD AFTERNOON");
         else setGreeting("GOOD EVENING");
     }, []);
 
-    const getMotivationalText = (state?: PerformanceState) => {
+    function getPerformanceState(sessions: Session[]): PerformanceState {
+        if (!sessions.length) return 'low';
+
+        const now = new Date();
+        const recentSessions = sessions.filter(session => { // Last 7 sessions only
+            const sessionDate = new Date(session.completedAt);
+            return now.getTime() - sessionDate.getTime() <= 7 * 24 * 60 * 60 * 1000
+        });
+        const totalMins = recentSessions.reduce((acc, session) => acc + session.duration, 0);
+        const activeDays = new Set(recentSessions.map(session => new Date(session.completedAt).toDateString())).size;
+        const lateNightSessions = recentSessions.filter(session => {
+            const hour = new Date(session.completedAt).getHours();
+            return hour >= 1 && hour <= 4;
+        });
+
+        if (lateNightSessions.length >= 3 && lateNightSessions.length >= recentSessions.length * 0.4) return 'late_night';
+        if (activeDays >= 5 && totalMins >= 600) return "high";
+        if (activeDays >= 2 && totalMins >= 120) return "building";
+        return "low";
+
+    }
+
+    function getMotivationalText(state?: PerformanceState) {
         switch (state) {
             case 'low':
                 return {
@@ -53,7 +81,7 @@ export default function Overview() {
         }
     };
 
-    const message = getMotivationalText();
+    const message = getMotivationalText(performance);
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -78,8 +106,7 @@ export default function Overview() {
                 className="pointer-events-none fixed inset-0 z-0 opacity-[0.03] mix-blend-overlay"
                 style={{
                     backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")'
-                }}
-            />
+                }} />
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center">
                 <motion.div animate={{ scale: [1, 1.05, 1], opacity: [0.03, 0.06, 0.03] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} className="absolute top-0 left-[10%] w-[80vw] h-[80vh] bg-white/2 blur-[150px] rounded-full" />
             </div>
@@ -109,17 +136,6 @@ export default function Overview() {
                     </motion.div>
                 </motion.div>
             </div>
-            {/* <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 2 }} className="absolute bottom-10 left-0 w-full px-8 md:px-16">
-                <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 text-[10px] md:text-xs tracking-[0.2em] text-white/20 uppercase font-medium">
-                    <p className="hover:text-white/40 transition-colors cursor-default">
-                        Most focused hours this week: 10PM – 1AM
-                    </p>
-                    <div className="hidden md:block w-1 h-1 rounded-full bg-white/10" />
-                    <p className="hover:text-white/40 transition-colors cursor-default">
-                        Average distraction rate decreased by 12%
-                    </p>
-                </div>
-            </motion.div> */}
         </div>
     );
 }

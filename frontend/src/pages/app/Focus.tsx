@@ -8,11 +8,16 @@ import ConfirmationModal from '../../components/ConfirmationModal.tsx';
 import { IoIosClose } from "react-icons/io";
 import { todayStudiedTime } from '../../utils/analytics.ts';
 import { createSessions } from '../../api/sessions.ts';
+import useDarkMode from '../../hooks/useDarkMode.ts';
 
 export default function FocusPage() {
   const [searchParams] = useSearchParams();
   const [timerState, setTimerState] = useState<'idle' | 'running' | 'paused'>('idle');
   const [timerPhase, setTimerPhase] = useState<'focus' | 'break'>('focus');
+  const userData = localStorage.getItem("user");
+  const user = userData ? JSON.parse(userData) : null;
+  const { setTheme } = useDarkMode();
+  if (user.theme) setTheme(user.theme);
 
   const [sessionDuration, setSessionDuration] = useState(25); // Default 25m
   const [breakDuration, setBreakDuration] = useState(5); // Default 5m
@@ -224,7 +229,7 @@ export default function FocusPage() {
                   </span>
                   <div className='flex items-center gap-8 group'>
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-white/70">
-                      {activeTask?.title || "Select an objective"}
+                      {timerState === 'idle' ? activeTask?.title || "Select an objective" : (timerState === "running" && !activeTask?.title) ? "Independent focus session" : activeTask?.title}
                     </h2>
                     {activeTaskId && <div onClick={handleClearTask} className='opacity-0 group-hover:opacity-100 border rounded-full border-neutral-700 p-0.5 hover:border-neutral-600 transition-all duration-200 ease cursor-pointer mt-1.5'><IoIosClose className='size-4.5 fill-neutral-400 hover:fill-neutral-300 transition-all duration-200 ease' /></div>}
                   </div>

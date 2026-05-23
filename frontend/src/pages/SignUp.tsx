@@ -6,6 +6,7 @@ import type { ChangeEvent } from "react";
 import { googleLogin, loginUser, registerUser } from "../api/auth.ts";
 import type { ResAuthUserObj } from "../types/AuthUserobj";
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+import useDarkMode from "../hooks/useDarkMode.ts";
 
 type modeT = "login" | "signup";
 
@@ -17,6 +18,7 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const modes: modeT[] = ["login", "signup"];
+    const {setTheme} = useDarkMode();
 
     const handleSubmit = async (e: ChangeEvent) => {
         e.preventDefault();
@@ -26,6 +28,7 @@ export default function SignUp() {
                 const data: ResAuthUserObj = await loginUser(userData);
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("user", JSON.stringify(data.user));
+                if(data.user.theme) setTheme(data.user.theme);
 
                 navigate("/app");
             } else if (mode === "signup") {

@@ -6,10 +6,12 @@ import type { JSX } from "react";
 export const DarkModeContext = createContext<DarkModeObj | null>(null);
 
 export function DarkModeProvider({ children }: { children: JSX.Element }): JSX.Element {
-    const [darkMode, setDarkMode] = useState<string | boolean>((): (string | boolean) => {
-        return localStorage.getItem("theme") || document.documentElement.classList.contains("dark");
+    const [darkMode, setDarkMode] = useState<boolean>(() => {
+        return localStorage.getItem("theme") === "dark";
     });
     const toggleDarkMode = (): void => setDarkMode(prev => !prev);
+
+    const setTheme = (theme: "dark" | "light"): void => setDarkMode(theme === "dark");
 
     useEffect((): void => {
         if (darkMode) {
@@ -21,5 +23,5 @@ export function DarkModeProvider({ children }: { children: JSX.Element }): JSX.E
         }
     }, [darkMode])
 
-    return <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}> {children} </DarkModeContext.Provider>
+    return <DarkModeContext.Provider value={{ darkMode, toggleDarkMode, setTheme }}> {children} </DarkModeContext.Provider>
 }

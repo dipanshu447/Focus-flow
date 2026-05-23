@@ -7,13 +7,17 @@ import useFocus from '../../hooks/useFocus';
 import type { FocusContextType } from '../../types/Focus.ts';
 import { todayStudiedTime } from '../../utils/analytics.ts';
 import { createTask, deleteTask, toggleTask } from '../../api/tasks.ts';
+import useDarkMode from '../../hooks/useDarkMode.ts';
 
 export default function TasksPage() {
   const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
   const { tasks, setTasks, sessions }: FocusContextType = useFocus();
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [newTitle, setNewTitle] = useState('');
-  console.log(tasks)
+  const userData = localStorage.getItem("user");
+  const user = userData ? JSON.parse(userData) : null;
+  const { setTheme } = useDarkMode();
+  if (user.theme) setTheme(user.theme);
 
   const activeTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
@@ -75,7 +79,6 @@ export default function TasksPage() {
 
   return (
     <div className="h-screen w-full text-[#e5e5e5] font-sans selection:bg-white/20 relative overflow-hidden flex flex-col">
-      {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar w-full px-8 pt-16 md:px-16 lg:px-24 mx-auto">
         <motion.header
           initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
@@ -159,7 +162,6 @@ export default function TasksPage() {
               )}
             </motion.div>
           )}
-
           {/* --- COMPLETED TASKS --- */}
           {activeTab === 'completed' && (
             <motion.div key="completed" variants={listVariants} initial="hidden" animate="visible" exit="hidden" className="flex flex-col gap-2 pb-24">

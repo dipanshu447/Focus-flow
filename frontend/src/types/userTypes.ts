@@ -13,6 +13,6 @@ export type userDataObj = {
   email: string
   role?: Role
   avatarUrl?: string
-  theme: string,
+  theme: "dark" | "light",
   createdAt: string
 }
