@@ -23,6 +23,8 @@ import PublicRoute from './routes/PublicRoute.tsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ForgotPassword from './pages/ForgotPassword.tsx';
 import ResetPassword from './pages/ResetPassword.tsx';
+import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
+import TermsOfService from './pages/TermsOfService.tsx';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme === "dark") {
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <Contact />
+      },
+      {
+        path: 'privacy',
+        element: <PrivacyPolicy />
+      },
+      {
+        path: 'terms',
+        element: <TermsOfService />
       },
       {
         path: 'signup',

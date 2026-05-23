@@ -82,7 +82,7 @@ export default function About() {
                 <span className="uppercase text-neutral-500 tracking-wider text-sm">A note from the team</span>
                 <div className='text-neutral-800 dark:text-neutral-200 leading-7 relative z-4 mt-6'>We built FocusFlow because we were tired of tools that promised productivity but delivered distraction. We wanted something quiet. Something that got out of the way. Something that trusted us to know what needed doing.</div>
                 <div className='text-neutral-800 dark:text-neutral-200 relative z-4 mt-4'>This is that tool.</div>
-                <Link to='signup' className="flex gap-2 items-center bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all duration-200 shadow-sm hover:shadow-md font-medium px-5 py-3 rounded-full text-sm self-baseline mt-6">Start using FocusFlow <FaArrowRight className="size-3"/></Link>
+                <Link to='/app' className="flex gap-2 items-center bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all duration-200 shadow-sm hover:shadow-md font-medium px-5 py-3 rounded-full text-sm self-baseline mt-6">Start using FocusFlow <FaArrowRight className="size-3"/></Link>
             </div>
         </div>
     )

@@ -3,8 +3,10 @@ import landingBg from '../assets/landing_end.png';
 import preview from '../assets/preview.png';
 import { LuTarget, LuTimer, LuTrendingUp } from "react-icons/lu"
 import scrollTosection from '../utils/scrollToSection.ts';
+import { Link } from 'react-router';
 
 export default function Welcome() {
+    const token = localStorage.getItem("token");
     const steps = [
         {
             num: "01",
@@ -55,7 +57,11 @@ export default function Welcome() {
                 <h1 className="text-8xl font-black my-3 tracking-tight">Stop Switching.<br /> Start Finishing.</h1>
                 <p>One task. One session. One outcome.</p>
                 <div className="flex gap-5 mt-4">
-                    <button className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-200 dark:text-black dark:hover:-translate-y-1 dark:hover:bg-white transition-all duration-200 font-medium px-7 py-3 rounded-full text-sm cursor-pointer scroll-smooth">Start Free</button>
+                    {token ? (
+                        <Link to="app" className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-200 dark:text-black dark:hover:-translate-y-1 dark:hover:bg-white transition-all duration-200 font-medium px-7 py-3 rounded-full text-sm cursor-pointer scroll-smooth">Launch App</Link>
+                    ) : (
+                        <Link to="signup" className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-200 dark:text-black dark:hover:-translate-y-1 dark:hover:bg-white transition-all duration-200 font-medium px-7 py-3 rounded-full text-sm cursor-pointer scroll-smooth">Start Free</Link>
+                    )}
                     <button className="mt-5 border border-black dark:border-neutral-700 hover:text-white hover:bg-black dark:hover:bg-neutral-900 dark:text-white  dark:hover:border-neutral-600 text-black transition-all duration-200 shadow-sm hover:shadow-md font-medium px-6 py-3 rounded-full text-sm scroll-smooth cursor-pointer" onClick={e => scrollTosection(e, 'howitworks')}>See it in action →</button>
                 </div>
             </div>
@@ -76,7 +82,7 @@ export default function Welcome() {
             </div>
             <div className="px-20 py-30 flex flex-col relative z-10 border-b border-b-neutral-800 w-full">
                 <div className="text-black dark:text-white flex flex-col items-center text-center w-full gap-10">
-                    <div className="w-3xl text-6xl font-black leading-16">FocusFlow brings your attention back under control.</div>
+                    <div id='features' className="w-3xl text-6xl font-black leading-16">FocusFlow brings your attention back under control.</div>
                     <div className='text-neutral-900 dark:text-gray-300 flex flex-col'>
                         <span>Not by adding more.</span>
                         <span>By removing what doesn’t matter.</span>
@@ -125,7 +131,11 @@ export default function Welcome() {
                 <h1 className="text-7xl font-black my-6 tracking-tight">Reclaim Your Attention.</h1>
                 <p className='text-medium'>One session is all it takes to feel the difference.</p>
                 <div className="flex gap-5 mt-6">
-                    <button className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-black dark:hover:bg-white dark:hover:font-bold transition-all duration-300 shadow-sm hover:shadow-md font-medium px-6 py-3 rounded-full text-sm cursor-pointer hover:-translate-y-1">Start Free</button>
+                    {token ? (
+                        <Link to="app" className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-black dark:hover:bg-white dark:hover:font-bold transition-all duration-300 shadow-sm hover:shadow-md font-medium px-6 py-3 rounded-full text-sm cursor-pointer hover:-translate-y-1">Launch App</Link>
+                    ) : (
+                       <Link to="signup" className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-black dark:hover:bg-white dark:hover:font-bold transition-all duration-300 shadow-sm hover:shadow-md font-medium px-6 py-3 rounded-full text-sm cursor-pointer hover:-translate-y-1">Start Free</Link>
+                    )}
                 </div>
             </div>
         </div>

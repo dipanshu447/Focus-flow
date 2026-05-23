@@ -1,5 +1,6 @@
 import Logo from '../assets/logo.svg';
 import { Link } from 'react-router';
+import scrollTosection from '../utils/scrollToSection';
 
 export default function Footer() {
     return (
@@ -15,19 +16,24 @@ export default function Footer() {
                 <div className='flex gap-12 justify-end'>
                     <div className='flex flex-col gap-4'>
                         <span className="text-neutral-500 font-light tracking-wider text-sm uppercase">Product</span>
-                        <Link to="/" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">Features</Link>
+                        <button onClick={(e) => scrollTosection(e, "features")} className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer mr-3">Features</button>
                         <Link to="/guide" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">Guide</Link>
-                        <Link to="/" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">App</Link>
+                        <Link to="/app" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">App</Link>
                     </div>
                     <div className='flex flex-col gap-4'>
                         <span className="text-neutral-500 font-light tracking-wider text-sm uppercase">Company</span>
                         <Link to="/about" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">About</Link>
                         <Link to="/contact" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">Contact</Link>
                     </div>
+                    <div className='flex flex-col gap-4'>
+                        <span className="text-neutral-500 font-light tracking-wider text-sm uppercase">Legal</span>
+                        <Link to="/privacy" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">Privacy</Link>
+                        <Link to="/terms" className="capitalize text-neutral-300 hover:text-white transition-all duration-200 ease font-light tracking-wider text-sm cursor-pointer">Terms</Link>
+                    </div>
                 </div>
             </div>
             <div className='flex justify-between mt-6'>
-                <span className="text-neutral-500 font-light tracking-wider text-xs">© {new Date().getFullYear()} FocusFlow. All rights reserved.</span>
+                <span className="text-neutral-500 font-light tracking-wider text-xs">© {new Date().getFullYear()} FocusFlow. Built by <a href="https://www.itsdipanshu.dev" target='_blank'>Dipanshu Sahu.</a></span>
                 <span className="text-neutral-500 font-light tracking-wider text-xs">Built for people who actually finish things.</span>
             </div>
         </div>

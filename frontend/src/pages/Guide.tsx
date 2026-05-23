@@ -46,7 +46,7 @@ export default function Guide() {
             title: "Track Without Obsession",
             content: [
                 "FocusFlow records your sessions quietly.",
-                "Look at your stats once a day — not after every session.",
+                "Look at your stats once a day, not after every session.",
                 "The goal is not to maximize sessions. It's to finish what matters.",
             ],
         },
@@ -107,7 +107,7 @@ export default function Guide() {
                 <h1 className="text-7xl font-black my-6 tracking-tight">Start with one session.</h1>
                 <p className='text-medium'>Don't plan. Don't optimize. Open the app and start the timer.</p>
                 <div className="flex gap-5 mt-6">
-                    <Link to="/" className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-black dark:hover:bg-white dark:hover:font-bold transition-all duration-300 shadow-sm hover:shadow-md font-medium px-6 py-3 rounded-full text-sm cursor-pointer hover:-translate-y-1 flex items-center gap-2">
+                    <Link to="/app" className="mt-5 bg-black text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-black dark:hover:bg-white dark:hover:font-bold transition-all duration-300 shadow-sm hover:shadow-md font-medium px-6 py-3 rounded-full text-sm cursor-pointer hover:-translate-y-1 flex items-center gap-2">
                         Open FocusFlow
                         <FaArrowRight className="size-3 fill-neutral-800" />
                     </Link>
