@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiCheckCircle, FiCircle, FiTrash2 } from 'react-icons/fi';
 import TaskRow from '../../components/TaskRow';
@@ -17,7 +17,6 @@ export default function TasksPage() {
   const userData = localStorage.getItem("user");
   const user = userData ? JSON.parse(userData) : null;
   const { setTheme } = useDarkMode();
-  if (user.theme) setTheme(user.theme);
 
   const activeTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
@@ -76,6 +75,10 @@ export default function TasksPage() {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }
   };
+
+  useEffect(() => {
+    if (user?.theme) setTheme(user.theme);
+  }, []);
 
   return (
     <div className="h-screen w-full text-[#e5e5e5] font-sans selection:bg-white/20 relative overflow-hidden flex flex-col">

@@ -142,7 +142,7 @@ export default function ProfilePage() {
                       alt="Profile"
                       className="w-full h-full object-cover grayscale" />
                   ) : (
-                    <span className="text-5xl md:text-6xl font-light text-black/20 dark:text-white/20 uppercase">
+                    <span className="text-5xl md:text-6xl font-light text-black/20 dark:text-white/20 uppercase select-none">
                       {userData?.name ? userData.name.charAt(0) : '?'}
                     </span>
                   )}

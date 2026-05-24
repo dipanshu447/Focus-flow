@@ -17,7 +17,6 @@ export default function FocusPage() {
   const userData = localStorage.getItem("user");
   const user = userData ? JSON.parse(userData) : null;
   const { setTheme } = useDarkMode();
-  if (user.theme) setTheme(user.theme);
 
   const [sessionDuration, setSessionDuration] = useState(25); // Default 25m
   const [breakDuration, setBreakDuration] = useState(5); // Default 5m
@@ -39,7 +38,6 @@ export default function FocusPage() {
     if (timerState !== 'running' && !startedAt) {
       setStartedAt(new Date());
     }
-
     setTimerState(prev => prev === 'running' ? 'paused' : 'running');
   };
 
@@ -55,7 +53,9 @@ export default function FocusPage() {
         startedAt: startedAt.toISOString(),
         completedAt: new Date().toISOString(),
         taskId: activeTask?.id,
-      })
+      });
+
+      if (!data?.session) return;
 
       setSessions(prev => [...prev, data.session]);
       setStartedAt(null);
@@ -65,41 +65,60 @@ export default function FocusPage() {
     }
   };
 
+  useEffect(() => {
+    if (user?.theme) setTheme(user.theme);
+    return () => {
+      document.title = "FocusFlow";
+    };
+  }, [])
+
   // --- Cycle Logic ---
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | undefined;
+    let message: string | undefined;
 
     if (timerState === 'running' && timeLeft > 0) {
+      message = timerPhase === "break" ? "Recharge" : activeTask ? activeTask.title : "Deep Work";
       interval = setInterval(() => {
-        setTimeLeft(prev => prev - 1);
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          const newTime = prev - 1;
+          document.title = `${formatTime(newTime)} • ${message}`;
+          return newTime;
+        });
       }, 1000);
     }
-
     else if (timerState === 'running' && timeLeft <= 0) {
-
       if (timerPhase === 'focus') {
-        addSession();
-
+        void addSession();
         if (currentSession < sessionCount) {
           setTimerPhase('break');
           setTimeLeft(breakDuration * 60);
-
         } else {
           setTimerPhase('focus');
           setTimerState('idle');
           setCurrentSession(1);
           setTimeLeft(sessionDuration * 60);
+          document.title = "FocusFlow";
         }
-
-      } else if (timerPhase === 'break') {
-
+        return;
+      }
+      if (timerPhase === 'break') {
         setTimerPhase('focus');
         setCurrentSession(prev => prev + 1);
         setTimeLeft(sessionDuration * 60);
+        return;
       }
+    } else if (timerState === 'paused') {
+      document.title = 'Paused • FocusFlow';
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
 
   }, [
     timerState,
@@ -108,18 +127,16 @@ export default function FocusPage() {
     currentSession,
     sessionCount,
     breakDuration,
-    sessionDuration
+    sessionDuration,
+    activeTask
   ]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (timerState !== "running") return;
-
       e.preventDefault();
     }
-
     window.addEventListener("beforeunload", handleBeforeUnload);
-
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     }
@@ -142,6 +159,7 @@ export default function FocusPage() {
     setTimerPhase('focus');
     setCurrentSession(1);
     setTimeLeft(sessionDuration * 60);
+    document.title = "FocusFlow";
   };
 
   const handleSettingChangeRequest = (type: 'focus' | 'break' | 'count', val: number) => {
@@ -168,7 +186,6 @@ export default function FocusPage() {
   const confirmReset = () => {
     if (pendingSettings) {
       applySetting(pendingSettings.type, pendingSettings.val);
-      // Force full reset to session 1 focus mode
       const newFocusDur = pendingSettings.type === 'focus' ? pendingSettings.val : sessionDuration;
       setTimerState('idle');
       setTimerPhase('focus');
@@ -205,8 +222,6 @@ export default function FocusPage() {
     { mins: 20, label: 'Long Break' }
   ];
 
-  console.log(pendingTasks.length ? "task list" : "back")
-
   return (
     <div className="h-screen w-full text-[#e5e5e5] font-sans selection:bg-white/20 relative overflow-hidden flex flex-col transition-all duration-200 ease">
       <AnimatePresence>
@@ -229,7 +244,7 @@ export default function FocusPage() {
                   </span>
                   <div className='flex items-center gap-8 group'>
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-white/70">
-                      {timerState === 'idle' ? activeTask?.title || "Select an objective" : (timerState === "running" && !activeTask?.title) ? "Independent focus session" : activeTask?.title}
+                      {timerState === 'idle' ? activeTask?.title || "Select an objective" : ((timerState === "running" || timerState === "paused") && !activeTask?.title) ? "Independent focus session" : activeTask?.title}
                     </h2>
                     {activeTaskId && <div onClick={handleClearTask} className='opacity-0 group-hover:opacity-100 border rounded-full border-neutral-700 p-0.5 hover:border-neutral-600 transition-all duration-200 ease cursor-pointer mt-1.5'><IoIosClose className='size-4.5 fill-neutral-400 hover:fill-neutral-300 transition-all duration-200 ease' /></div>}
                   </div>

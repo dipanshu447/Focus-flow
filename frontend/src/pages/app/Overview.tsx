@@ -15,9 +15,9 @@ export default function Overview() {
     const userData = localStorage.getItem("user");
     const user = userData ? JSON.parse(userData) : null;
     const { setTheme } = useDarkMode();
-    if (user.theme) setTheme(user.theme);
 
     useEffect(() => {
+        if (user?.theme) setTheme(user.theme);
         const hour = new Date().getHours();
         if (hour >= 22 || hour < 4) setGreeting("GOOD EVENING");
         else if (hour < 12) setGreeting("GOOD MORNING");
