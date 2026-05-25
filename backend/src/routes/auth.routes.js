@@ -4,7 +4,6 @@ import prisma from "../config/db.js";
 import jwt from 'jsonwebtoken';
 import gclient from '../config/oauth.js';
 import crypto from 'crypto';
-import { resend } from "../config/resend.js";
 import { sendWelcomeEmail } from "../services/email.service.js";
 import { transporter } from "../config/mail.js";
 
