@@ -56,9 +56,9 @@ export default function Contact() {
                             Reach us directly
                         </span>
                         <a
-                            href="mailto:dipanshusahu447@gmail.com"
+                            href="mailto:teamfocusfloow@gmail.com"
                             className="text-black/90 dark:text-white/90 hover:text-black/60 dark:hover:text-white/60 mt-4 md:mt-6 font-semibold text-3xl transition-colors duration-300 ease-in-out">
-                            dipanshusahu447@gmail.com
+                            teamfocusfloow@gmail.com
                         </a>
                     </div>
                     <div className="flex flex-col border-b border-black/5 dark:border-white/5 py-10 md:py-12">

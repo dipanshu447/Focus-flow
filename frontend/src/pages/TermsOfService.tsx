@@ -89,9 +89,9 @@ export default function TermsOfService() {
             </p>
             <div className="mt-2">
               <a 
-                href="mailto:dipanshusahu447@gmail.com" 
+                href="mailto:teamfocusfloow@gmail.com" 
                 className="inline-block text-black/90 dark:text-white/90 font-medium border-b border-black/20 dark:border-white/20 hover:border-black/90 dark:hover:border-white/90 transition-colors pb-1 text-sm md:text-base">
-                dipanshusahu447@gmail.com
+                teamfocusfloow@gmail.com
               </a>
             </div>
           </section>
