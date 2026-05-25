@@ -130,12 +130,12 @@ export default function SideBar() {
                     )}
                 </div>
             </aside>
-            <header className="md:hidden fixed top-0 left-0 w-full h-16 border-b border-black/10 dark:border-white/10 bg-[#fcfcfc]/80 dark:bg-[#050505]/80 backdrop-blur-xl z-40 flex items-center justify-between px-4 transition-colors duration-500">
+            <header className="md:hidden fixed top-0 left-0 w-full h-14 border-b border-black/10 dark:border-white/10 backdrop-blur-xl z-40 flex items-center justify-between px-4 transition-colors duration-500">
                 <div className="flex items-center gap-3">
                     <button 
                         onClick={() => setIsMobileMenuOpen(true)} 
                         className="p-2 -ml-2 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors outline-none">
-                        <LuMenu size={24} />
+                        <LuMenu size={20} />
                     </button>
                     <Link to="." className="flex items-center gap-1 justify-center">
                         <img src={logo} alt="FocusFlow logo" className="size-8 invert-0 mt-0.5 dark:invert" />
