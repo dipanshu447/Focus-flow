@@ -9,6 +9,12 @@ import { IoIosClose } from "react-icons/io";
 import { todayStudiedTime } from '../../utils/analytics.ts';
 import { createSessions } from '../../api/sessions.ts';
 import { toast } from 'sonner';
+import { playSound } from '../../utils/sounds.ts';
+import buttonClick from '/sounds/button-click.mp3';
+import breakTime from '/sounds/break_time.mp3';
+import digitalAlram from '/sounds/digital-alarm.mp3';
+import sesstionComplete from '/sounds/sesstion_complete.mp3';
+import { requestNotificationPermission, showNotification } from '../../utils/notifications.ts';
 
 export default function FocusPage() {
   const [searchParams] = useSearchParams();
@@ -31,11 +37,16 @@ export default function FocusPage() {
 
   const blocker = useBlocker(({ currentLocation, nextLocation }) => timerState === "running" && currentLocation.pathname !== nextLocation.pathname);
 
-  const handleToggleTimer = () => {
+  const handleToggleTimer = async () => {
+    if(timerState === "idle"){
+      await requestNotificationPermission();
+    }
+
     if (timerState !== 'running' && !startedAt) {
       setStartedAt(new Date());
     }
     setTimerState(prev => prev === 'running' ? 'paused' : 'running');
+    playSound(buttonClick);
   };
 
   const activeTask = tasks.find(t => t.id === activeTaskId);
@@ -51,9 +62,11 @@ export default function FocusPage() {
         completedAt: new Date().toISOString(),
         taskId: activeTask?.id,
       });
-      
+
       if (!data?.session) return;
+      playSound(sesstionComplete);
       toast.success("Great work! Session completed");
+      showNotification("Focus Session Complete", "Great work! Time for a break.");
 
       setSessions(prev => [...prev, data.session]);
       setStartedAt(null);
@@ -94,7 +107,9 @@ export default function FocusPage() {
         void addSession();
         if (currentSession < sessionCount) {
           setTimerPhase('break');
+          playSound(breakTime);
           setTimeLeft(breakDuration * 60);
+          toast.info("Break started");
         } else {
           setTimerPhase('focus');
           setTimerState('idle');
@@ -105,6 +120,9 @@ export default function FocusPage() {
         return;
       }
       if (timerPhase === 'break') {
+        playSound(digitalAlram);
+        toast.success("Break finished");
+        showNotification("Break Finished", "Ready to get back to focus?");
         setTimerPhase('focus');
         setCurrentSession(prev => prev + 1);
         setTimeLeft(sessionDuration * 60);
@@ -112,7 +130,6 @@ export default function FocusPage() {
       }
     } else if (timerState === 'paused') {
       document.title = 'Paused • FocusFlow';
-      toast.info("Session paused");
     }
 
     return () => {
@@ -160,6 +177,7 @@ export default function FocusPage() {
     setTimeLeft(sessionDuration * 60);
     document.title = "FocusFlow";
     toast.info("Timer reset");
+    playSound(buttonClick);
   };
 
   const handleSettingChangeRequest = (type: 'focus' | 'break' | 'count', val: number) => {
@@ -226,21 +244,21 @@ export default function FocusPage() {
     <div className="h-screen w-full text-[#111] dark:text-[#e5e5e5] font-sans selection:bg-black/10 dark:selection:bg-white/20 relative flex flex-col transition-colors duration-500 overflow-hidden">
       <AnimatePresence>
         {showResetWarning && (
-          <ConfirmationModal 
-            modalTitle="Reset Session?" 
-            modalSubtext="Changing timer settings will reset the current session and pause the timer." 
-            leftBtntext="Cancel" 
-            rightBtntext="Confirm Reset" 
-            leftBtnfunc={cancelReset} 
+          <ConfirmationModal
+            modalTitle="Reset Session?"
+            modalSubtext="Changing timer settings will reset the current session and pause the timer."
+            leftBtntext="Cancel"
+            rightBtntext="Confirm Reset"
+            leftBtnfunc={cancelReset}
             rightBtnfunc={confirmReset} />
         )}
         {blocker.state === "blocked" && (
-          <ConfirmationModal 
-            modalTitle="Focus session active" 
-            modalSubtext="Leaving this page may interrupt your session." 
-            leftBtntext="Stay" 
-            rightBtntext="Leave Anyway" 
-            leftBtnfunc={() => blocker.reset()} 
+          <ConfirmationModal
+            modalTitle="Focus session active"
+            modalSubtext="Leaving this page may interrupt your session."
+            leftBtntext="Stay"
+            rightBtntext="Leave Anyway"
+            leftBtnfunc={() => blocker.reset()}
             rightBtnfunc={() => blocker.proceed()} />
         )}
       </AnimatePresence>
@@ -260,8 +278,8 @@ export default function FocusPage() {
                         {timerState === 'idle' ? activeTask?.title || "Select an objective" : ((timerState === "running" || timerState === "paused") && !activeTask?.title) ? "Independent focus session" : activeTask?.title}
                       </h2>
                       {activeTaskId && (
-                        <div 
-                          onClick={handleClearTask} 
+                        <div
+                          onClick={handleClearTask}
                           className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 border rounded-full border-black/10 dark:border-white/10 p-1 hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-200 cursor-pointer mt-1">
                           <IoIosClose className="w-5 h-5 text-black/60 dark:text-white/60 transition-colors" />
                         </div>
@@ -282,11 +300,10 @@ export default function FocusPage() {
               </div>
               <div className="relative mb-12 md:mb-16 select-none cursor-default transition-all duration-1000">
                 <h1
-                  className={`text-[clamp(5rem,14vw,17rem)] font-light leading-[0.85] tracking-tighter tabular-nums transition-colors duration-1000 ${
-                    timerPhase === 'break' 
-                      ? 'text-black/50 dark:text-white/30' 
+                  className={`text-[clamp(5rem,14vw,17rem)] font-light leading-[0.85] tracking-tighter tabular-nums transition-colors duration-1000 ${timerPhase === 'break'
+                      ? 'text-black/50 dark:text-white/30'
                       : 'text-black/90 dark:text-white/90'
-                  }`}
+                    }`}
                   style={{ letterSpacing: '-0.04em' }}>
                   {formatTime(timeLeft)}
                 </h1>
@@ -294,11 +311,10 @@ export default function FocusPage() {
               <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto justify-center md:justify-start">
                 <button
                   onClick={handleToggleTimer}
-                  className={`group relative flex items-center justify-center gap-3 px-10 py-4 md:px-12 md:py-5 rounded-full font-bold tracking-[0.2em] text-[10px] sm:text-xs uppercase transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98] ${
-                    timerPhase === 'break' 
-                      ? 'bg-black/10 dark:bg-white/10 text-black dark:text-white hover:bg-black/20 dark:hover:bg-white/20' 
+                  className={`group relative flex items-center justify-center gap-3 px-10 py-4 md:px-12 md:py-5 rounded-full font-bold tracking-[0.2em] text-[10px] sm:text-xs uppercase transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98] ${timerPhase === 'break'
+                      ? 'bg-black/10 dark:bg-white/10 text-black dark:text-white hover:bg-black/20 dark:hover:bg-white/20'
                       : 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/80 dark:hover:bg-neutral-200'
-                  }`}>
+                    }`}>
                   {timerState === 'running' ? (
                     <>
                       <FiPause size={16} className="fill-current" />
@@ -324,17 +340,15 @@ export default function FocusPage() {
               <div className="flex items-center gap-8 mb-8 border-b border-black/10 dark:border-white/10 pb-4 shrink-0">
                 <button
                   onClick={() => setActiveTab('tasks')}
-                  className={`text-[10px] tracking-[0.3em] uppercase font-bold transition-colors relative pb-1 ${
-                    activeTab === 'tasks' ? 'text-black/90 dark:text-white/90' : 'text-black/50 hover:text-black/60 dark:text-white/30 dark:hover:text-white/60'
-                  }`}>
+                  className={`text-[10px] tracking-[0.3em] uppercase font-bold transition-colors relative pb-1 ${activeTab === 'tasks' ? 'text-black/90 dark:text-white/90' : 'text-black/50 hover:text-black/60 dark:text-white/30 dark:hover:text-white/60'
+                    }`}>
                   Tasks
                   {activeTab === 'tasks' && <motion.div layoutId="activeTab" className="absolute -bottom-4 left-0 w-full h-px bg-black dark:bg-white/80" />}
                 </button>
                 <button
                   onClick={() => setActiveTab('flow')}
-                  className={`text-[10px] tracking-[0.3em] uppercase font-bold transition-colors relative pb-1 ${
-                    activeTab === 'flow' ? 'text-black/90 dark:text-white/90' : 'text-black/50 hover:text-black/60 dark:text-white/30 dark:hover:text-white/60'
-                  }`}>
+                  className={`text-[10px] tracking-[0.3em] uppercase font-bold transition-colors relative pb-1 ${activeTab === 'flow' ? 'text-black/90 dark:text-white/90' : 'text-black/50 hover:text-black/60 dark:text-white/30 dark:hover:text-white/60'
+                    }`}>
                   Timer Settings
                   {activeTab === 'flow' && <motion.div layoutId="activeTab" className="absolute -bottom-4 left-0 w-full h-px bg-black dark:bg-white/80" />}
                 </button>
@@ -353,24 +367,23 @@ export default function FocusPage() {
                             <div
                               key={task.id}
                               className="flex items-center gap-4 py-3 cursor-pointer group">
-                              <button 
-                                onClick={() => handleToggleComplete(task.id)} 
+                              <button
+                                onClick={() => handleToggleComplete(task.id)}
                                 className={`transition-colors cursor-pointer shrink-0 ${activeTaskId === task.id ? 'text-black/80 dark:text-white/60' : 'text-black/20 hover:text-black/50 dark:text-white/20 dark:hover:text-white/50'}`}>
                                 <FiCircle size={16} />
                               </button>
-                              <span 
-                                onClick={() => setActiveTaskId(task.id)} 
-                                className={`text-sm md:text-base transition-all ${
-                                  activeTaskId === task.id 
-                                    ? 'text-black/90 dark:text-white/90 font-medium' 
+                              <span
+                                onClick={() => setActiveTaskId(task.id)}
+                                className={`text-sm md:text-base transition-all ${activeTaskId === task.id
+                                    ? 'text-black/90 dark:text-white/90 font-medium'
                                     : 'text-black/60 dark:text-white/50 font-light group-hover:text-black/70 dark:group-hover:text-white/70'
-                                }`}>
+                                  }`}>
                                 {task.title}
                               </span>
                             </div>
                           ))
                         ) : (
-                          <div className="text-black/60 dark:text-white/40 text-xs md:text-sm mt-20 flex flex-col items-center justify-center gap-2 font-light">
+                          <div className="text-black/60 dark:text-white/40 text-xs md:text-sm mt-20 flex flex-col items-center justify-center gap-2 font-light text-center">
                             <span>All clear for now.</span>
                             <span>Start a focus session or add your next task.</span>
                           </div>
@@ -391,11 +404,10 @@ export default function FocusPage() {
                             <button
                               key={preset.mins}
                               onClick={() => handleSettingChangeRequest('focus', preset.mins)}
-                              className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 ${
-                                sessionDuration === preset.mins
+                              className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 ${sessionDuration === preset.mins
                                   ? 'bg-black text-white shadow-md dark:bg-[#1a1a1a] dark:text-white dark:border dark:border-white/10'
                                   : 'text-black/60 dark:text-white/40 hover:text-black/90 dark:hover:text-white/80 border border-transparent hover:bg-black/5 dark:hover:bg-white/5'
-                              }`}>
+                                }`}>
                               <span className="text-sm font-bold w-8 text-left">{preset.mins}m</span>
                               <span className={`text-xs tracking-wide ${sessionDuration === preset.mins ? 'font-medium text-white/80' : 'font-light text-black/50 dark:text-white/40'}`}>
                                 {preset.label}
@@ -411,11 +423,10 @@ export default function FocusPage() {
                             <button
                               key={preset.mins}
                               onClick={() => handleSettingChangeRequest('break', preset.mins)}
-                              className={`flex items-center gap-2 px-5 py-3 rounded-full transition-all duration-300 ${
-                                breakDuration === preset.mins
+                              className={`flex items-center gap-2 px-5 py-3 rounded-full transition-all duration-300 ${breakDuration === preset.mins
                                   ? 'bg-black text-white shadow-md dark:bg-[#1a1a1a] dark:text-white dark:border dark:border-white/10'
                                   : 'text-black/60 dark:text-white/40 hover:text-black/90 dark:hover:text-white/80 border border-transparent hover:bg-black/5 dark:hover:bg-white/5'
-                              }`}>
+                                }`}>
                               <span className="text-xs font-bold">{preset.mins}m</span>
                               <span className={`text-[10px] tracking-wide ${breakDuration === preset.mins ? 'font-medium text-white/80' : 'font-light text-black/50 dark:text-white/40'}`}>
                                 {preset.label}
@@ -431,8 +442,7 @@ export default function FocusPage() {
                             <button
                               key={count}
                               onClick={() => handleSettingChangeRequest('count', count)}
-                              className={`flex items-center justify-center size-10 rounded-full transition-all duration-300 ${
-                                sessionCount === count
+                              className={`flex items-center justify-center size-10 rounded-full transition-all duration-300 ${sessionCount === count
                                   ? 'bg-black text-white shadow-md dark:bg-[#1a1a1a] dark:text-white dark:border dark:border-white/10'
                                   : 'text-black/60 dark:text-white/40 hover:text-black/90 dark:hover:text-white/80 border border-transparent hover:bg-black/5 dark:hover:bg-white/5'}`}>
                               <span className="text-sm font-bold">{count}</span>
