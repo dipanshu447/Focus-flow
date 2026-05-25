@@ -25,6 +25,8 @@ import ForgotPassword from './pages/ForgotPassword.tsx';
 import ResetPassword from './pages/ResetPassword.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import TermsOfService from './pages/TermsOfService.tsx';
+import { Toaster } from 'sonner';
+import useDarkMode from './hooks/useDarkMode.ts';
 
 const theme: string | null = localStorage.getItem("theme");
 if (theme === "dark") {
@@ -128,11 +130,24 @@ const router = createBrowserRouter([
   }
 ])
 
+function App() {
+  const { darkMode } = useDarkMode();
+  return (
+    <>
+      <Toaster
+        position="top-center"
+        theme={darkMode ? "dark" : "light"}
+      />
+      <RouterProvider router={router} />
+    </>
+  )
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <DarkModeProvider>
-        <RouterProvider router={router} />
+        <App />
       </DarkModeProvider>
     </GoogleOAuthProvider>
   </StrictMode>,

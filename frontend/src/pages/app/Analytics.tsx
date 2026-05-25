@@ -8,7 +8,6 @@ import { formatTime } from '../../utils/time.ts';
 import { FaLock } from "react-icons/fa";
 import { getUser } from '../../api/user.ts';
 import type { userDataObj } from '../../types/userTypes.ts';
-import useDarkMode from '../../hooks/useDarkMode.ts';
 
 type Timeframe = 'week' | 'month' | 'year' | 'all';
 
@@ -19,12 +18,11 @@ interface ChartPoint {
 }
 
 export default function AnalyticsPage() {
-    const [activeChartTab, setActiveChartTab] = useState<Timeframe>('week');
+     const [activeChartTab, setActiveChartTab] = useState<Timeframe>('week');
     const [hoveredPoint, setHoveredPoint] = useState<ChartPoint | null>(null);
     const [hoveredHeatmap, setHoveredHeatmap] = useState<{ date: string, duration: string } | null>(null);
     const { sessions }: FocusContextType = useFocus();
     const [userData, setUserData] = useState<userDataObj | null>(null);
-    const { setTheme } = useDarkMode();
 
     const currentYear = new Date();
     const userjoinedAt = userData?.createdAt && new Date(userData.createdAt);
@@ -36,7 +34,6 @@ export default function AnalyticsPage() {
         async function fetchUser() {
             const data = await getUser();
             setUserData(data.user);
-            if (data.user.theme) setTheme(data.user.theme);
         }
         fetchUser()
     }, []);
@@ -265,44 +262,43 @@ export default function AnalyticsPage() {
     };
 
     return (
-        <div className="h-screen w-full text-[#e5e5e5] font-sans selection:bg-white/20 flex flex-col overflow-hidden relative">
-            <div className="flex-1 overflow-y-auto custom-scrollbar w-full px-8 py-16 md:px-16 lg:px-24 xl:px-32 relative">
+        <div className="h-screen w-full text-[#111] dark:text-[#e5e5e5] font-sans selection:bg-black/10 dark:selection:bg-white/20 flex flex-col overflow-hidden relative transition-colors duration-500">
+            <div className="flex-1 overflow-y-auto custom-scrollbar w-full px-6 md:px-12 lg:px-24 pt-12 md:pt-16 pb-24 relative">
                 <motion.div
-                    variants={pageVariants} initial="hidden" animate="visible"
-                    className="max-w-6xl mx-auto flex flex-col gap-20 pb-20 relative">
+                    variants={pageVariants} 
+                    initial="hidden" 
+                    animate="visible"
+                    className="max-w-5xl mx-auto flex flex-col gap-16 md:gap-20 relative">
                     <motion.header variants={itemVariants} className="flex flex-col gap-3">
-                        <h1 className="text-4xl md:text-5xl font-light tracking-wide text-white/90">Reflection</h1>
-                        <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/30 font-medium">
+                        <h1 className="text-4xl md:text-5xl font-light tracking-tight text-black/90 dark:text-white/90">Reflection</h1>
+                        <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-black/40 dark:text-white/40 font-bold">
                             Consistency builds reality.
                         </p>
                     </motion.header>
-                    {/* ================= OVERVIEW METRICS ================= */}
                     <motion.section variants={itemVariants} className="flex flex-col gap-8">
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-8">
                             {overviewStats.map((stat, i) => (
                                 <div key={i} className="flex flex-col gap-2 cursor-default">
-                                    <span className="text-[9px] tracking-[0.3em] uppercase text-white/30">{stat.label}</span>
+                                    <span className="text-[9px] tracking-[0.3em] uppercase text-black/40 dark:text-white/40 font-bold">{stat.label}</span>
                                     <div className="flex flex-col">
-                                        <span className="text-2xl md:text-3xl font-light tracking-tight text-white/80">{stat.value}</span>
+                                        <span className="text-2xl md:text-3xl font-light tracking-tight text-black/90 dark:text-white/90">{stat.value}</span>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </motion.section>
-                    {/* ================= MAIN ANALYTICS GRAPH ================= */}
-                    <motion.section variants={itemVariants} className="flex flex-col gap-8">
+                    <motion.section variants={itemVariants} className="flex flex-col gap-6 md:gap-8">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                            <h3 className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Focus Rhythm</h3>
-                            {/* Tab Filters */}
-                            <div className="flex items-center gap-2">
+                            <h3 className="text-[10px] tracking-[0.3em] text-black/40 dark:text-white/40 uppercase font-bold">Focus Rhythm</h3>
+                            <div className="flex flex-wrap items-center gap-2">
                                 {chartTabs.map((tab) => (
                                     <button
                                         key={tab.id}
                                         onClick={() => setActiveChartTab(tab.id)}
-                                        className={`relative px-4 py-2 rounded-full text-[9px] uppercase tracking-widest font-medium transition-colors flex items-center gap-2
-                                ${activeChartTab === tab.id ? 'text-white' : 'text-white/40 hover:text-white/70'}`}>
+                                        className={`relative px-4 py-2 rounded-full text-[9px] uppercase tracking-widest font-bold transition-colors flex items-center gap-2
+                                        ${activeChartTab === tab.id ? 'text-black dark:text-white' : 'text-black/40 hover:text-black/70 dark:text-white/40 dark:hover:text-white/70'}`}>
                                         {activeChartTab === tab.id && (
-                                            <motion.div layoutId="chartTab" className="absolute inset-0 bg-neutral-900 border border-neutral-900 rounded-full z-[-1]" />
+                                            <motion.div layoutId="chartTab" className="absolute inset-0 bg-neutral-200 dark:bg-neutral-900 rounded-full z-[-1]" />
                                         )}
                                         {tab.locked && <FiLock size={10} className="opacity-50" />}
                                         {tab.label}
@@ -310,151 +306,150 @@ export default function AnalyticsPage() {
                                 ))}
                             </div>
                         </div>
-                        {/* Immersive Wave Chart Area */}
-                        <div className="relative w-full h-80 rounded-4xl bg-linear-to-b from-[#0a0a0a] to-transparent border border-neutral-900 flex flex-col group cursor-crosshair">
-                            {showRnAnalytics && <div className='absolute inset-0 backdrop-blur-xs z-10 rounded-4xl flex flex-col items-center justify-center gap-2 text-neutral-500'>
-                                <FaLock className='size-6' />
-                                {activeChartTab === "year" ? "Yearly insights become available next calendar year." : activeChartTab === "all" && "All-time analytics unlock after one year of focus history."}
-                            </div>}
+                        <div className="relative w-full h-64 md:h-80 rounded-2xl md:rounded-4xl bg-linear-to-b from-neutral-100 to-white dark:from-neutral-950 dark:to-neutral-950 border border-black/5 dark:border-white/5 flex flex-col group cursor-crosshair overflow-hidden transition-colors duration-500">
+                            {showRnAnalytics && (
+                                <div className='absolute inset-0 backdrop-blur-sm bg-white/50 dark:bg-[#050505]/50 z-20 flex flex-col items-center justify-center gap-3 text-black/60 dark:text-white/60 p-6 text-center'>
+                                    <FaLock className='w-5 h-5 md:w-6 md:h-6' />
+                                    <p className="text-xs md:text-sm max-w-xs font-medium">
+                                        {activeChartTab === "year" ? "Yearly insights become available next calendar year." : activeChartTab === "all" && "All-time analytics unlock after one year of focus history."}
+                                    </p>
+                                </div>
+                            )}
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={activeChartTab}
                                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
                                     className="relative flex-1 w-full">
-                                    {/* Grid Lines */}
-                                    <div className="absolute inset-0 flex flex-col justify-between py-10 px-8 pointer-events-none opacity-[0.15]">
-                                        {[1, 2, 3].map(i => <div key={i} className="w-full h-px bg-white/5" />)}
+                                    <div className="absolute inset-0 flex flex-col justify-between py-10 px-4 md:px-8 pointer-events-none opacity-[0.15] dark:opacity-[0.1]">
+                                        {[1, 2, 3].map(i => <div key={i} className="w-full h-px bg-black dark:bg-white" />)}
                                     </div>
-                                    {/* Smooth Wave SVG */}
                                     <div className="w-full h-full relative z-0">
-                                        <svg viewBox="0 0 1000 300" preserveAspectRatio="none" className="w-full h-[85%] absolute bottom-8">
+                                        <svg viewBox="0 0 1000 300" preserveAspectRatio="none" className="w-full h-[85%] absolute bottom-8 text-black dark:text-white transition-colors duration-500">
                                             <defs>
                                                 <linearGradient id="waveGradient" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stopColor="rgba(255, 255, 255, 0.08)" />
-                                                    <stop offset="100%" stopColor="rgba(255, 255, 255, 0.0)" />
+                                                    <stop offset="0%" stopColor="currentColor" stopOpacity="0.1" />
+                                                    <stop offset="100%" stopColor="currentColor" stopOpacity="0.0" />
                                                 </linearGradient>
                                             </defs>
-                                            {/* Gradient Fill */}
                                             <path
                                                 d={activePath ? `${activePath} L 1000,300 L 0,300 Z` : ''}
                                                 fill="url(#waveGradient)"
                                                 className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                                            {/* Crisp Line */}
                                             <path
                                                 d={activePath || ''}
                                                 fill="none"
-                                                stroke="rgba(255, 255, 255, 0.4)"
+                                                stroke="currentColor"
                                                 strokeWidth="2"
                                                 vectorEffect="non-scaling-stroke"
-                                                className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-60 group-hover:opacity-100" />
+                                                className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-30 dark:opacity-40 group-hover:opacity-60 dark:group-hover:opacity-80" />
                                         </svg>
-                                        {/* Interactive Hover Zones overlaying the SVG */}
-                                        <div className="absolute inset-x-8 bottom-8 top-0 flex z-10">
+                                        <div className="absolute inset-x-4 md:inset-x-8 bottom-8 top-0 flex z-10">
                                             {activeData.map((d, i) => (
                                                 <div
                                                     key={i}
                                                     className="flex-1 h-full relative"
                                                     onMouseEnter={() => setHoveredPoint(d)}
                                                     onMouseLeave={() => setHoveredPoint(null)}>
-                                                    {/* Data point visual marker (visible on hover) */}
-                                                    <div className={`absolute bottom-0 w-px h-full bg-white/10 left-1/2 -translate-x-1/2 transition-opacity duration-300 pointer-events-none ${hoveredPoint?.label === d.label ? 'opacity-100' : 'opacity-0'}`} />
+                                                    <div className={`absolute bottom-0 w-px h-full bg-black/10 dark:bg-white/10 left-1/2 -translate-x-1/2 transition-opacity duration-300 pointer-events-none ${hoveredPoint?.label === d.label ? 'opacity-100' : 'opacity-0'}`} />
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
-                                    {/* Dynamic X-Axis Labels */}
-                                    <div className="absolute bottom-0 inset-x-8 h-8 flex justify-between items-center pointer-events-none">
+                                    <div className="absolute bottom-0 inset-x-4 md:inset-x-8 h-8 flex justify-between items-center pointer-events-none">
                                         {activeData.map((d, i) => (
-                                            <span key={i} className={`flex-1 text-center text-[9px] uppercase tracking-widest transition-colors duration-300 ${hoveredPoint?.label === d.label ? 'text-white/80' : 'text-white/30'}`}>
+                                            <span key={i} className={`flex-1 text-center text-[8px] md:text-[9px] uppercase tracking-widest transition-colors duration-300 ${hoveredPoint?.label === d.label ? 'text-black/80 dark:text-white/80 font-bold' : 'text-black/50 dark:text-white/30'}`}>
                                                 {d.label}
                                             </span>
                                         ))}
                                     </div>
                                 </motion.div>
                             </AnimatePresence>
-                            {/* Floating Global Tooltip */}
                             <AnimatePresence>
                                 {hoveredPoint && (
-                                    <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="absolute top-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-[#111] border border-white/10 rounded-xl shadow-2xl pointer-events-none z-20 flex items-center gap-3 backdrop-blur-md">
-                                        <span className="text-[10px] text-white/40 uppercase tracking-widest">{hoveredPoint.label}</span>
-                                        <span className="text-white/20">—</span>
-                                        <span className="text-xs font-light text-white/90">{hoveredPoint.displayValue}</span>
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: 5 }} 
+                                        animate={{ opacity: 1, y: 0 }} 
+                                        exit={{ opacity: 0 }} 
+                                        transition={{ duration: 0.2 }} 
+                                        className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-xl shadow-xl dark:shadow-2xl pointer-events-none z-30 flex items-center gap-3 backdrop-blur-md">
+                                        <span className="text-[10px] text-black/50 dark:text-white/40 uppercase tracking-widest font-bold">{hoveredPoint.label}</span>
+                                        <span className="text-black/20 dark:text-white/20">—</span>
+                                        <span className="text-xs font-medium text-black/90 dark:text-white/90">{hoveredPoint.displayValue}</span>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
                     </motion.section>
-                    {/* ================= LOWER SECTIONS ================= */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12">
-                        {/* Left: Behavioral Insights & Recent Sessions */}
-                        <div className="lg:col-span-7 flex flex-col gap-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                        <div className="lg:col-span-7 flex flex-col gap-12">
                             <motion.section variants={itemVariants} className="flex flex-col gap-6">
-                                <h3 className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Recent Sessions</h3>
+                                <h3 className="text-[10px] tracking-[0.3em] text-black/50 dark:text-white/40 uppercase font-bold">Recent Sessions</h3>
                                 <div className="flex flex-col gap-2">
-                                    {
-                                        recentSessions.length > 1 ? (
-                                            recentSessions.map((session) => (
-                                                <div key={session.id} className="flex items-center justify-between p-4 rounded-xl hover:bg-neutral-950 transition-colors cursor-default border border-transparent">
-                                                    <span className="text-sm font-light text-white/70">{session?.taskTitle ? session.taskTitle : "No Task Sesstion"}</span>
-                                                    <span className="text-xs font-mono text-white/40">{formatTime(session.duration)}</span>
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <div className='pt-15 text-xs text-center text-neutral-500'>
-                                                Start a focus session to begin building your reflection history.
+                                    {recentSessions.length > 0 ? (
+                                        recentSessions.map((session) => (
+                                            <div key={session.id} className="flex items-center justify-between p-4 rounded-xl hover:bg-neutral-200 dark:hover:bg-neutral-950 transition-colors cursor-default border border-transparent">
+                                                <span className="text-sm font-light text-black dark:text-white/90 truncate mr-4">
+                                                    {session?.taskTitle ? session.taskTitle : "Independent Session"}
+                                                </span>
+                                                <span className="text-xs font-medium text-black/40 dark:text-white/40 shrink-0">
+                                                    {formatTime(session.duration)}
+                                                </span>
                                             </div>
-                                        )
-                                    }
+                                        ))
+                                    ) : (
+                                        <div className='pt-8 pb-4 text-xs text-center text-black/40 dark:text-white/40 font-light'>
+                                            Start a focus session to begin building your reflection history.
+                                        </div>
+                                    )}
                                 </div>
                             </motion.section>
                         </div>
-                        {/* Right: Heatmap Fingerprint */}
-                        <div className="lg:col-span-5 flex flex-col gap-16">
+                        <div className="lg:col-span-5 flex flex-col gap-12">
                             <motion.section variants={itemVariants} className="flex flex-col gap-6 relative">
                                 <div className="flex flex-col gap-2">
-                                    <h3 className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-medium">Consistency Fingerprint</h3>
-                                    <p className="text-xs font-light text-white/30">Last 12 weeks.</p>
+                                    <h3 className="text-[10px] tracking-[0.3em] text-black/50 dark:text-white/40 uppercase font-bold">Consistency Fingerprint</h3>
+                                    <p className="text-xs font-light text-black/50 dark:text-white/40">Last 12 weeks.</p>
                                 </div>
-                                <div className="p-8 rounded-3xl bg-[#0a0a0a] border border-neutral-900 flex flex-col items-center relative">
-                                    {/* Heatmap Tooltip overlay */}
+                                <div className="p-6 md:p-8 rounded-4xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/5 flex flex-col items-center relative transition-colors duration-500">
                                     <AnimatePresence>
                                         {hoveredHeatmap && (
                                             <motion.div
-                                                initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
-                                                className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 bg-[#111] border border-white/10 rounded-xl shadow-2xl pointer-events-none z-30 flex items-center gap-3 backdrop-blur-md w-max">
-                                                <span className="text-[10px] text-white/40 uppercase tracking-widest">{hoveredHeatmap.date}</span>
-                                                <span className="text-white/20">—</span>
-                                                <span className="text-xs font-light text-white/90">{hoveredHeatmap.duration}</span>
+                                                initial={{ opacity: 0, y: 5 }} 
+                                                animate={{ opacity: 1, y: 0 }} 
+                                                exit={{ opacity: 0 }} 
+                                                transition={{ duration: 0.2 }}
+                                                className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-xl shadow-xl dark:shadow-2xl pointer-events-none z-30 flex items-center gap-3 backdrop-blur-md w-max">
+                                                <span className="text-[10px] text-black/50 dark:text-white/40 uppercase tracking-widest font-bold">{hoveredHeatmap.date}</span>
+                                                <span className="text-black/20 dark:text-white/20">—</span>
+                                                <span className="text-xs font-medium text-black/90 dark:text-white/90">{hoveredHeatmap.duration}</span>
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-                                    <div className="flex gap-0.75 overflow-x-auto hide-scrollbar w-full justify-center">
-                                        {/* 7 Rows (Days) x 12 Cols (Weeks) Grid */}
-                                        <div className="grid grid-rows-7 grid-flow-col gap-0.75">
+                                    <div className="flex gap-1 overflow-x-auto hide-scrollbar w-full justify-center">
+                                        <div className="grid grid-rows-7 grid-flow-col gap-1">
                                             {heatmapWeeks.map((week, wIdx) => (
                                                 week.map((day, dIdx) => (
                                                     <div
                                                         key={`${wIdx}-${dIdx}`}
                                                         onMouseEnter={() => setHoveredHeatmap({ date: day.dateStr, duration: day.duration })}
                                                         onMouseLeave={() => setHoveredHeatmap(null)}
-                                                        className={`w-3.5 h-3.5 rounded-xs transition-colors duration-300 cursor-crosshair
-                                                        ${day.intensity === 0 ? 'bg-neutral-900 hover:bg-neutral-800' : ''}
-                                                        ${day.intensity === 1 ? 'bg-neutral-800 hover:bg-neutral-700' : ''}
-                                                        ${day.intensity === 2 ? 'bg-neutral-600 hover:bg-neutral-500' : ''}
-                                                        ${day.intensity === 3 ? 'bg-neutral-400 hover:neutral-300' : ''}
-                                                        `}
-                                                    />
+                                                        className={`w-3 h-3 md:w-3.5 md:h-3.5 rounded-[3px] transition-colors duration-300 cursor-crosshair
+                                                        ${day.intensity === 0 ? 'bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10' : ''}
+                                                        ${day.intensity === 1 ? 'bg-black/20 hover:bg-black/30 dark:bg-white/20 dark:hover:bg-white/30' : ''}
+                                                        ${day.intensity === 2 ? 'bg-black/50 hover:bg-black/60 dark:bg-white/50 dark:hover:bg-white/60' : ''}
+                                                        ${day.intensity === 3 ? 'bg-black/80 hover:bg-black/90 dark:bg-white/80 dark:hover:bg-white/90' : ''}
+                                                        `} />
                                                 ))
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3 mt-8 text-[9px] uppercase tracking-[0.2em] text-white/20 w-full justify-between px-2">
+                                    <div className="flex items-center gap-3 mt-8 text-[9px] uppercase tracking-[0.2em] text-black/40 dark:text-white/30 font-bold w-full justify-between px-2">
                                         <span>Less</span>
-                                        <div className="flex items-center gap-1.5 opacity-50">
-                                            <div className="w-2.5 h-2.5 rounded-xs bg-neutral-900" />
-                                            <div className="w-2.5 h-2.5 rounded-xs bg-neutral-800" />
-                                            <div className="w-2.5 h-2.5 rounded-xs bg-neutral-600" />
-                                            <div className="w-2.5 h-2.5 rounded-xs bg-neutral-400" />
+                                        <div className="flex items-center gap-1.5 opacity-80">
+                                            <div className="w-2.5 h-2.5 rounded-xs bg-black/5 dark:bg-white/5" />
+                                            <div className="w-2.5 h-2.5 rounded-xs bg-black/20 dark:bg-white/20" />
+                                            <div className="w-2.5 h-2.5 rounded-xs bg-black/50 dark:bg-white/50" />
+                                            <div className="w-2.5 h-2.5 rounded-xs bg-black/80 dark:bg-white/80" />
                                         </div>
                                         <span>More</span>
                                     </div>

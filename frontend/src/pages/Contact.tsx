@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import api from '../service/api.ts';
+import { toast } from "sonner";
 
 type FormResObj = {
     name: string
@@ -23,65 +24,122 @@ export default function Contact() {
         try {
             await api.post('/contact', formData);
             setStatus('success');
+            toast.success("Message sent successfully");
             setFormData({ name: '', email: '', message: '' });
         } catch (error) {
-            console.error("Submission failed:", error);
+            console.error("Submission failed:");
             setStatus('error');
+            toast.error("Failed to send message");
+        } finally {
+            setStatus('idle');
         }
     }
 
     return (
-        <div className="relative z-2 flex flex-col w-full mb-20">
-            <div className="relative my-20 dark:text-white pt-20 pb-20 flex flex-col px-20 w-5xl">
-                <span className="uppercase text-neutral-500 tracking-wider text-sm">Contact</span>
-                <h1 className="text-9xl font-black my-10 tracking-tight leading-25 text-black dark:text-white text-left">Let's talk.</h1>
-                <p className="mt-2 w-xl text-neutral-400 leading-7">A question, a thought, or just a hello.<br />We read every message.</p>
+        <div className="relative z-2 flex flex-col w-full transition-colors duration-500 overflow-hidden min-h-screen grayscale">
+            <div className="relative pt-32 md:pt-40 pb-16 md:pb-24 flex flex-col px-6 md:px-12 lg:px-24 w-full">
+                <span className="uppercase text-black/40 dark:text-white/40 tracking-[0.2em] font-medium text-[10px] md:text-xs mb-4">
+                    Contact
+                </span>
+                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black my-4 tracking-tight leading-[1.1] text-black/90 dark:text-white/90 text-left">
+                    Let's talk.
+                </h1>
+                <p className="mt-4 text-base md:text-lg font-light text-black/60 dark:text-white/60 leading-relaxed">
+                    A question, a thought, or just a hello.<br className="hidden md:block" />
+                    We read every message.
+                </p>
             </div>
-            <div className="px-20 py-20 flex border-t border-t-neutral-800 flex-col">
-                <div className="text-black dark:text-white flex flex-col border-b border-b-neutral-800 pb-15">
-                    <span className="uppercase text-neutral-500 tracking-wider text-sm">Reach us directly</span>
-                    <a href="mailto:hello@focusflow.app" className='text-black dark:text-neutral-300 dark:hover:text-white mt-6 font-semibold text-4xl transition-all duration-200 ease'>hello@focusflow.app</a>
+            <div className="px-6 md:px-12 lg:px-24 py-16 md:py-24 flex flex-col lg:flex-row gap-16 lg:gap-24 border-y border-black/10 dark:border-white/10 w-full mb-20">
+                <div className="flex flex-col w-full lg:w-1/2">
+                    <div className="flex flex-col border-b border-black/5 dark:border-white/5 pb-10 md:pb-12">
+                        <span className="uppercase text-black/40 dark:text-white/40 tracking-[0.2em] font-medium text-[10px] md:text-xs">
+                            Reach us directly
+                        </span>
+                        <a
+                            href="mailto:dipanshusahu447@gmail.com"
+                            className="text-black/90 dark:text-white/90 hover:text-black/60 dark:hover:text-white/60 mt-4 md:mt-6 font-semibold text-3xl transition-colors duration-300 ease-in-out">
+                            dipanshusahu447@gmail.com
+                        </a>
+                    </div>
+                    <div className="flex flex-col border-b border-black/5 dark:border-white/5 py-10 md:py-12">
+                        <span className="uppercase text-black/40 dark:text-white/40 tracking-[0.2em] font-medium text-[10px] md:text-xs mb-4 md:mb-6">
+                            Response time
+                        </span>
+                        <ul className="flex flex-col gap-3">
+                            <li className="flex items-start gap-3 text-sm md:text-base font-light text-black/60 dark:text-white/60">
+                                We typically respond within 24-48 hours.
+                            </li>
+                            <li className="flex items-start gap-3 text-sm md:text-base font-light text-black/60 dark:text-white/60">
+                                No auto-responders. A real human reads your message.
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="flex flex-col border-b border-black/5 dark:border-white/5 py-10 md:py-12">
+                        <span className="uppercase text-black/40 dark:text-white/40 tracking-[0.2em] font-medium text-[10px] md:text-xs mb-4 md:mb-6">
+                            Topics
+                        </span>
+                        <ul className="flex flex-col gap-4">
+                            {["General questions", "Feature suggestions", "Bug reports", "Press & partnerships"].map((topic, i) => (
+                                <li key={i} className="flex items-center gap-4 text-sm md:text-base font-light text-black/60 dark:text-white/60">
+                                    <div className="p-1.5 rounded-full bg-black/5 dark:bg-white/5 shrink-0">
+                                        <FaArrowRight className="w-3 h-3 text-black/40 dark:text-white/40" />
+                                    </div>
+                                    {topic}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
-                <div className="text-black dark:text-white flex flex-col border-b border-b-neutral-800 py-15">
-                    <span className="uppercase text-neutral-500 tracking-wider text-sm">Response time</span>
-                    <li className="flex items-center gap-3 text-sm text-neutral-300 mt-6">We typically respond within 24–48 hours.</li>
-                    <li className="mt-1 flex items-center gap-3 text-sm text-neutral-300">No auto-responders. A real human reads your message.</li>
+                <div className="flex flex-col w-full lg:w-1/2 mt-8 lg:mt-0 ">
+                    <span className="uppercase text-black/40 dark:text-white/40 tracking-[0.2em] font-medium text-[10px] md:text-xs mb-6">
+                        Send a message
+                    </span>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
+                        <input
+                            value={formData.name}
+                            onChange={handleChange}
+                            name="name"
+                            type="text"
+                            placeholder="Your name"
+                            className="w-full px-5 py-4 rounded-2xl bg-neutral-200 dark:bg-neutral-900 text-black/90 dark:text-white/90 placeholder-black/40 dark:placeholder-white/40 border border-transparent focus:outline-none focus:border-black/20 dark:focus:border-white/20 transition-colors duration-300"
+                            required />
+                        <input
+                            value={formData.email}
+                            onChange={handleChange}
+                            name="email"
+                            type="email"
+                            placeholder="Email address"
+                            className="w-full px-5 py-4 rounded-2xl bg-neutral-200 dark:bg-neutral-900 text-black/90 dark:text-white/90 placeholder-black/40 dark:placeholder-white/40 border border-transparent focus:outline-none focus:border-black/20 dark:focus:border-white/20 transition-colors duration-300"
+                            required />
+                        <textarea
+                            value={formData.message}
+                            onChange={handleChange}
+                            name="message"
+                            placeholder="Your message"
+                            className="w-full px-5 py-4 rounded-2xl bg-neutral-200 dark:bg-neutral-900 text-black/90 dark:text-white/90 placeholder-black/40 dark:placeholder-white/40 border border-transparent focus:outline-none focus:border-black/20 dark:focus:border-white/20 transition-colors duration-300 resize-y min-h-40"
+                            required />
+
+                        <button
+                            type="submit"
+                            disabled={status === "loading"}
+                            className="w-full mt-4 px-6 py-4 rounded-full bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-white/90 disabled:opacity-70 disabled:cursor-not-allowed font-medium transition-all duration-300 shadow-xl hover:-translate-y-0.5 cursor-pointer">
+                            {status === 'loading' ? 'Sending...' : 'Send message'}
+                        </button>
+                        <div className="min-h-6 mt-2">
+                            {status === 'success' && (
+                                <p className="text-green-600 dark:text-green-400 text-sm font-medium text-center">
+                                    Message sent successfully! We will get back to you soon.
+                                </p>
+                            )}
+                            {status === 'error' && (
+                                <p className="text-red-600 dark:text-red-400 text-sm font-medium text-center">
+                                    Something went wrong. Please try again later.
+                                </p>
+                            )}
+                        </div>
+                    </form>
                 </div>
-                <div className="text-black dark:text-white flex flex-col border-b border-b-neutral-800 w-full py-10">
-                    <span className="uppercase text-neutral-500 tracking-wider text-sm">Topics</span>
-                    <ul className="text-black dark:text-white mt-3 flex flex-col gap-1.5 mb-10">
-                        <li className="mt-1 flex items-center gap-3 text-sm text-neutral-400">
-                            <FaArrowRight className="size-3 fill-neutral-600" />
-                            General questions
-                        </li>
-                        <li className="mt-1 flex items-center gap-3 text-sm text-neutral-400">
-                            <FaArrowRight className="size-3 fill-neutral-600" />
-                            Feature suggestions
-                        </li>
-                        <li className="mt-1 flex items-center gap-3 text-sm text-neutral-400">
-                            <FaArrowRight className="size-3 fill-neutral-600" />
-                            Bug reports
-                        </li>
-                        <li className="mt-1 flex items-center gap-3 text-sm text-neutral-400">
-                            <FaArrowRight className="size-3 fill-neutral-600" />
-                            Press & partnerships
-                        </li>
-                    </ul>
-                </div>
-                <span className="text-neutral-500 text-sm mt-10">"We built FocusFlow because we were tired of tools that promised productivity but delivered distraction."</span>
-            </div>
-            <div className="px-20 pt-10 pb-20 flex flex-col border-b-neutral-800 border-b">
-                <span className="uppercase text-neutral-500 tracking-wider text-sm">Send a message</span>
-                <form onSubmit={handleSubmit}>
-                    <input value={formData.name} onChange={handleChange} name="name" type="text" placeholder="Your name" className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" required />
-                    <input value={formData.email} onChange={handleChange} name="email" type="text" placeholder="Email address" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" required />
-                    <textarea value={formData.message} onChange={handleChange} name="message" placeholder="Your message" className="w-full mt-5 px-4 py-3 rounded-xl bg-neutral-900 text-white focus:outline-none focus:ring-1 focus:ring-neutral-500" required rows={4} cols={4} />
-                    <button type="submit" disabled={status === "loading"} className="w-full mt-8 px-4 py-3 rounded-xl bg-neutral-100 text-black hover:bg-neutral-200 cursor-pointer transition-all duration-200 ease text-sm">{status === 'loading' ? 'Sending...' : 'Send message'}</button>
-                    {/* Status Messages */}
-                    {status === 'success' && <p className="mt-4 text-green-400 text-sm">Message sent successfully! We will get back to you soon.</p>}
-                    {status === 'error' && <p className="mt-4 text-red-400 text-sm">Something went wrong. Please try again later.</p>}
-                </form>
             </div>
         </div>
-    )
+    );
 }

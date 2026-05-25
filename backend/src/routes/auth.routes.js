@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import gclient from '../config/oauth.js';
 import crypto from 'crypto';
 import { resend } from "../config/resend.js";
+import { sendWelcomeEmail } from "../services/email.service.js";
 
 const router = express.Router();
 
@@ -32,6 +33,10 @@ router.post("/register", async (req, res) => {
         email,
         password: hashedPassword
       }
+    });
+    await sendWelcomeEmail({
+      email: user.email,
+      name: user.name
     });
 
     const token = jwt.sign({ userId: user.id, }, process.env.JWT_SECRET, { expiresIn: "7d", });
@@ -124,6 +129,11 @@ router.post("/google", async (req, res) => {
           googleId: sub,
           avatarUrl: picture,
         },
+      });
+
+      await sendWelcomeEmail({
+        email: user.email,
+        name: user.name,
       });
     }
 

@@ -16,3 +16,10 @@ export type userDataObj = {
   theme: "dark" | "light",
   createdAt: string
 }
+
+export type userStoredObj = {
+    id?: string
+    name?: string,
+    email?: string
+    theme?: string
+}
