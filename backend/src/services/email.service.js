@@ -1,9 +1,9 @@
-import { resend } from "../config/resend.js";
+import { transporter } from "../config/mail.js";
 
 export const sendWelcomeEmail = async ({ email, name }) => {
   try {
-    await resend.emails.send({
-      from: "onboarding@resend.dev",
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
       to: email,
       subject: "Welcome to FocusFlow",
       html: `
@@ -91,8 +91,6 @@ export const sendWelcomeEmail = async ({ email, name }) => {
       </p>
 
       <div style="
-        display:grid;
-        gap:16px;
         margin-bottom:42px;
       ">
 
@@ -101,6 +99,7 @@ export const sendWelcomeEmail = async ({ email, name }) => {
           border:1px solid #1d1d1d;
           border-radius:18px;
           padding:22px;
+margin-bottom:16px;
         ">
           <h3 style="
             margin:0 0 10px;
@@ -125,6 +124,7 @@ export const sendWelcomeEmail = async ({ email, name }) => {
           border:1px solid #1d1d1d;
           border-radius:18px;
           padding:22px;
+margin-bottom:16px;
         ">
           <h3 style="
             margin:0 0 10px;
@@ -243,12 +243,12 @@ export const sendWelcomeEmail = async ({ email, name }) => {
 };
 
 export const sendContactEmail = async ({ name, email, message }) => {
-    return await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: process.env.CONTACT_RECEIVER_EMAIL,
-        subject: `New FocusFlow Contact Message from ${name}`,
-        replyTo: email,
-        html: `
+  return await transporter.sendMail({
+    from: "teamfocusfloow@gmail.com",
+    to: process.env.EMAIL_USER,
+    subject: `New FocusFlow Contact Message from ${name}`,
+    replyTo: email,
+    html: `
 <div style="
   background:#000000;
   padding:40px 20px;
@@ -314,8 +314,6 @@ export const sendContactEmail = async ({ name, email, message }) => {
 
       <!-- User Info Cards -->
       <div style="
-        display:grid;
-        gap:16px;
         margin-bottom:32px;
       ">
 
@@ -324,6 +322,7 @@ export const sendContactEmail = async ({ name, email, message }) => {
           border:1px solid #1d1d1d;
           border-radius:16px;
           padding:18px 20px;
+margin-bottom:16px;
         ">
           <p style="
             margin:0 0 8px;
@@ -350,6 +349,7 @@ export const sendContactEmail = async ({ name, email, message }) => {
           border:1px solid #1d1d1d;
           border-radius:16px;
           padding:18px 20px;
+margin-bottom:16px;
         ">
           <p style="
             margin:0 0 8px;
@@ -378,7 +378,7 @@ export const sendContactEmail = async ({ name, email, message }) => {
         background:#111111;
         border:1px solid #1d1d1d;
         border-radius:20px;
-        padding:28px;
+        padding:18px 20px;
       ">
 
         <p style="
@@ -442,5 +442,5 @@ export const sendContactEmail = async ({ name, email, message }) => {
 
 </div>
 `
-    });
+  });
 };

@@ -6,6 +6,7 @@ import gclient from '../config/oauth.js';
 import crypto from 'crypto';
 import { resend } from "../config/resend.js";
 import { sendWelcomeEmail } from "../services/email.service.js";
+import { transporter } from "../config/mail.js";
 
 const router = express.Router();
 
@@ -189,8 +190,8 @@ router.post("/forgot-password", async (req, res) => {
 
     const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
 
-    await resend.emails.send({
-      from: "onboarding@resend.dev",
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
       // from: process.env.RESEND_FROM_EMAIL,
       to: email,
       subject: "Reset Your FocusFlow Password",
