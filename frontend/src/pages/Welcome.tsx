@@ -49,7 +49,7 @@ export default function Welcome() {
 
     return (
         <div className="relative z-2 pb-20 flex flex-col bg-top bg-no-repeat text-neutral-950 dark:text-[#e5e5e5] w-full transition-colors duration-500 overflow-hidden">
-            <div className="w-full px-6 py-24 md:py-32 lg:py-35 text-center flex flex-col items-center gap-1 self-center relative z-10 border-b border-black/10 dark:border-white/10">
+            <div className="w-full px-6 py-32 lg:py-35 text-center flex flex-col items-center gap-1 self-center relative z-10 border-b border-black/10 dark:border-white/10">
                 <div
                     className="absolute inset-0 bg-cover bg-center mask-[linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] -z-10 opacity-[0.15] dark:opacity-15 pointer-events-none"
                     style={{ backgroundImage: `url(${heroBg})` }}

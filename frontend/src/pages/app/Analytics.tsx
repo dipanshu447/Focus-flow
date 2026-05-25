@@ -262,13 +262,13 @@ export default function AnalyticsPage() {
     };
 
     return (
-        <div className="h-screen w-full text-[#111] dark:text-[#e5e5e5] font-sans selection:bg-black/10 dark:selection:bg-white/20 flex flex-col overflow-hidden relative transition-colors duration-500">
+        <div className="h-screen w-full text-[#111] dark:text-[#e5e5e5] font-sans selection:bg-black/10 dark:selection:bg-white/20 flex flex-col overflow-hidden relative transition-colors duration-500 mt-10 sm:mt-0">
             <div className="flex-1 overflow-y-auto custom-scrollbar w-full px-6 md:px-12 lg:px-24 pt-12 md:pt-16 pb-24 relative">
                 <motion.div
                     variants={pageVariants} 
                     initial="hidden" 
                     animate="visible"
-                    className="max-w-5xl mx-auto flex flex-col gap-16 md:gap-20 relative">
+                    className="max-w-5xl mx-auto flex flex-col gap-10 md:gap-20 relative">
                     <motion.header variants={itemVariants} className="flex flex-col gap-3">
                         <h1 className="text-4xl md:text-5xl font-light tracking-tight text-black/90 dark:text-white/90">Reflection</h1>
                         <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-black/40 dark:text-white/40 font-bold">

@@ -115,7 +115,7 @@ export default function ProfilePage() {
   );
 
   return (
-    <div className="h-screen w-full overflow-hidden text-[#111] dark:text-[#e5e5e5] font-sans transition-colors duration-500 selection:bg-black/10 dark:selection:bg-white/20">
+    <div className="h-screen w-full overflow-hidden text-[#111] dark:text-[#e5e5e5] font-sans transition-colors duration-500 selection:bg-black/10 dark:selection:bg-white/20 mt-10 sm:mt-0">
       <AnimatePresence>
         {showLogoutModal && (
           <ConfirmationModal

@@ -80,7 +80,7 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="h-screen w-full text-[#111] dark:text-[#e5e5e5] font-sans selection:bg-black/10 dark:selection:bg-white/20 relative overflow-hidden flex flex-col transition-colors duration-500">
+    <div className="h-screen w-full text-[#111] dark:text-[#e5e5e5] font-sans selection:bg-black/10 dark:selection:bg-white/20 relative overflow-hidden flex flex-col transition-colors duration-500 mt-10 sm:mt-0">
       <div className="flex-1 overflow-y-auto custom-scrollbar w-full px-6 md:px-12 lg:px-24 pt-12 md:pt-16 max-w-5xl mx-auto pb-24">
         <motion.header
           initial={{ opacity: 0, y: -10 }} 
