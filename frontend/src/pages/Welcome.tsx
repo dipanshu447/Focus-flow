@@ -142,7 +142,7 @@ export default function Welcome() {
                 </p>
                 <div className="w-full max-w-5xl bg-black/2 dark:bg-white/2 mt-12 md:mt-20 overflow-hidden rounded-2xl md:rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl dark:shadow-[0_20px_60px_rgba(255,255,255,0.03)] transition-all duration-500">
                     <img 
-                        className="w-full h-auto object-cover scale-100 hover:scale-[1.02] transition-transform duration-700 ease-in-out grayscale" 
+                        className="w-full h-auto object-cover scale-100 hover:scale-[1.02] transition-transform duration-700 ease-in-out grayscale invert-0 dark:invert" 
                         src={preview} 
                         alt="FocusFlow Interface Preview" 
                         loading="lazy"/>
