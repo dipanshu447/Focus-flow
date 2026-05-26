@@ -34,10 +34,10 @@ router.post("/register", async (req, res) => {
         password: hashedPassword
       }
     });
-    await sendWelcomeEmail({
-      email: user.email,
-      name: user.name
-    });
+    // await sendWelcomeEmail({
+    //   email: user.email,
+    //   name: user.name
+    // });
 
     const token = jwt.sign({ userId: user.id, }, process.env.JWT_SECRET, { expiresIn: "7d", });
 
