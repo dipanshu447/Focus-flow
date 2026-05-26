@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { JSX } from "react";
 
-type DarkModeController = { darkMode: string | boolean, toggleDarkMode: () => void }
+type DarkModeController = { darkMode: boolean, toggleDarkMode: () => void }
 
 export default function Navbar({ darkMode, toggleDarkMode }: DarkModeController): JSX.Element {
     const token = localStorage.getItem("token");
