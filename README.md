@@ -1,5 +1,5 @@
 <div align="center">
-<img style="width:60px;border-radius:30%" src=".github/FocusFlow.png" alt="FocusFlow Logo" />
+<img style="width:60px;border-radius:40%" src=".github/FocusFlow.png" alt="FocusFlow Logo" />
 
 # FocusFlow
 
@@ -15,8 +15,6 @@ A full-stack productivity app built for focused work sessions, task management, 
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-gray?style=flat-square\&logo=postgresql)
 ![Prisma](https://img.shields.io/badge/Prisma-gray?style=flat-square\&logo=prisma)
 ![JWT](https://img.shields.io/badge/JWT-gray?style=flat-square\&logo=jsonwebtokens)
-
-<br />
 
 <img src=".github/assets/preview.gif" alt="FocusFlow Preview" width="100%" />
 
@@ -81,31 +79,37 @@ Instead of trying to become an all-in-one workspace, FocusFlow focuses on doing 
 
 ### Frontend
 
-* React.js
-* TypeScript
-* Tailwind CSS
-* React Router
-* Context API
-* Framer Motion
-* Vite
+| Technology | Purpose |
+|---|---|
+| React.js | Frontend library |
+| TypeScript | Type safety |
+| Tailwind CSS | Styling |
+| React Router | Routing |
+| Context API | State management |
+| Framer Motion | Animations |
+| Vite | Build tool |
 
 ### Backend
 
-* Node.js
-* Express.js
-* PostgreSQL
-* Prisma ORM
-* JWT Authentication
-* Google OAuth
-* bcrypt
-* Zod
-* Resend
+| Technology | Purpose |
+|---|---|
+| Node.js | Runtime environment |
+| Express.js | Backend framework |
+| PostgreSQL | Database |
+| Prisma ORM | Database ORM |
+| JWT Authentication | Authentication |
+| Google OAuth | Social login |
+| bcrypt | Password hashing |
+| Zod | Validation |
+| Gmail SMTP | Email service |
 
 ### Deployment
 
-* Vercel
-* Render
-* Neon PostgreSQL
+| Technology | Purpose |
+|---|---|
+| Vercel | Frontend deployment |
+| Render | Backend deployment |
+| Neon PostgreSQL | Cloud database |
 
 ## Backend Route Structure
 
@@ -168,22 +172,19 @@ This project helped me better understand how modern applications handle programm
 ### Frontend
 
 ```env
-VITE_API_BASE_URL=
+VITE_API_URL=
 VITE_GOOGLE_CLIENT_ID=
 ```
 
 ### Backend
 
 ```env
-PORT=
 DATABASE_URL=
 JWT_SECRET=
-
 GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-
-RESEND_API_KEY=
 CLIENT_URL=
+EMAIL_PASS=
+EMAIL_USER=
 ```
 
 ## Getting Started
