@@ -21,8 +21,8 @@ import { FocusProvider } from './context/FocusContext.tsx';
 import ProtectedRoute from './routes/ProtectedRoute.tsx';
 import PublicRoute from './routes/PublicRoute.tsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import ForgotPassword from './pages/ForgotPassword.tsx';
-import ResetPassword from './pages/ResetPassword.tsx';
+// import ForgotPassword from './pages/ForgotPassword.tsx';
+// import ResetPassword from './pages/ResetPassword.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import TermsOfService from './pages/TermsOfService.tsx';
 import { Toaster } from 'sonner';
@@ -73,22 +73,22 @@ const router = createBrowserRouter([
           </PublicRoute>
         )
       },
-      {
-        path: 'forgot-password',
-        element: (
-          <PublicRoute>
-            <ForgotPassword />
-          </PublicRoute>
-        ),
-      },
-      {
-        path: 'reset-password',
-        element: (
-          <PublicRoute>
-            <ResetPassword />
-          </PublicRoute>
-        ),
-      },
+      // {
+      //   path: 'forgot-password',
+      //   element: (
+      //     <PublicRoute>
+      //       <ForgotPassword />
+      //     </PublicRoute>
+      //   ),
+      // },
+      // {
+      //   path: 'reset-password',
+      //   element: (
+      //     <PublicRoute>
+      //       <ResetPassword />
+      //     </PublicRoute>
+      //   ),
+      // },
       {
         path: "*",
         element: <NotFound />

@@ -185,6 +185,7 @@ GOOGLE_CLIENT_ID=
 CLIENT_URL=
 EMAIL_PASS=
 EMAIL_USER=
+RESEND_API_KEY=
 ```
 
 ## Getting Started
@@ -192,7 +193,7 @@ EMAIL_USER=
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/focusflow.git
+git clone https://github.com/dipanshu447/Focus-flow.git
 ```
 
 ### Frontend Setup

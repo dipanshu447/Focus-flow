@@ -144,7 +144,7 @@ export default function SignUp() {
                             {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                         </button>
                     </div>
-                    {mode === "login" && (
+                    {/* {mode === "login" && (
                         <div className="flex justify-end mt-1">
                             <Link
                                 to="/forgot-password"
@@ -152,7 +152,7 @@ export default function SignUp() {
                                 Forgot password?
                             </Link>
                         </div>
-                    )}
+                    )} */}
                     <button
                         type="submit"
                         disabled={isLoading}

@@ -62,7 +62,7 @@ export default function PrivacyPolicy() {
                 <li><strong className="font-medium text-black/80 dark:text-white/80">Google OAuth:</strong> For seamless and secure social authentication.</li>
                 <li><strong className="font-medium text-black/80 dark:text-white/80">PostgreSQL via Neon:</strong> For secure, scalable database storage.</li>
                 <li><strong className="font-medium text-black/80 dark:text-white/80">Render:</strong> For hosting our backend architecture.</li>
-                <li><strong className="font-medium text-black/80 dark:text-white/80">Resend:</strong> For delivering transactional emails, such as password resets, account verifications, and important account-related communications.</li>
+                {/* <li><strong className="font-medium text-black/80 dark:text-white/80">Resend:</strong> For delivering transactional emails, such as password resets, account verifications, and important account-related communications.</li> */}
               </ul>
               <p className="mt-2 text-xs md:text-sm text-black/60 dark:text-white/40 italic">
                 These providers process data on our behalf and are bound by stringent privacy and security agreements.
