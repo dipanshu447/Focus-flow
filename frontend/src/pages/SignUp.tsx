@@ -179,7 +179,7 @@ export default function SignUp() {
                         size="large"
                         text="continue_with"
                         logo_alignment="center"
-                        width="100%"
+                        width={320}
                         onSuccess={handleGooglelogin}
                         onError={() => {
                             console.log("Google Login Failed");
