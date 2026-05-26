@@ -219,7 +219,7 @@ router.post("/forgot-password", async (req, res) => {
     ">
 
       <img
-        src="YOUR_LOGO_URL"
+        src="https://github.com/dipanshu447/Focus-flow/raw/main/.github/FocusFlow.png"
         width="64"
         alt="FocusFlow"
         style="margin-bottom:20px;"

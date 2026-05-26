@@ -30,7 +30,7 @@ export const sendWelcomeEmail = async ({ email, name }) => {
     ">
 
       <img
-        src="YOUR_LOGO_URL"
+        src="https://github.com/dipanshu447/Focus-flow/raw/main/.github/FocusFlow.png"
         width="64"
         alt="FocusFlow"
         style="
@@ -278,7 +278,7 @@ export const sendContactEmail = async ({ name, email, message }) => {
       ">
 
         <img
-          src="YOUR_LOGO_URL"
+          src="https://github.com/dipanshu447/Focus-flow/raw/main/.github/FocusFlow.png"
           width="52"
           height="52"
           alt="FocusFlow"
