@@ -1,5 +1,5 @@
 export type DarkModeObj = {
-  darkMode: string,
+  darkMode: boolean,
   toggleDarkMode: () => void,
   setTheme: (theme: "dark" | "light") => void
 }
