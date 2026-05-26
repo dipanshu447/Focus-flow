@@ -7,7 +7,7 @@ A full-stack productivity app built for focused work sessions, task management, 
 
 <br />
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-black?style=for-the-badge\&logo=vercel)](https://your-demo-link.com)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-black?style=for-the-badge\&logo=vercel)](https://focus-flow-taupe-three.vercel.app)
 
 ![React](https://img.shields.io/badge/React-gray?style=flat-square\&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-gray?style=flat-square\&logo=typescript)
@@ -16,7 +16,7 @@ A full-stack productivity app built for focused work sessions, task management, 
 ![Prisma](https://img.shields.io/badge/Prisma-gray?style=flat-square\&logo=prisma)
 ![JWT](https://img.shields.io/badge/JWT-gray?style=flat-square\&logo=jsonwebtokens)
 
-<img src=".github/assets/preview.gif" alt="FocusFlow Preview" width="100%" />
+<img src=".github/preview.gif" alt="FocusFlow Preview" width="100%" />
 
 </div>
 
@@ -101,7 +101,8 @@ Instead of trying to become an all-in-one workspace, FocusFlow focuses on doing 
 | Google OAuth | Social login |
 | bcrypt | Password hashing |
 | Zod | Validation |
-| Gmail SMTP | Email service |
+| Resend | Email service |
+<!-- | Gmail SMTP | Email service | -->
 
 ### Deployment
 
@@ -121,9 +122,9 @@ POST /api/contact
 POST /api/auth/register
 POST /api/auth/login
 POST /api/auth/google
-POST /api/auth/forgot-password
-POST /api/auth/reset-password
 ```
+<!-- POST /api/auth/forgot-password
+POST /api/auth/reset-password -->
 
 ### Protected Routes
 
@@ -156,13 +157,13 @@ FocusFlow stores raw focus session data and calculates analytics on the frontend
 
 # Email System
 
-FocusFlow includes a transactional email system powered by Gmail SMTP.
+FocusFlow includes a transactional email system powered by Resend.
 
 Implemented email flows:
 
-* Welcome emails
+<!-- * Welcome emails
 * Forgot password emails
-* Reset password emails
+* Reset password emails -->
 * Contact form emails
 
 This project helped me better understand how modern applications handle programmatic email workflows and authentication-related communication systems.
@@ -227,19 +228,19 @@ Through FocusFlow, I learned:
 * Responsive UI systems
 * Theme persistence architecture
 * Deployment workflows
-* Email systems using Gmail SMTP
+* Email systems using Resend
 * Production-style project organization
 
 This project significantly improved my understanding of how modern SaaS-style applications are built and structured.
 
 ## Legacy Version
 
-The original version of FocusFlow is available in the `v1` branch.
+The original version of FocusFlow is available in the [`v1`](https://github.com/dipanshu447/Focus-flow/tree/v1) branch.
 
 It has been preserved to showcase the evolution of the project, architecture improvements, and the transition from the initial prototype to FocusFlow 2.0.
 
 ## Developer
 
-Built and designed by **Dipanshu Sahu**
+Built and designed by [**Dipanshu Sahu**](https://itsdipanshu.dev)
 
 FocusFlow started as a small productivity experiment and gradually evolved into a complete full-stack application focused on real-world architecture, clean UI/UX, and meaningful productivity workflows.
