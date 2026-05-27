@@ -18,7 +18,7 @@ interface ChartPoint {
 }
 
 export default function AnalyticsPage() {
-     const [activeChartTab, setActiveChartTab] = useState<Timeframe>('week');
+    const [activeChartTab, setActiveChartTab] = useState<Timeframe>('week');
     const [hoveredPoint, setHoveredPoint] = useState<ChartPoint | null>(null);
     const [hoveredHeatmap, setHoveredHeatmap] = useState<{ date: string, duration: string } | null>(null);
     const { sessions }: FocusContextType = useFocus();
@@ -59,22 +59,46 @@ export default function AnalyticsPage() {
     ] as const;
 
     const weeklyChartData = () => {
-        const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun",];
+        const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
         const weeklyTotals = [0, 0, 0, 0, 0, 0, 0];
 
+        const now = new Date();
+
+        const startOfWeek = new Date(now);
+        const currentDay = now.getDay();
+
+        const diff = currentDay === 0 ? 6 : currentDay - 1;
+
+        startOfWeek.setDate(now.getDate() - diff);
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 7);
+
         sessions.forEach((session) => {
-            const day = new Date(session.completedAt).getDay();
-            const index = day === 0 ? 6 : day - 1;
-            weeklyTotals[index] += session.duration;
+            const sessionDate = new Date(session.completedAt);
+
+            if (
+                sessionDate >= startOfWeek &&
+                sessionDate < endOfWeek
+            ) {
+                const day = sessionDate.getDay();
+                const index = day === 0 ? 6 : day - 1;
+
+                weeklyTotals[index] += session.duration;
+            }
         });
 
         const maxSeconds = Math.max(...weeklyTotals);
 
         return days.map((day, index) => {
             const seconds = weeklyTotals[index];
+
             return {
                 label: day,
-                value: maxSeconds > 0 ? (seconds / maxSeconds) * 100 : 0,
+                value: maxSeconds > 0
+                    ? (seconds / maxSeconds) * 100
+                    : 0,
                 displayValue: formatTime(seconds),
             };
         });
@@ -265,8 +289,8 @@ export default function AnalyticsPage() {
         <div className="h-screen w-full text-[#111] dark:text-[#e5e5e5] font-sans selection:bg-black/10 dark:selection:bg-white/20 flex flex-col overflow-hidden relative transition-colors duration-500 mt-10 sm:mt-0">
             <div className="flex-1 overflow-y-auto custom-scrollbar w-full px-6 md:px-12 lg:px-24 pt-12 md:pt-16 pb-24 relative">
                 <motion.div
-                    variants={pageVariants} 
-                    initial="hidden" 
+                    variants={pageVariants}
+                    initial="hidden"
                     animate="visible"
                     className="max-w-5xl mx-auto flex flex-col gap-10 md:gap-20 relative">
                     <motion.header variants={itemVariants} className="flex flex-col gap-3">
@@ -366,11 +390,11 @@ export default function AnalyticsPage() {
                             </AnimatePresence>
                             <AnimatePresence>
                                 {hoveredPoint && (
-                                    <motion.div 
-                                        initial={{ opacity: 0, y: 5 }} 
-                                        animate={{ opacity: 1, y: 0 }} 
-                                        exit={{ opacity: 0 }} 
-                                        transition={{ duration: 0.2 }} 
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 5 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
                                         className="absolute top-4 md:top-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-xl shadow-xl dark:shadow-2xl pointer-events-none z-30 flex items-center gap-3 backdrop-blur-md">
                                         <span className="text-[10px] text-black/50 dark:text-white/40 uppercase tracking-widest font-bold">{hoveredPoint.label}</span>
                                         <span className="text-black/20 dark:text-white/20">—</span>
@@ -414,9 +438,9 @@ export default function AnalyticsPage() {
                                     <AnimatePresence>
                                         {hoveredHeatmap && (
                                             <motion.div
-                                                initial={{ opacity: 0, y: 5 }} 
-                                                animate={{ opacity: 1, y: 0 }} 
-                                                exit={{ opacity: 0 }} 
+                                                initial={{ opacity: 0, y: 5 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0 }}
                                                 transition={{ duration: 0.2 }}
                                                 className="absolute -top-12 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-xl shadow-xl dark:shadow-2xl pointer-events-none z-30 flex items-center gap-3 backdrop-blur-md w-max">
                                                 <span className="text-[10px] text-black/50 dark:text-white/40 uppercase tracking-widest font-bold">{hoveredHeatmap.date}</span>
