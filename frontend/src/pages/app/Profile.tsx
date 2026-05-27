@@ -61,6 +61,7 @@ export default function ProfilePage() {
   const handleSaveProfile = async () => {
     try {
       await updateProfile(userData);
+      if(userData) localStorage.setItem("user", JSON.stringify(userData));
       toast.success("Profile updated");
       if (userData?.theme) setTheme(userData.theme);
       setIsEditing(false);
