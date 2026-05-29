@@ -61,8 +61,6 @@ export default function FocusPage() {
         completedAt: new Date().toISOString(),
         taskId: activeTask?.id,
       });
-      if (!data?.session) return;
-      playSound(sesstionComplete);
       toast.success("Great work! Session completed");
       showNotification("Focus Session Complete", "Great work! Time for a break.");
       setSessions(prev => [...prev, data.session]);
@@ -92,8 +90,25 @@ export default function FocusPage() {
     } else if (timerState === 'running' && timeLeft <= 0) {
       if (timerPhase === 'focus') {
         void addSession();
-        if (currentSession < sessionCount) { setTimerPhase('break'); playSound(breakTime); setTimeLeft(breakDuration * 60); toast.info("Break started"); }
-        else { setTimerPhase('focus'); setTimerState('idle'); setCurrentSession(1); setTimeLeft(sessionDuration * 60); document.title = "FocusFlow"; }
+        if (currentSession < sessionCount) {
+          setTimerPhase('break');
+          playSound(breakTime);
+          setTimeLeft(breakDuration * 60);
+          toast.info("Break started");
+        }
+        else {
+          playSound(sesstionComplete);
+          setTimerPhase('focus');
+          setTimerState('idle');
+          setCurrentSession(1);
+          setTimeLeft(sessionDuration * 60);
+          toast.success("Focus flow completed");
+          showNotification(
+            "Focus Flow Complete",
+            "Amazing work. You've completed all sessions."
+          );
+          document.title = "FocusFlow";
+        }
         return;
       }
       if (timerPhase === 'break') {
@@ -266,7 +281,7 @@ export default function FocusPage() {
             leftBtntext="Stay"
             rightBtntext="Leave Anyway"
             leftBtnfunc={() => blocker.reset()}
-            rightBtnfunc={() => blocker.proceed()} 
+            rightBtnfunc={() => blocker.proceed()}
           />
         )}
       </AnimatePresence>
@@ -314,11 +329,10 @@ export default function FocusPage() {
               </div>
               <div className="relative mb-12 lg:mb-16 select-none cursor-default transition-all duration-1000 w-full flex justify-center lg:justify-start">
                 <h1
-                  className={`text-[clamp(6rem,24vw,12rem)] lg:text-[clamp(6rem,14vw,17rem)] font-light leading-[0.8] tracking-tighter tabular-nums transition-colors duration-1000 ${
-                    timerPhase === 'break'
-                      ? 'text-black/60 dark:text-white/30'
-                      : 'text-black/90 dark:text-white/90'
-                  }`}
+                  className={`text-[clamp(6rem,24vw,12rem)] lg:text-[clamp(6rem,14vw,17rem)] font-light leading-[0.8] tracking-tighter tabular-nums transition-colors duration-1000 ${timerPhase === 'break'
+                    ? 'text-black/60 dark:text-white/30'
+                    : 'text-black/90 dark:text-white/90'
+                    }`}
                   style={{ letterSpacing: '-0.05em' }}>
                   {formatTime(timeLeft)}
                 </h1>
@@ -326,11 +340,10 @@ export default function FocusPage() {
               <div className="flex items-center justify-center lg:justify-start lg:gap-6 w-full">
                 <button
                   onClick={handleToggleTimer}
-                  className={`group relative flex items-center justify-center gap-3 px-12 py-4 md:px-14 md:py-5 rounded-full font-bold tracking-[0.2em] text-[10px] sm:text-xs uppercase transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98] ${
-                    timerPhase === 'break'
-                      ? 'bg-black/10 dark:bg-white/10 text-black dark:text-white hover:bg-black/20 dark:hover:bg-white/20'
-                      : 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/80 dark:hover:bg-neutral-200'
-                  }`}>
+                  className={`group relative flex items-center justify-center gap-3 px-12 py-4 md:px-14 md:py-5 rounded-full font-bold tracking-[0.2em] text-[10px] sm:text-xs uppercase transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98] ${timerPhase === 'break'
+                    ? 'bg-black/10 dark:bg-white/10 text-black dark:text-white hover:bg-black/20 dark:hover:bg-white/20'
+                    : 'bg-black dark:bg-white text-white dark:text-black hover:bg-black/80 dark:hover:bg-neutral-200'
+                    }`}>
                   {timerState === 'running' ? (
                     <>
                       <FiPause size={16} className="fill-current" />

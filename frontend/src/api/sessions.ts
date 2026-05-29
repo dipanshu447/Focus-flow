@@ -8,5 +8,5 @@ export async function getSessions() {
 
 export async function createSessions(newSession: sessionTypeObj) {
     const res = await api.post("/sessions", newSession);
-    return res.data.sessions;
+    return res.data;
 }
