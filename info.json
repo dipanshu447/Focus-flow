@@ -1,29 +1,34 @@
 {
-  "tagline": "Minimalist productivity app focused on deep work, task management, and focus analytics.",
+  "portfolio_order": 1,
   "featured": true,
+  "card_tags": [
+    "TypeScript",
+    "PostgreSQL",
+    "JWT Auth"
+  ],
+  "tagline": "Full-stack productivity platform with focus tracking, task management, analytics, and secure authentication.",
   "status": "completed",
   "details": {
-    "overview": "FocusFlow is a full-stack productivity application designed to help users stay focused using Pomodoro-based work sessions, task tracking, analytics, and distraction-free workflows. The app focuses on clean UI, smooth UX, and practical productivity features with scalable backend architecture.",
+    "overview": "FocusFlow is a full-stack productivity platform designed to help users manage tasks, track focus sessions, and improve productivity through analytics. Built with React, TypeScript, Node.js, and PostgreSQL, it combines secure authentication, session tracking, and data-driven insights in a clean and distraction-free experience.",
     "image": "https://github.com/dipanshu447/Focus-flow/raw/main/.github/preview.gif",
+    "engineering_challenges": [
+      "Designing PostgreSQL schemas for tasks, focus sessions, and analytics",
+      "Implementing secure JWT and Google OAuth authentication",
+      "Building productivity analytics from user session data",
+      "Creating scalable REST APIs with validation and middleware"
+    ],
     "key_features": [
       "Pomodoro focus timer with session tracking",
-      "Task management with focus-linked sessions",
-      "Focus analytics and productivity insights",
+      "Task management integrated with focus sessions",
+      "Productivity analytics dashboard",
       "JWT authentication with Google OAuth",
-      "Responsive dark/light theme UI",
-      "Persistent user data with PostgreSQL",
-      "Clean dashboard with distraction-free design",
-      "Session history and performance tracking"
+      "Responsive dark and light theme support"
     ],
     "what_i_learned": [
-      "Designed and built a scalable full-stack architecture using React, Express, Prisma, and PostgreSQL",
-      "Implemented secure authentication using JWT and Google OAuth",
-      "Built RESTful APIs with proper route structure and middleware",
-      "Managed relational database models using Prisma ORM",
-      "Improved frontend state management and application structure",
-      "Optimized user experience with responsive UI and clean component architecture",
-      "Handled deployment workflows using Vercel, Render, and Neon PostgreSQL",
-      "Built production-style project organization and backend architecture"
+      "Building a production-style full-stack application",
+      "Designing relational databases with Prisma and PostgreSQL",
+      "Implementing authentication and authorization workflows",
+      "Deploying and maintaining modern web applications"
     ],
     "tech_stack": {
       "frontend": [
@@ -37,12 +42,14 @@
       "backend": [
         "Node.js",
         "Express.js",
-        "PostgreSQL",
-        "Prisma ORM",
         "JWT Authentication",
         "Google OAuth",
         "Zod",
         "Resend"
+      ],
+      "database": [
+        "PostgreSQL",
+        "Prisma ORM"
       ],
       "tools": [
         "Vercel",
